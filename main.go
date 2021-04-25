@@ -51,17 +51,25 @@ func main() {
 		digitalocean.ListImages(1)
 		digitalocean.ListImages(2)
 	} else if command == "producer" {
+		if argMap["dest"] == "" {
+			return
+		}
 		// https://www.coincashew.com/coins/overview-ada/guide-how-to-build-a-haskell-stakepool-node
 		b, _ := ioutil.ReadFile("producer.history")
 		blob := string(b)
 		t := template.Must(template.New("producer").Parse(blob))
 		var buff bytes.Buffer
 		r := Replacer{}
-		r.RelayIP = "hi"
-		err := t.Execute(&buff, r)
-		fmt.Println(err)
-		fmt.Println(len(buff.Bytes()))
+		r.RelayIP = "144.126.222.70"
+		t.Execute(&buff, r)
+		ioutil.WriteFile("producer.sh", buff.Bytes(), 0755)
+		dest := argMap["dest"]
+		out, err := exec.Command("scp", "producer.sh", "root@"+dest+":").Output()
+		fmt.Println(string(out), err)
+
+		// apply tag
 	} else if command == "wolf" {
+
 		fmt.Println("groupadd ssh-users")
 		fmt.Println("useradd -c 'get in sync' -m -d /home/wolf -s /bin/bash -G sudo,ssh-users wolf")
 		fmt.Println("rsync --archive --chown=wolf:wolf ~/.ssh /home/wolf")
