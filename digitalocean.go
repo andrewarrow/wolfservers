@@ -40,8 +40,6 @@ func ListDroplets() {
 	oauthClient := oauth2.NewClient(context.Background(), tokenSource)
 	client := godo.NewClient(oauthClient)
 
-	fmt.Println("auth ok")
-
 	ctx := context.TODO()
 
 	opt := &godo.ListOptions{
