@@ -39,6 +39,42 @@ type Replacer struct {
 	LtLt    string
 }
 
+func MakeRelay() {
+	b2, _ := ioutil.ReadFile("relay.history")
+	blob := string(b2)
+	t := template.Must(template.New("relay").
+		Funcs(template.FuncMap{"unescape": unescape}).
+		Parse(blob))
+	var buff bytes.Buffer
+	r := Replacer{}
+	r.RelayIP = ""
+	r.LtLt = "<<"
+	t.Execute(&buff, r)
+	ioutil.WriteFile("relay.sh", buff.Bytes(), 0755)
+}
+func MakeProducer() {
+	b2, _ := ioutil.ReadFile("producer.history")
+	blob := string(b2)
+	t := template.Must(template.New("producer").
+		Funcs(template.FuncMap{"unescape": unescape}).
+		Parse(blob))
+	var buff bytes.Buffer
+	r := Replacer{}
+	r.RelayIP = "144.126.222.70"
+	r.LtLt = "<<"
+	t.Execute(&buff, r)
+	ioutil.WriteFile("producer.sh", buff.Bytes(), 0755)
+}
+
+func PrepDest(dest string) {
+	out, _ := exec.Command("ssh-keyscan", "-H", dest).Output()
+	f, _ := os.OpenFile(files.UserHomeDir()+"/.ssh/known_hosts", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	f.WriteString(string(out))
+}
+func ScpFile(file, dest string) {
+	out, err := exec.Command("scp", file, "root@"+dest+":").Output()
+	fmt.Println(string(out), err)
+}
 func main() {
 	rand.Seed(time.Now().UnixNano())
 
@@ -56,36 +92,29 @@ func main() {
 	} else if command == "images" {
 		digitalocean.ListImages(1)
 		digitalocean.ListImages(2)
+	} else if command == "relay" {
+		if argMap["dest"] == "" {
+			return
+		}
+		dest := argMap["dest"]
+		PrepDest(dest)
+		b1, _ := ioutil.ReadFile("node.setup")
+		ioutil.WriteFile("node.sh", b1, 0755)
+		MakeRelay()
+		ScpFile("setup.sh", dest)
+		ScpFile("relay.sh", dest)
 	} else if command == "producer" {
 		if argMap["dest"] == "" {
 			return
 		}
 		// https://www.coincashew.com/coins/overview-ada/guide-how-to-build-a-haskell-stakepool-node
-		b1, _ := ioutil.ReadFile("producer.setup")
-		b2, _ := ioutil.ReadFile("producer.history")
-		blob := string(b2)
-		t := template.Must(template.New("producer").
-			Funcs(template.FuncMap{"unescape": unescape}).
-			Parse(blob))
-		var buff bytes.Buffer
-		r := Replacer{}
-		r.RelayIP = "144.126.222.70"
-		r.LtLt = "<<"
-		t.Execute(&buff, r)
-		ioutil.WriteFile("setup.sh", b1, 0755)
-		ioutil.WriteFile("producer.sh", buff.Bytes(), 0755)
 		dest := argMap["dest"]
-		out, err := exec.Command("ssh-keyscan", "-H", dest).Output()
-		fmt.Println(err)
-		// todo append /.ssh/known_hosts out
-		f, _ := os.OpenFile(files.UserHomeDir()+"/.ssh/known_hosts", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-		f.WriteString(string(out))
-
-		out, err = exec.Command("scp", "setup.sh", "root@"+dest+":").Output()
-		fmt.Println(string(out), err)
-		out, err = exec.Command("scp", "producer.sh", "root@"+dest+":").Output()
-		fmt.Println(string(out), err)
-
+		PrepDest(dest)
+		b1, _ := ioutil.ReadFile("node.setup")
+		ioutil.WriteFile("node.sh", b1, 0755)
+		MakeProducer()
+		ScpFile("setup.sh", dest)
+		ScpFile("producer.sh", dest)
 		// apply tag
 	} else if command == "wolf" {
 
