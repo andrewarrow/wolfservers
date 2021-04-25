@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/andrewarrow/wolfservers/args"
@@ -15,6 +16,7 @@ func PrintHelp() {
 	fmt.Println("  wolfservers help         # this menu")
 	fmt.Println("  wolfservers ls           # list servers")
 	fmt.Println("  wolfservers make         # make new one --size=slug")
+	fmt.Println("  wolfservers danger       # --ID=id")
 	fmt.Println("")
 }
 
@@ -36,7 +38,12 @@ func main() {
 			return
 		}
 		digitalocean.CreateDroplet(argMap["size"])
-	} else if command == "relays" {
+	} else if command == "danger" {
+		if argMap["ID"] == "" {
+			return
+		}
+		id, _ := strconv.Atoi(argMap["ID"])
+		digitalocean.RemoveDroplet(id)
 	} else if command == "help" {
 		PrintHelp()
 	}

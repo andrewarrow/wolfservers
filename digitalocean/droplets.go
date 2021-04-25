@@ -43,12 +43,11 @@ func CreateDroplet(size string) {
 	}
 
 	client, ctx := GetClient()
-	newDroplet, _, err := client.Droplets.Create(ctx, createRequest)
+	_, _, err := client.Droplets.Create(ctx, createRequest)
 	if err != nil {
 		fmt.Printf("err: %v\n\n", err)
 
 	}
-	fmt.Printf(newDroplet.PublicIPv4())
 }
 
 func ListSizes() {
@@ -85,6 +84,12 @@ func ListDroplets() {
 	droplets, _, _ := client.Droplets.List(ctx, opt)
 
 	for _, droplet := range droplets {
-		fmt.Printf("%s %v\n", droplet.Name, droplet.Networks.V4[1].IPAddress)
+		//fmt.Println(droplet)
+		fmt.Printf("%s %s %s %s\n",
+
+			display.LeftAligned(droplet.ID, 10),
+			display.LeftAligned(droplet.Name, 20),
+			display.LeftAligned(droplet.Networks.V4[1].IPAddress, 20),
+			display.LeftAligned(droplet.Image.Slug, 20))
 	}
 }
