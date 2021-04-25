@@ -22,6 +22,7 @@ func PrintHelp() {
 	fmt.Println("  wolfservers ed255        # new ed25519 key")
 	fmt.Println("  wolfservers wolf         # user add for wolf user")
 	fmt.Println("  wolfservers images       # list images")
+	fmt.Println("  wolfservers tags         # list tags")
 	fmt.Println("")
 }
 
