@@ -13,6 +13,7 @@ import (
 
 	"github.com/andrewarrow/wolfservers/args"
 	"github.com/andrewarrow/wolfservers/digitalocean"
+	"github.com/andrewarrow/wolfservers/files"
 )
 
 func PrintHelp() {
@@ -75,7 +76,11 @@ func main() {
 		ioutil.WriteFile("producer.sh", buff.Bytes(), 0755)
 		dest := argMap["dest"]
 		out, err := exec.Command("ssh-keyscan", "-H", dest).Output()
-		fmt.Println(string(out), err)
+		fmt.Println(err)
+		// todo append /.ssh/known_hosts out
+		f, _ := os.OpenFile(files.UserHomeDir()+"/.ssh/known_hosts", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		f.WriteString(string(out))
+
 		out, err = exec.Command("scp", "setup.sh", "root@"+dest+":").Output()
 		fmt.Println(string(out), err)
 		out, err = exec.Command("scp", "producer.sh", "root@"+dest+":").Output()
