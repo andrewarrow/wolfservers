@@ -1,20 +1,3 @@
-useradd -c 'aa' -m -d /home/aa -s /bin/bash -G sudo aa
-rsync --archive --chown=aa:aa ~/.ssh /home/aa
-echo "aa ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/99_sudo_include_file
-
-wget https://hydra.iohk.io/build/6163141/download/1/cardano-node-1.26.1-linux.tar.gz
-gunzip cardano-node-1.26.1-linux.tar.gz
-tar -xf cardano-node-1.26.1-linux.tar 
-rm *.tar
-mkdir cardano-my-node
-echo PATH="$HOME/.local/bin:$PATH" >> $HOME/.bashrc
-echo export LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH" >> $HOME/.bashrc
-echo export NODE_HOME=$HOME/cardano-my-node >> $HOME/.bashrc
-echo export NODE_CONFIG=mainnet>> $HOME/.bashrc
-echo export NODE_BUILD_NUM=$(curl https://hydra.iohk.io/job/Cardano/iohk-nix/cardano-deployment/latest-finished/download/1/index.html | grep -e "build" | sed 's/.*build\/\([0-9]*\)\/download.*/\1/g') >> $HOME/.bashrc
-
-source $HOME/.bashrc
-mkdir $NODE_HOME
 cd cardano-my-node/
 wget -N https://hydra.iohk.io/build/${NODE_BUILD_NUM}/download/1/${NODE_CONFIG}-byron-genesis.json
 wget -N https://hydra.iohk.io/build/${NODE_BUILD_NUM}/download/1/${NODE_CONFIG}-topology.json
@@ -95,6 +78,7 @@ curl -s -o env https://raw.githubusercontent.com/cardano-community/guild-operato
 chmod 755 gLiveView.sh
 sed -i env     -e "s/\#CONFIG=\"\${CNODE_HOME}\/files\/config.json\"/CONFIG=\"\${NODE_HOME}\/mainnet-config.json\"/g"     -e "s/\#SOCKET=\"\${CNODE_HOME}\/sockets\/node0.socket\"/SOCKET=\"\${NODE_HOME}\/db\/socket\"/g"
 
+cd $NODE_HOME
 cardano-cli node key-gen-KES     --verification-key-file kes.vkey     --signing-key-file kes.skey
 pushd +1
 slotsPerKESPeriod=$(cat $NODE_HOME/${NODE_CONFIG}-shelley-genesis.json | jq -r '.slotsPerKESPeriod')

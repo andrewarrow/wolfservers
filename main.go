@@ -60,8 +60,9 @@ func main() {
 			return
 		}
 		// https://www.coincashew.com/coins/overview-ada/guide-how-to-build-a-haskell-stakepool-node
-		b, _ := ioutil.ReadFile("producer.history")
-		blob := string(b)
+		b1, _ := ioutil.ReadFile("producer.setup")
+		b2, _ := ioutil.ReadFile("producer.history")
+		blob := string(b2)
 		t := template.Must(template.New("producer").
 			Funcs(template.FuncMap{"unescape": unescape}).
 			Parse(blob))
@@ -70,9 +71,14 @@ func main() {
 		r.RelayIP = "144.126.222.70"
 		r.LtLt = "<<"
 		t.Execute(&buff, r)
+		ioutil.WriteFile("setup.sh", b1, 0755)
 		ioutil.WriteFile("producer.sh", buff.Bytes(), 0755)
 		dest := argMap["dest"]
-		out, err := exec.Command("scp", "producer.sh", "root@"+dest+":").Output()
+		out, err := exec.Command("ssh-keyscan", "-H", dest).Output()
+		fmt.Println(string(out), err)
+		out, err = exec.Command("scp", "setup.sh", "root@"+dest+":").Output()
+		fmt.Println(string(out), err)
+		out, err = exec.Command("scp", "producer.sh", "root@"+dest+":").Output()
 		fmt.Println(string(out), err)
 
 		// apply tag
