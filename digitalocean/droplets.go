@@ -53,8 +53,10 @@ func ListSizes() {
 	var sizes DropletSizes
 	json.Unmarshal([]byte(jsonString), &sizes)
 	for _, s := range sizes.Sizes {
-		fmt.Println(s.PriceMonth, display.LeftAligned(s.Slug, 20),
-			s.Description)
+		fmt.Println(display.LeftAligned(s.PriceMonth, 5), display.LeftAligned(s.Slug, 20),
+			display.LeftAligned(s.Memory, 10),
+			display.LeftAligned(s.Disk, 10),
+			display.LeftAligned(s.Vcpus, 10), s.Description)
 	}
 }
 func ListDroplets() {
