@@ -23,11 +23,10 @@ func CreateDroplet(size, key string) {
 			Slug: "ubuntu-18-04-x64",
 		},
 	}
-
 	client, ctx := GetClient()
-	_, _, err := client.Droplets.Create(ctx, createRequest)
+	r, _, err := client.Droplets.Create(ctx, createRequest)
 	if err != nil {
 		fmt.Printf("err: %v\n\n", err)
-
 	}
+	fmt.Println(r)
 }

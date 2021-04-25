@@ -17,7 +17,7 @@ func PrintHelp() {
 	fmt.Println("  wolfservers help         # this menu")
 	fmt.Println("  wolfservers ls           # list servers")
 	fmt.Println("  wolfservers keys         # list ssh keys")
-	fmt.Println("  wolfservers make         # make new one --size=slug --key=key")
+	fmt.Println("  wolfservers make         # make new one --size=slug")
 	fmt.Println("  wolfservers danger       # --ID=id")
 	fmt.Println("  wolfservers ed255        # new ed25519 key")
 	fmt.Println("  wolfservers wolf         # user add for wolf user")
@@ -40,26 +40,25 @@ func main() {
 		digitalocean.ListKeys()
 	} else if command == "wolf" {
 		fmt.Println("groupadd ssh-users")
-		fmt.Println("useradd -c “get in sync” -m -d /home/wolf -s /bin/bash -G sudo,ssh-users wolf")
+		fmt.Println("useradd -c 'get in sync' -m -d /home/wolf -s /bin/bash -G sudo,ssh-users wolf")
 		fmt.Println("rsync --archive --chown=wolf:wolf ~/.ssh /home/wolf")
 
 		text := `apt update
 apt upgrade
-apt install -y build-essential libssl-dev
-apt install pkg-config
-apt install nload
-apt install jq
-apt install python3-pip
-apt-get install tcptraceroute
-apt-get install chrony`
+apt install -y build-essential libssl-dev pkg-config nload jq python3-pip tcptraceroute chrony
+cd /usr/bin; wget http://www.vdberg.org/~richard/tcpping; chmod 755 tcpping; cd
+curl -LO https://github.com/BurntSushi/ripgrep/releases/download/11.0.2/ripgrep_11.0.2_amd64.deb
+dpkg -i ripgrep_11.0.2_amd64.deb; rm ripgrep_11.0.2_amd64.deb
+`
 
 		fmt.Println(text)
 	} else if command == "make" {
-		if argMap["size"] == "" || argMap["key"] == "" {
+		if argMap["size"] == "" {
 			digitalocean.ListSizes()
 			return
 		}
-		digitalocean.CreateDroplet(argMap["size"], argMap["key"])
+		key := os.Getenv("DO_PRINT")
+		digitalocean.CreateDroplet(argMap["size"], key)
 	} else if command == "danger" {
 		if argMap["ID"] == "" {
 			return
