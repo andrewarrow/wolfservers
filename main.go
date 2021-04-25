@@ -20,6 +20,7 @@ func PrintHelp() {
 	fmt.Println("  wolfservers make         # make new one --size=slug --key=key")
 	fmt.Println("  wolfservers danger       # --ID=id")
 	fmt.Println("  wolfservers ed255        # new ed25519 key")
+	fmt.Println("  wolfservers wolf         # user add for wolf user")
 	fmt.Println("")
 }
 
@@ -37,6 +38,22 @@ func main() {
 		digitalocean.ListDroplets()
 	} else if command == "keys" {
 		digitalocean.ListKeys()
+	} else if command == "wolf" {
+		fmt.Println("groupadd ssh-users")
+		fmt.Println("useradd -c “get in sync” -m -d /home/wolf -s /bin/bash -G sudo,ssh-users wolf")
+		fmt.Println("rsync --archive --chown=wolf:wolf ~/.ssh /home/wolf")
+
+		text := `apt update
+apt upgrade
+apt install -y build-essential libssl-dev
+apt install pkg-config
+apt install nload
+apt install jq
+apt install python3-pip
+apt-get install tcptraceroute
+apt-get install chrony`
+
+		fmt.Println(text)
 	} else if command == "make" {
 		if argMap["size"] == "" || argMap["key"] == "" {
 			digitalocean.ListSizes()
