@@ -17,7 +17,7 @@ func PrintHelp() {
 	fmt.Println("  wolfservers help         # this menu")
 	fmt.Println("  wolfservers ls           # list servers")
 	fmt.Println("  wolfservers keys         # list ssh keys")
-	fmt.Println("  wolfservers make         # make new one --size=slug")
+	fmt.Println("  wolfservers make         # make new one --size=slug --key=key")
 	fmt.Println("  wolfservers danger       # --ID=id")
 	fmt.Println("  wolfservers ed255        # new ed25519 key")
 	fmt.Println("")
@@ -38,11 +38,11 @@ func main() {
 	} else if command == "keys" {
 		digitalocean.ListKeys()
 	} else if command == "make" {
-		if argMap["size"] == "" {
+		if argMap["size"] == "" || argMap["key"] == "" {
 			digitalocean.ListSizes()
 			return
 		}
-		digitalocean.CreateDroplet(argMap["size"])
+		digitalocean.CreateDroplet(argMap["size"], argMap["key"])
 	} else if command == "danger" {
 		if argMap["ID"] == "" {
 			return

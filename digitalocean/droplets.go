@@ -2,7 +2,6 @@ package digitalocean
 
 import (
 	"context"
-	"crypto/rand"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -26,28 +25,6 @@ func (t *TokenSource) Token() (*oauth2.Token, error) {
 		AccessToken: t.AccessToken,
 	}
 	return token, nil
-}
-
-func CreateDroplet(size string) {
-	b := make([]byte, 16)
-	rand.Read(b)
-	dropletName := fmt.Sprintf("wolf-%X", b[4:6])
-
-	createRequest := &godo.DropletCreateRequest{
-		Name:   dropletName,
-		Region: "SFO3",
-		Size:   size,
-		Image: godo.DropletCreateImage{
-			Slug: "ubuntu-18-04-x64",
-		},
-	}
-
-	client, ctx := GetClient()
-	_, _, err := client.Droplets.Create(ctx, createRequest)
-	if err != nil {
-		fmt.Printf("err: %v\n\n", err)
-
-	}
 }
 
 func ListSizes() {
