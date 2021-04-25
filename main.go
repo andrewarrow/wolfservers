@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
+	"os/exec"
 	"strconv"
 	"time"
 
@@ -15,8 +16,10 @@ func PrintHelp() {
 	fmt.Println("")
 	fmt.Println("  wolfservers help         # this menu")
 	fmt.Println("  wolfservers ls           # list servers")
+	fmt.Println("  wolfservers keys         # list ssh keys")
 	fmt.Println("  wolfservers make         # make new one --size=slug")
 	fmt.Println("  wolfservers danger       # --ID=id")
+	fmt.Println("  wolfservers ed255        # new ed25519 key")
 	fmt.Println("")
 }
 
@@ -32,6 +35,8 @@ func main() {
 
 	if command == "ls" {
 		digitalocean.ListDroplets()
+	} else if command == "keys" {
+		digitalocean.ListKeys()
 	} else if command == "make" {
 		if argMap["size"] == "" {
 			digitalocean.ListSizes()
@@ -44,6 +49,10 @@ func main() {
 		}
 		id, _ := strconv.Atoi(argMap["ID"])
 		digitalocean.RemoveDroplet(id)
+	} else if command == "ed255" {
+		out, err := exec.Command("ssh-keygen", "-o", "-a", "100", "-t", "ed25519",
+			"-f", "/Users/andrewarrow/.ssh/id_ed25519", "-C", "wolfservers").Output()
+		fmt.Println(string(out), err)
 	} else if command == "help" {
 		PrintHelp()
 	}
