@@ -43,6 +43,8 @@ func main() {
 		digitalocean.ListImages(1)
 		digitalocean.ListImages(2)
 	} else if command == "wolf2" {
+		// https://hydra.iohk.io/build/6163141
+		// https://hydra.iohk.io/build/6163141/download/1/cardano-node-1.26.1-linux.tar.gz
 		// https://www.coincashew.com/coins/overview-ada/guide-how-to-build-a-haskell-stakepool-node
 		fmt.Println("sudo apt-get update -y")
 		fmt.Println("sudo apt-get upgrade -y")
@@ -126,8 +128,10 @@ echo "export JORMUNGANDR_STORAGE_DIR='/home/wolf/storage'" >> ~/.bashrc
 		if argMap["ID"] == "" {
 			return
 		}
-		id, _ := strconv.Atoi(argMap["ID"])
-		digitalocean.RemoveDroplet(id)
+		if false { // TODO rethink how to prevent disaster
+			id, _ := strconv.Atoi(argMap["ID"])
+			digitalocean.RemoveDroplet(id)
+		}
 	} else if command == "ed255" {
 		out, err := exec.Command("ssh-keygen", "-o", "-a", "100", "-t", "ed25519",
 			"-f", "/Users/andrewarrow/.ssh/id_ed25519", "-C", "wolfservers").Output()
