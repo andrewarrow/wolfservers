@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/andrewarrow/wolfservers/display"
 	"github.com/andrewarrow/wolfservers/network"
 	"github.com/digitalocean/godo"
 	"golang.org/x/oauth2"
@@ -48,11 +49,12 @@ func CreateDroplet() {
 }*/
 
 func ListSizes() {
-	jsonString := network.DoGet("v2/sizes")
+	jsonString := network.DoGet("v2/sizes?per_page=100")
 	var sizes DropletSizes
 	json.Unmarshal([]byte(jsonString), &sizes)
 	for _, s := range sizes.Sizes {
-		fmt.Println(s)
+		fmt.Println(s.PriceMonth, display.LeftAligned(s.Slug, 20),
+			s.Description)
 	}
 }
 func ListDroplets() {
