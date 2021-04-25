@@ -42,6 +42,36 @@ func main() {
 	} else if command == "images" {
 		digitalocean.ListImages(1)
 		digitalocean.ListImages(2)
+	} else if command == "wolf2" {
+		// https://www.coincashew.com/coins/overview-ada/guide-how-to-build-a-haskell-stakepool-node
+		fmt.Println("sudo apt-get update -y")
+		fmt.Println("sudo apt-get upgrade -y")
+		fmt.Println("sudo apt-get install git jq bc make automake rsync htop curl build-essential pkg-config libffi-dev libgmp-dev libssl-dev libtinfo-dev libsystemd-dev zlib1g-dev make g++ wget libncursesw5 libtool autoconf -y")
+		fmt.Println("")
+		l := `mkdir $HOME/git
+cd $HOME/git
+git clone https://github.com/input-output-hk/libsodium
+cd libsodium
+git checkout 66f017f1
+./autogen.sh
+./configure
+make
+sudo make install`
+		fmt.Println(l)
+		fmt.Println("sudo apt-get -y install pkg-config libgmp-dev libssl-dev libtinfo-dev libsystemd-dev zlib1g-dev build-essential curl libgmp-dev libffi-dev libncurses-dev libtinfo5")
+		fmt.Println("curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh")
+		l = `cd $HOME
+source .bashrc
+ghcup upgrade
+ghcup install cabal 3.4.0.0
+ghcup set cabal 3.4.0.0`
+		fmt.Println(l)
+		l = `ghcup install ghc 8.10.4
+ghcup set ghc 8.10.4`
+		fmt.Println(l)
+		fmt.Println("")
+		fmt.Println("")
+
 	} else if command == "wolf" {
 		fmt.Println("groupadd ssh-users")
 		fmt.Println("useradd -c 'get in sync' -m -d /home/wolf -s /bin/bash -G sudo,ssh-users wolf")
@@ -65,6 +95,23 @@ git clone https://github.com/input-output-hk/jormungandr
 cd jormungandr/
 git submodule update --init --recursive
 cargo install --path jormungandr --force
+
+git clone https://github.com/Chris-Graffagnino/Jormungandr-for-Newbs.git -b files-only --single-branch files
+
+chmod +x ~/files/*.sh; chmod +x ~/files/env
+cat ~/files/.bashrc > ~/.bashrc && cat ~/files/.bash_profile > ~/.bash_profile && cat ~/files/.bash_aliases > .bash_aliases
+
+chmod 700 ~/.bashrc && chmod 700 ~/.bash_profile
+
+source ~/.bash_profile
+
+mkdir /home/wolf/storage
+
+echo "export USERNAME='wolf'" >> ~/.bashrc
+echo "export PUBLIC_IP_ADDR='161.35.232.233'" >> ~/.bashrc
+echo "export REST_PORT='3001'" >> ~/.bashrc
+echo "export REST_URL='http://127.0.0.1:3001/api'" >> ~/.bashrc
+echo "export JORMUNGANDR_STORAGE_DIR='/home/wolf/storage'" >> ~/.bashrc
 `
 
 		fmt.Println(text)

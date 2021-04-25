@@ -3,6 +3,8 @@ package digitalocean
 import (
 	"crypto/rand"
 	"fmt"
+	"os"
+	"strconv"
 
 	"github.com/digitalocean/godo"
 )
@@ -12,6 +14,17 @@ func CreateDroplet(size, key string) {
 	rand.Read(b)
 	dropletName := fmt.Sprintf("wolf-%X", b[4:6])
 
+	imageIdString := os.Getenv("DO_IMAGE")
+
+	dci := godo.DropletCreateImage{
+		Slug: "ubuntu-18-04-x64",
+	}
+	if imageIdString != "" {
+		imageId, _ := strconv.Atoi(imageIdString)
+		dci.Slug = ""
+		dci.ID = imageId
+	}
+
 	sshKey := godo.DropletCreateSSHKey{0, key}
 	sshList := []godo.DropletCreateSSHKey{sshKey}
 	createRequest := &godo.DropletCreateRequest{
@@ -19,9 +32,7 @@ func CreateDroplet(size, key string) {
 		Region:  "SFO3",
 		Size:    size,
 		SSHKeys: sshList,
-		Image: godo.DropletCreateImage{
-			Slug: "ubuntu-18-04-x64",
-		},
+		Image:   dci,
 	}
 	client, ctx := GetClient()
 	r, _, err := client.Droplets.Create(ctx, createRequest)

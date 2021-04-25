@@ -22,8 +22,8 @@ func ListImages(page int) {
 	var images Images
 	json.Unmarshal([]byte(jsonString), &images)
 	for _, s := range images.Images {
-		fmt.Println(display.LeftAligned(s.Id, 5),
-			display.LeftAligned(s.Slug, 50),
-			display.LeftAligned(s.Name, 10))
+		fmt.Println(display.LeftAligned(s.Id, 20),
+			display.LeftAligned(s.Slug, 30),
+			display.LeftAligned(s.Name, 30))
 	}
 }
