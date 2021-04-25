@@ -29,8 +29,13 @@ func PrintHelp() {
 	fmt.Println("")
 }
 
+func unescape(s string) template.HTML {
+	return template.HTML(s)
+}
+
 type Replacer struct {
 	RelayIP string
+	LtLt    string
 }
 
 func main() {
@@ -57,10 +62,13 @@ func main() {
 		// https://www.coincashew.com/coins/overview-ada/guide-how-to-build-a-haskell-stakepool-node
 		b, _ := ioutil.ReadFile("producer.history")
 		blob := string(b)
-		t := template.Must(template.New("producer").Parse(blob))
+		t := template.Must(template.New("producer").
+			Funcs(template.FuncMap{"unescape": unescape}).
+			Parse(blob))
 		var buff bytes.Buffer
 		r := Replacer{}
 		r.RelayIP = "144.126.222.70"
+		r.LtLt = "<<"
 		t.Execute(&buff, r)
 		ioutil.WriteFile("producer.sh", buff.Bytes(), 0755)
 		dest := argMap["dest"]
@@ -71,7 +79,7 @@ func main() {
 	} else if command == "wolf" {
 
 		fmt.Println("groupadd ssh-users")
-		fmt.Println("useradd -c 'get in sync' -m -d /home/wolf -s /bin/bash -G sudo,ssh-users wolf")
+		fmt.Println("useradd -c 'aa' -m -d /home/aa -s /bin/bash -G sudo aa")
 		fmt.Println("rsync --archive --chown=wolf:wolf ~/.ssh /home/wolf")
 
 		text := `apt update

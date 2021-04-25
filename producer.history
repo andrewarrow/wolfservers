@@ -2,6 +2,7 @@ wget https://hydra.iohk.io/build/6163141/download/1/cardano-node-1.26.1-linux.ta
 gunzip cardano-node-1.26.1-linux.tar.gz
 tar -xf cardano-node-1.26.1-linux.tar 
 rm *.tar
+mkdir cardano-my-node
 echo PATH="$HOME/.local/bin:$PATH" >> $HOME/.bashrc
 echo export LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH" >> $HOME/.bashrc
 echo export NODE_HOME=$HOME/cardano-my-node >> $HOME/.bashrc
@@ -19,7 +20,7 @@ sed -i ${NODE_CONFIG}-config.json     -e "s/TraceBlockFetchDecisions\": false/Tr
 
 echo export CARDANO_NODE_SOCKET_PATH="$NODE_HOME/db/socket" >> $HOME/.bashrc
 source $HOME/.bashrc
-cat > $NODE_HOME/${NODE_CONFIG}-topology.json << EOF 
+cat > $NODE_HOME/${NODE_CONFIG}-topology.json {{unescape .LtLt}} EOF 
  {
     "Producers": [
       {
@@ -31,7 +32,7 @@ cat > $NODE_HOME/${NODE_CONFIG}-topology.json << EOF
   }
 EOF
 
-cat > $NODE_HOME/startBlockProducingNode.sh << EOF 
+cat > $NODE_HOME/startBlockProducingNode.sh {{unescape .LtLt}} EOF 
 #!/bin/bash
 DIRECTORY=$NODE_HOME
 PORT=6000
@@ -44,7 +45,7 @@ CONFIG=\${DIRECTORY}/${NODE_CONFIG}-config.json
 EOF
 
 chmod +x /root/cardano-my-node/startBlockProducingNode.sh 
-cat > $NODE_HOME/cardano-node.service << EOF 
+cat > $NODE_HOME/cardano-node.service {{unescape .LtLt}} EOF 
 # The Cardano node service (part of systemd)
 # file: /etc/systemd/system/cardano-node.service 
 
