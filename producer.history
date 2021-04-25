@@ -1,3 +1,7 @@
+useradd -c 'aa' -m -d /home/aa -s /bin/bash -G sudo aa
+rsync --archive --chown=aa:aa ~/.ssh /home/aa
+echo "aa ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/99_sudo_include_file
+
 wget https://hydra.iohk.io/build/6163141/download/1/cardano-node-1.26.1-linux.tar.gz
 gunzip cardano-node-1.26.1-linux.tar.gz
 tar -xf cardano-node-1.26.1-linux.tar 
@@ -83,12 +87,13 @@ systemctl enable cardano-node
 systemctl reload-or-restart cardano-node
 
 cd $NODE_HOME
-apt install bc tcptraceroute -y
+apt-get update -y
+apt install bc tcptraceroute jq -y
+
 curl -s -o gLiveView.sh https://raw.githubusercontent.com/cardano-community/guild-operators/master/scripts/cnode-helper-scripts/gLiveView.sh
 curl -s -o env https://raw.githubusercontent.com/cardano-community/guild-operators/master/scripts/cnode-helper-scripts/env
 chmod 755 gLiveView.sh
 sed -i env     -e "s/\#CONFIG=\"\${CNODE_HOME}\/files\/config.json\"/CONFIG=\"\${NODE_HOME}\/mainnet-config.json\"/g"     -e "s/\#SOCKET=\"\${CNODE_HOME}\/sockets\/node0.socket\"/SOCKET=\"\${NODE_HOME}\/db\/socket\"/g"
-   apt-get update -y
 
 cardano-cli node key-gen-KES     --verification-key-file kes.vkey     --signing-key-file kes.skey
 pushd +1

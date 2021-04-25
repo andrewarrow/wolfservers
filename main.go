@@ -78,9 +78,9 @@ func main() {
 		// apply tag
 	} else if command == "wolf" {
 
-		fmt.Println("groupadd ssh-users")
 		fmt.Println("useradd -c 'aa' -m -d /home/aa -s /bin/bash -G sudo aa")
-		fmt.Println("rsync --archive --chown=wolf:wolf ~/.ssh /home/wolf")
+		fmt.Println("rsync --archive --chown=aa:aa ~/.ssh /home/aa")
+		fmt.Println("sudo bash -c 'echo \"aa ALL=(ALL) NOPASSWD:ALL\" >> /etc/sudoers.d/99_sudo_include_file'")
 
 		text := `apt update
 apt upgrade
@@ -131,10 +131,10 @@ echo "export JORMUNGANDR_STORAGE_DIR='/home/wolf/storage'" >> ~/.bashrc
 		if argMap["ID"] == "" {
 			return
 		}
-		if false { // TODO rethink how to prevent disaster
-			id, _ := strconv.Atoi(argMap["ID"])
-			digitalocean.RemoveDroplet(id)
-		}
+		//if false { // TODO rethink how to prevent disaster
+		id, _ := strconv.Atoi(argMap["ID"])
+		digitalocean.RemoveDroplet(id)
+		//}
 	} else if command == "ed255" {
 		out, err := exec.Command("ssh-keygen", "-o", "-a", "100", "-t", "ed25519",
 			"-f", "/Users/andrewarrow/.ssh/id_ed25519", "-C", "wolfservers").Output()
