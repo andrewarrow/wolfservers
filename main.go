@@ -59,7 +59,6 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 source $HOME/.cargo/env
 git clone https://github.com/input-output-hk/jormungandr
 cd jormungandr/
-git checkout v0.9.3; git checkout -b nbn
 git submodule update --init --recursive
 cargo install --path jormungandr --force
 `
