@@ -49,6 +49,19 @@ apt install -y build-essential libssl-dev pkg-config nload jq python3-pip tcptra
 cd /usr/bin; wget http://www.vdberg.org/~richard/tcpping; chmod 755 tcpping; cd
 curl -LO https://github.com/BurntSushi/ripgrep/releases/download/11.0.2/ripgrep_11.0.2_amd64.deb
 dpkg -i ripgrep_11.0.2_amd64.deb; rm ripgrep_11.0.2_amd64.deb
+ufw disable
+ufw default deny incoming; ufw default allow outgoing
+ufw limit proto tcp from any to any port 22
+ufw allow proto tcp from any to any port 3000
+ufw enable
+su - wolf
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+source $HOME/.cargo/env
+git clone https://github.com/input-output-hk/jormungandr
+cd jormungandr/
+git checkout v0.9.3; git checkout -b nbn
+git submodule update --init --recursive
+cargo install --path jormungandr --force
 `
 
 		fmt.Println(text)
