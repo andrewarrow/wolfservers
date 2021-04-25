@@ -5,12 +5,15 @@ import (
 	"math/rand"
 	"os"
 	"time"
+
+	"github.com/andrewarrow/wolfservers/digitalocean"
 )
 
 func PrintHelp() {
 	fmt.Println("")
 	fmt.Println("  wolfservers help         # this menu")
 	fmt.Println("  wolfservers ls           # list servers")
+	fmt.Println("  wolfservers make         # make new one")
 	fmt.Println("")
 }
 
@@ -24,8 +27,10 @@ func main() {
 	command := os.Args[1]
 
 	if command == "ls" {
-		ListDroplets()
-	} else if command == "connect" {
+		digitalocean.ListDroplets()
+	} else if command == "make" {
+		digitalocean.ListSizes()
+		//CreateDroplet()
 	} else if command == "relays" {
 	} else if command == "help" {
 		PrintHelp()
