@@ -6,6 +6,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/andrewarrow/wolfservers/args"
 	"github.com/andrewarrow/wolfservers/digitalocean"
 )
 
@@ -13,7 +14,7 @@ func PrintHelp() {
 	fmt.Println("")
 	fmt.Println("  wolfservers help         # this menu")
 	fmt.Println("  wolfservers ls           # list servers")
-	fmt.Println("  wolfservers make         # make new one")
+	fmt.Println("  wolfservers make         # make new one --size=slug")
 	fmt.Println("")
 }
 
@@ -25,11 +26,15 @@ func main() {
 		return
 	}
 	command := os.Args[1]
+	argMap := args.ToMap()
 
 	if command == "ls" {
 		digitalocean.ListDroplets()
 	} else if command == "make" {
-		digitalocean.ListSizes()
+		if argMap["size"] == "" {
+			digitalocean.ListSizes()
+			return
+		}
 		//CreateDroplet()
 	} else if command == "relays" {
 	} else if command == "help" {
