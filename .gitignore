@@ -1,5 +1,6 @@
 vendor
 producer.sh
 setup.sh
+relay.sh
 go.sum
 wolfservers

@@ -35,8 +35,9 @@ func unescape(s string) template.HTML {
 }
 
 type Replacer struct {
-	RelayIP string
-	LtLt    string
+	RelayIP    string
+	LtLt       string
+	ProducerIP string
 }
 
 func MakeRelay() {
@@ -47,7 +48,7 @@ func MakeRelay() {
 		Parse(blob))
 	var buff bytes.Buffer
 	r := Replacer{}
-	r.RelayIP = ""
+	r.ProducerIP = "165.232.150.86"
 	r.LtLt = "<<"
 	t.Execute(&buff, r)
 	ioutil.WriteFile("relay.sh", buff.Bytes(), 0755)
@@ -99,7 +100,7 @@ func main() {
 		dest := argMap["dest"]
 		PrepDest(dest)
 		b1, _ := ioutil.ReadFile("node.setup")
-		ioutil.WriteFile("node.sh", b1, 0755)
+		ioutil.WriteFile("setup.sh", b1, 0755)
 		MakeRelay()
 		ScpFile("setup.sh", dest)
 		ScpFile("relay.sh", dest)
@@ -111,7 +112,7 @@ func main() {
 		dest := argMap["dest"]
 		PrepDest(dest)
 		b1, _ := ioutil.ReadFile("node.setup")
-		ioutil.WriteFile("node.sh", b1, 0755)
+		ioutil.WriteFile("setup.sh", b1, 0755)
 		MakeProducer()
 		ScpFile("setup.sh", dest)
 		ScpFile("producer.sh", dest)
