@@ -7,19 +7,24 @@ sed -i ${NODE_CONFIG}-config.json     -e "s/TraceBlockFetchDecisions\": false/Tr
 
 echo export CARDANO_NODE_SOCKET_PATH="$NODE_HOME/db/socket" >> $HOME/.bashrc
 source $HOME/.bashrc
-cat > $NODE_HOME/${NODE_CONFIG}-topology.json {{unescape .LtLt}} EOF 
+cat > $NODE_HOME/${NODE_CONFIG}-topology.json << EOF 
  {
     "Producers": [
       {
-        "addr": "{{.RelayIP}}",
+        "addr": "{{.ProducerIP}}",
         "port": 6000,
         "valency": 1
+      },
+      {
+        "addr": "relays-new.cardano-mainnet.iohk.io",
+        "port": 3001,
+        "valency": 2
       }
     ]
   }
 EOF
 
-cat > $NODE_HOME/startBlockProducingNode.sh {{unescape .LtLt}} EOF 
+cat > $NODE_HOME/startRelayNode1.sh << EOF 
 #!/bin/bash
 DIRECTORY=$NODE_HOME
 PORT=6000
@@ -31,8 +36,8 @@ CONFIG=\${DIRECTORY}/${NODE_CONFIG}-config.json
 /usr/local/bin/cardano-node run --topology \${TOPOLOGY} --database-path \${DB_PATH} --socket-path \${SOCKET_PATH} --host-addr \${HOSTADDR} --port \${PORT} --config \${CONFIG}
 EOF
 
-chmod +x /root/cardano-my-node/startBlockProducingNode.sh 
-cat > $NODE_HOME/cardano-node.service {{unescape .LtLt}} EOF 
+chmod +x /root/cardano-my-node/startRelayNode1.sh 
+cat > $NODE_HOME/cardano-node.service << EOF 
 # The Cardano node service (part of systemd)
 # file: /etc/systemd/system/cardano-node.service 
 
@@ -45,7 +50,7 @@ After           = network-online.target
 User            = ${USER}
 Type            = simple
 WorkingDirectory= ${NODE_HOME}
-ExecStart       = /bin/bash -c '${NODE_HOME}/startBlockProducingNode.sh'
+ExecStart       = /bin/bash -c '${NODE_HOME}/startRelayNode1.sh'
 KillSignal=SIGINT
 RestartKillSignal=SIGINT
 TimeoutStopSec=2
@@ -55,7 +60,7 @@ RestartSec=5
 SyslogIdentifier=cardano-node
 
 [Install]
-WantedBy= multi-user.target
+WantedBy	= multi-user.target
 EOF
 
 cd /usr/local/bin/
