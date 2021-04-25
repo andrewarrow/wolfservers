@@ -2,6 +2,7 @@ package digitalocean
 
 import (
 	"context"
+	"crypto/rand"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -27,26 +28,28 @@ func (t *TokenSource) Token() (*oauth2.Token, error) {
 	return token, nil
 }
 
-/*
-func CreateDroplet() {
-	dropletName := "super-cool-droplet"
+func CreateDroplet(size string) {
+	b := make([]byte, 16)
+	rand.Read(b)
+	dropletName := fmt.Sprintf("wolf-%X", b[4:6])
 
 	createRequest := &godo.DropletCreateRequest{
 		Name:   dropletName,
 		Region: "SFO3",
-		Size:   "s-1vcpu-1gb",
+		Size:   size,
 		Image: godo.DropletCreateImage{
-			Slug: "ubuntu-14-04-x64",
+			Slug: "ubuntu-18-04-x64",
 		},
 	}
 
+	client, ctx := GetClient()
 	newDroplet, _, err := client.Droplets.Create(ctx, createRequest)
 	if err != nil {
-		fmt.Printf("err: %s\n\n", err)
+		fmt.Printf("err: %v\n\n", err)
 
 	}
 	fmt.Printf(newDroplet.PublicIPv4())
-}*/
+}
 
 func ListSizes() {
 	jsonString := network.DoGet("v2/sizes?per_page=100")
@@ -57,18 +60,22 @@ func ListSizes() {
 			display.LeftAligned(s.Memory, 10),
 			display.LeftAligned(s.Disk, 10),
 			display.LeftAligned(s.Vcpus, 10), s.Description)
+		//fmt.Println(strings.Join(s.Regions, ","))
 	}
 }
-func ListDroplets() {
-
+func GetClient() (*godo.Client, context.Context) {
 	tokenSource := &TokenSource{
 		AccessToken: pat,
 	}
 
 	oauthClient := oauth2.NewClient(context.Background(), tokenSource)
 	client := godo.NewClient(oauthClient)
-
 	ctx := context.TODO()
+
+	return client, ctx
+}
+func ListDroplets() {
+	client, ctx := GetClient()
 
 	opt := &godo.ListOptions{
 		Page:    1,

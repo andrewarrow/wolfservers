@@ -35,7 +35,7 @@ func main() {
 			digitalocean.ListSizes()
 			return
 		}
-		//CreateDroplet()
+		digitalocean.CreateDroplet(argMap["size"])
 	} else if command == "relays" {
 	} else if command == "help" {
 		PrintHelp()
