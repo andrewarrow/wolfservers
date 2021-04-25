@@ -21,6 +21,7 @@ func PrintHelp() {
 	fmt.Println("  wolfservers danger       # --ID=id")
 	fmt.Println("  wolfservers ed255        # new ed25519 key")
 	fmt.Println("  wolfservers wolf         # user add for wolf user")
+	fmt.Println("  wolfservers images       # list images")
 	fmt.Println("")
 }
 
@@ -38,6 +39,9 @@ func main() {
 		digitalocean.ListDroplets()
 	} else if command == "keys" {
 		digitalocean.ListKeys()
+	} else if command == "images" {
+		digitalocean.ListImages(1)
+		digitalocean.ListImages(2)
 	} else if command == "wolf" {
 		fmt.Println("groupadd ssh-users")
 		fmt.Println("useradd -c 'get in sync' -m -d /home/wolf -s /bin/bash -G sudo,ssh-users wolf")
