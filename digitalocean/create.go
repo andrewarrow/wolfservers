@@ -1,18 +1,16 @@
 package digitalocean
 
 import (
-	"crypto/rand"
 	"fmt"
 	"os"
 	"strconv"
 
+	"github.com/andrewarrow/wolfservers/keys"
 	"github.com/digitalocean/godo"
 )
 
 func CreateDroplet(size, key string) {
-	b := make([]byte, 16)
-	rand.Read(b)
-	dropletName := fmt.Sprintf("wolf-%X", b[4:6])
+	dropletName := keys.WolfName()
 
 	imageIdString := os.Getenv("DO_IMAGE")
 

@@ -14,6 +14,7 @@ import (
 	"github.com/andrewarrow/wolfservers/args"
 	"github.com/andrewarrow/wolfservers/digitalocean"
 	"github.com/andrewarrow/wolfservers/files"
+	"github.com/andrewarrow/wolfservers/keys"
 )
 
 func PrintHelp() {
@@ -177,9 +178,7 @@ echo "export JORMUNGANDR_STORAGE_DIR='/home/wolf/storage'" >> ~/.bashrc
 		digitalocean.RemoveDroplet(id)
 		//}
 	} else if command == "ed255" {
-		out, err := exec.Command("ssh-keygen", "-o", "-a", "100", "-t", "ed25519",
-			"-f", "/Users/andrewarrow/.ssh/id_ed25519", "-C", "wolfservers").Output()
-		fmt.Println(string(out), err)
+		keys.MakeEd()
 	} else if command == "help" {
 		PrintHelp()
 	}
