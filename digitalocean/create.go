@@ -9,8 +9,8 @@ import (
 	"github.com/digitalocean/godo"
 )
 
-func CreateDroplet(size, key string) {
-	dropletName := keys.WolfName()
+func CreateDroplet(prefix, size, key string) {
+	dropletName := keys.WolfName(prefix)
 
 	imageIdString := os.Getenv("DO_IMAGE")
 
