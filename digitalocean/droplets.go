@@ -65,11 +65,10 @@ func ListDroplets() {
 		if len(droplet.Networks.V4) < 2 {
 			continue
 		}
-		fmt.Printf("%s %s %s %s\n",
+		fmt.Printf("%s %s %s\n",
 
 			display.LeftAligned(droplet.ID, 10),
-			display.LeftAligned(droplet.Name, 10),
-			display.LeftAligned(droplet.Tags, 15),
+			display.LeftAligned(droplet.Name, 20),
 			display.LeftAligned("ssh aa@"+droplet.Networks.V4[1].IPAddress, 40))
 	}
 }
