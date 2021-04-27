@@ -103,7 +103,7 @@ func ScpFileToHot(file, dest string) {
 	tokens := strings.Split(file, "/")
 	filename := tokens[1]
 	out, _ = exec.Command("ssh", "aa@"+dest,
-		fmt.Sprintf("sudo cp %s /root/cardano-my-node; rm %s;", filename)).CombinedOutput()
+		fmt.Sprintf("sudo cp %s /root/cardano-my-node; rm %s;", filename, filename)).CombinedOutput()
 	fmt.Println(string(out))
 }
 func ScpFileToNodeHome(file, dest string) string {
