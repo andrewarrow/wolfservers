@@ -2,6 +2,7 @@ package vultr
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/vultr/govultr/v2"
 )
@@ -11,16 +12,17 @@ func BoolToBoolPtr(value bool) *bool {
 	return &b
 }
 
-func CreateServer() {
+func CreateServer(name string) {
 	client, ctx := VultrClient()
 	instanceOptions := &govultr.InstanceCreateReq{
-		Label:      "test",
-		Hostname:   "test",
+		Label:      name,
+		Hostname:   name,
 		Backups:    "false",
 		EnableIPv6: BoolToBoolPtr(false),
-		OsID:       362,
-		Plan:       "vc2-1c-2gb",
-		Region:     "ewr",
+		OsID:       270,
+		Plan:       "vc2-4c-8gb",
+		SSHKeys:    []string{os.Getenv("VULTR_SSH")},
+		Region:     "lax",
 	}
 
 	res, err := client.Instance.Create(ctx, instanceOptions)

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/andrewarrow/wolfservers/display"
 	"github.com/vultr/govultr/v2"
 	"golang.org/x/oauth2"
 )
@@ -15,7 +16,11 @@ func ListServers() {
 	listOptions := &govultr.ListOptions{PerPage: 100}
 	i, _, _ := client.Instance.List(ctx, listOptions)
 	for _, v := range i {
-		fmt.Println(v)
+		fmt.Printf("%s %s %s\n",
+
+			display.LeftAligned(v.ID, 10),
+			display.LeftAligned(v.Label, 20),
+			display.LeftAligned("ssh aa@"+v.MainIP, 40))
 	}
 }
 
