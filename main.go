@@ -97,6 +97,15 @@ func ScpFileFromRemote(orig string) {
 	out, err = exec.Command("scp", "aa@"+orig+":kes*", "airgapped/").Output()
 	fmt.Println(string(out), err)
 }
+func ScpFileToHot(file, dest string) {
+	out, err := exec.Command("scp", file, "aa@"+dest+":").Output()
+	fmt.Println(string(out), err)
+	tokens := strings.Split(file, "/")
+	filename := tokens[1]
+	out, _ = exec.Command("ssh", "aa@"+dest,
+		fmt.Sprintf("sudo cp %s /root/cardano-my-node; rm %s;", filename)).CombinedOutput()
+	fmt.Println(string(out))
+}
 func ScpFileToNodeHome(file, dest string) string {
 	out, err := exec.Command("scp", file, "aa@"+dest+":").Output()
 	fmt.Println(string(out), err)
@@ -136,10 +145,9 @@ func main() {
 		startKesPeriod := ScpFileToNodeHome("scripts/producer.keys", ip)
 		ScpFileFromRemote(ip)
 		MakeAirGap(startKesPeriod)
-		// scripts/producer.keys
-		//   kes.vkey
-		//   kes.skey
-		//   startKesPeriod: 215
+	} else if command == "wolfit2" {
+		ip := argMap["producer"]
+		ScpFileToHot("airgapped/node.cert", ip)
 	} else if command == "relay" {
 		dest := argMap["relay"]
 		PrepDest(dest)
