@@ -15,6 +15,7 @@ import (
 	"github.com/andrewarrow/wolfservers/digitalocean"
 	"github.com/andrewarrow/wolfservers/files"
 	"github.com/andrewarrow/wolfservers/keys"
+	"github.com/andrewarrow/wolfservers/linode"
 	"github.com/andrewarrow/wolfservers/vultr"
 )
 
@@ -91,6 +92,7 @@ func main() {
 	if command == "ls" {
 		digitalocean.ListDroplets()
 		vultr.ListServers()
+		linode.ListServers()
 	} else if command == "keys" {
 		digitalocean.ListKeys()
 	} else if command == "images" {
