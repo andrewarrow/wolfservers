@@ -106,7 +106,10 @@ func main() {
 		MakeRelay(argMap["producer"])
 		ScpFile("setup.sh", dest)
 		ScpFile("relay.sh", dest)
-	} else if command == "fresh2v" {
+	} else if command == "fresh2linode" {
+		linode.CreateServer("producer")
+		linode.CreateServer("relay")
+	} else if command == "fresh2vultr" {
 		vultr.CreateServer("producer")
 		vultr.CreateServer("relay")
 	} else if command == "fresh2do" {
