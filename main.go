@@ -39,9 +39,10 @@ func unescape(s string) template.HTML {
 }
 
 type Replacer struct {
-	RelayIP    string
-	LtLt       string
-	ProducerIP string
+	RelayIP        string
+	LtLt           string
+	ProducerIP     string
+	StartKesPeriod string
 }
 
 func MakeRelay(ip string) {
@@ -70,6 +71,17 @@ func MakeProducer(ip string) {
 	t.Execute(&buff, r)
 	ioutil.WriteFile("producer.sh", buff.Bytes(), 0755)
 }
+func MakeAirGap(StartKesPeriod string) {
+	b2, _ := ioutil.ReadFile("scripts/airgapped.keys")
+	blob := string(b2)
+	t := template.Must(template.New("thing").
+		Parse(blob))
+	var buff bytes.Buffer
+	r := Replacer{}
+	r.StartKesPeriod = StartKesPeriod
+	t.Execute(&buff, r)
+	ioutil.WriteFile("airgapped/airgapped.sh", buff.Bytes(), 0755)
+}
 
 func PrepDest(dest string) {
 	out, _ := exec.Command("ssh-keyscan", "-H", dest).Output()
@@ -80,11 +92,12 @@ func ScpFile(file, dest string) {
 	out, err := exec.Command("scp", file, "root@"+dest+":").Output()
 	fmt.Println(string(out), err)
 }
-func ScpFileFromRemote(file, orig string) {
-	out, err := exec.Command("scp", "aa@"+orig+":kes*", ".").Output()
+func ScpFileFromRemote(orig string) {
+	out, err := exec.Command("mkdir", "airgapped").Output()
+	out, err = exec.Command("scp", "aa@"+orig+":kes*", "airgapped/").Output()
 	fmt.Println(string(out), err)
 }
-func ScpFileToNodeHome(file, dest string) {
+func ScpFileToNodeHome(file, dest string) string {
 	out, err := exec.Command("scp", file, "aa@"+dest+":").Output()
 	fmt.Println(string(out), err)
 	//tokens := strings.Split(file, "/")
@@ -94,9 +107,10 @@ func ScpFileToNodeHome(file, dest string) {
 	for _, line := range tokens {
 		if strings.HasPrefix(line, "startKesPeriod") {
 			tokens = strings.Split(line, ":")
-			fmt.Println("startKesPeriod!", tokens[1])
+			return tokens[1]
 		}
 	}
+	return ""
 }
 func main() {
 	rand.Seed(time.Now().UnixNano())
@@ -119,8 +133,9 @@ func main() {
 		digitalocean.ListImages(2)
 	} else if command == "wolfit" {
 		ip := argMap["producer"]
-		ScpFileToNodeHome("scripts/producer.keys", ip)
-		ScpFileFromRemote("", ip)
+		startKesPeriod := ScpFileToNodeHome("scripts/producer.keys", ip)
+		ScpFileFromRemote(ip)
+		MakeAirGap(startKesPeriod)
 		// scripts/producer.keys
 		//   kes.vkey
 		//   kes.skey
