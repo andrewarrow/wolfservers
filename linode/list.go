@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/andrewarrow/wolfservers/display"
 	"github.com/linode/linodego"
 	"golang.org/x/oauth2"
 )
@@ -15,8 +16,14 @@ func ListServers() {
 	client, ctx := LinodeClient()
 	options := linodego.ListOptions{}
 
-	res, err := client.ListInstances(ctx, &options)
-	fmt.Println(res, err)
+	i, _ := client.ListInstances(ctx, &options)
+	for _, v := range i {
+		fmt.Printf("%s %s %s\n",
+
+			display.LeftAligned(v.ID, 10),
+			display.LeftAligned(v.Label, 20),
+			display.LeftAligned(fmt.Sprintf("ssh aa@%v", v.IPv4[0]), 40))
+	}
 }
 
 func LinodeClient() (*linodego.Client, context.Context) {
