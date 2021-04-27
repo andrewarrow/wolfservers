@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/andrewarrow/wolfservers/args"
@@ -79,13 +80,23 @@ func ScpFile(file, dest string) {
 	out, err := exec.Command("scp", file, "root@"+dest+":").Output()
 	fmt.Println(string(out), err)
 }
+func ScpFileFromRemote(file, orig string) {
+	out, err := exec.Command("scp", "aa@"+orig+":kes*", ".").Output()
+	fmt.Println(string(out), err)
+}
 func ScpFileToNodeHome(file, dest string) {
 	out, err := exec.Command("scp", file, "aa@"+dest+":").Output()
 	fmt.Println(string(out), err)
 	//tokens := strings.Split(file, "/")
 	//out, err = exec.Command("ssh", "aa@"+dest, fmt.Sprintf("'sudo mv %s /root/cardano-my-node/'", tokens[1])).CombinedOutput()
-	out, err = exec.Command("ssh", "aa@"+dest, "sudo cp producer.keys /root/cardano-my-node; rm producer.keys; sudo chmod +x /root/cardano-my-node/producer.keys; sudo /root/cardano-my-node/producer.keys").CombinedOutput()
-	fmt.Println(string(out), err)
+	out, _ = exec.Command("ssh", "aa@"+dest, "sudo cp producer.keys /root/cardano-my-node; rm producer.keys; sudo chmod +x /root/cardano-my-node/producer.keys; sudo /root/cardano-my-node/producer.keys; sudo cp /root/cardano-my-node/kes.* /home/aa").CombinedOutput()
+	tokens := strings.Split(string(out), "\n")
+	for _, line := range tokens {
+		if strings.HasPrefix(line, "startKesPeriod") {
+			tokens = strings.Split(line, ":")
+			fmt.Println("startKesPeriod!", tokens[1])
+		}
+	}
 }
 func main() {
 	rand.Seed(time.Now().UnixNano())
@@ -107,8 +118,9 @@ func main() {
 		digitalocean.ListImages(1)
 		digitalocean.ListImages(2)
 	} else if command == "wolfit" {
-		dest := argMap["producer"]
-		ScpFileToNodeHome("scripts/producer.keys", dest)
+		ip := argMap["producer"]
+		ScpFileToNodeHome("scripts/producer.keys", ip)
+		ScpFileFromRemote("", ip)
 		// scripts/producer.keys
 		//   kes.vkey
 		//   kes.skey
