@@ -79,6 +79,14 @@ func ScpFile(file, dest string) {
 	out, err := exec.Command("scp", file, "root@"+dest+":").Output()
 	fmt.Println(string(out), err)
 }
+func ScpFileToNodeHome(file, dest string) {
+	out, err := exec.Command("scp", file, "aa@"+dest+":").Output()
+	fmt.Println(string(out), err)
+	//tokens := strings.Split(file, "/")
+	//out, err = exec.Command("ssh", "aa@"+dest, fmt.Sprintf("'sudo mv %s /root/cardano-my-node/'", tokens[1])).CombinedOutput()
+	out, err = exec.Command("ssh", "aa@"+dest, "sudo cp producer.keys /root/cardano-my-node; rm producer.keys; sudo chmod +x /root/cardano-my-node/producer.keys; sudo /root/cardano-my-node/producer.keys").CombinedOutput()
+	fmt.Println(string(out), err)
+}
 func main() {
 	rand.Seed(time.Now().UnixNano())
 
@@ -98,6 +106,13 @@ func main() {
 	} else if command == "images" {
 		digitalocean.ListImages(1)
 		digitalocean.ListImages(2)
+	} else if command == "wolfit" {
+		dest := argMap["producer"]
+		ScpFileToNodeHome("scripts/producer.keys", dest)
+		// scripts/producer.keys
+		//   kes.vkey
+		//   kes.skey
+		//   startKesPeriod: 215
 	} else if command == "relay" {
 		dest := argMap["relay"]
 		PrepDest(dest)

@@ -1,2 +1,13 @@
+NODE_HOME=/root/cardano-my-node
+export CARDANO_NODE_SOCKET_PATH=/root/cardano-my-node/db/socket
 cd $NODE_HOME
 cardano-cli node key-gen-KES --verification-key-file kes.vkey --signing-key-file kes.skey
+pushd +1
+slotsPerKESPeriod=$(cat $NODE_HOME/mainnet-shelley-genesis.json | jq -r '.slotsPerKESPeriod')
+echo slotsPerKESPeriod: ${slotsPerKESPeriod}
+slotNo=$(cardano-cli query tip --mainnet | jq -r '.slot')
+echo slotNo: ${slotNo}
+kesPeriod=$((${slotNo} / ${slotsPerKESPeriod}))
+echo kesPeriod: ${kesPeriod}
+startKesPeriod=${kesPeriod}
+echo startKesPeriod: ${startKesPeriod}
