@@ -44,7 +44,7 @@ type Replacer struct {
 }
 
 func MakeRelay(ip string) {
-	b2, _ := ioutil.ReadFile("relay.history")
+	b2, _ := ioutil.ReadFile("scripts/relay.history")
 	blob := string(b2)
 	t := template.Must(template.New("relay").
 		Funcs(template.FuncMap{"unescape": unescape}).
@@ -57,7 +57,7 @@ func MakeRelay(ip string) {
 	ioutil.WriteFile("relay.sh", buff.Bytes(), 0755)
 }
 func MakeProducer(ip string) {
-	b2, _ := ioutil.ReadFile("producer.history")
+	b2, _ := ioutil.ReadFile("scripts/producer.history")
 	blob := string(b2)
 	t := template.Must(template.New("producer").
 		Funcs(template.FuncMap{"unescape": unescape}).
@@ -101,7 +101,7 @@ func main() {
 	} else if command == "relay" {
 		dest := argMap["relay"]
 		PrepDest(dest)
-		b1, _ := ioutil.ReadFile("node.setup")
+		b1, _ := ioutil.ReadFile("scripts/node.setup")
 		ioutil.WriteFile("setup.sh", b1, 0755)
 		MakeRelay(argMap["producer"])
 		ScpFile("setup.sh", dest)
