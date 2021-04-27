@@ -65,7 +65,7 @@ func ListDroplets() {
 		if len(droplet.Networks.V4) < 2 {
 			continue
 		}
-		fmt.Printf("%s %s %s\n",
+		fmt.Printf("%s [DO]     %s %s\n",
 
 			display.LeftAligned(droplet.ID, 10),
 			display.LeftAligned(droplet.Name, 20),

@@ -18,7 +18,7 @@ func ListServers() {
 
 	i, _ := client.ListInstances(ctx, &options)
 	for _, v := range i {
-		fmt.Printf("%s %s %s\n",
+		fmt.Printf("%s [LINODE] %s %s\n",
 
 			display.LeftAligned(v.ID, 10),
 			display.LeftAligned(v.Label, 20),

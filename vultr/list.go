@@ -16,7 +16,7 @@ func ListServers() {
 	listOptions := &govultr.ListOptions{PerPage: 100}
 	i, _, _ := client.Instance.List(ctx, listOptions)
 	for _, v := range i {
-		fmt.Printf("%s %s %s\n",
+		fmt.Printf("%s [VULTR]  %s %s\n",
 
 			display.LeftAligned(v.ID, 10),
 			display.LeftAligned(v.Label, 20),
