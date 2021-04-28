@@ -1,6 +1,7 @@
 vendor
 producer.sh
 airgapped
+.DS_Store
 setup.sh
 relay.sh
 go.sum

@@ -1,0 +1,5 @@
+
+cardano-cli stake-address delegation-certificate \
+    --stake-verification-key-file stake.vkey \
+    --cold-verification-key-file node.vkey \
+    --out-file deleg.cert

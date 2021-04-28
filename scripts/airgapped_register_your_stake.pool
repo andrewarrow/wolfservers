@@ -1,0 +1,15 @@
+
+cardano-cli stake-pool registration-certificate \
+    --cold-verification-key-file node.vkey \
+    --vrf-verification-key-file vrf.vkey \
+    --pool-pledge 100000000 \
+    --pool-cost 345000000 \
+    --pool-margin 0.15 \
+    --pool-reward-account-verification-key-file stake.vkey \
+    --pool-owner-stake-verification-key-file stake.vkey \
+    --mainnet \
+    --pool-relay-ipv4 {{ .Relay }}
+    --pool-relay-port 6000 \
+    --metadata-url {{  .MetaURL }}
+    --metadata-hash $(cat poolMetaDataHash.txt) \
+    --out-file pool.cert
