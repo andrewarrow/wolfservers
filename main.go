@@ -194,7 +194,8 @@ func main() {
 		digitalocean.RemoveDroplet(id)
 		//}
 	} else if command == "ed255" {
-		keys.MakeEd()
+		name, pubKey := keys.MakeEd()
+		linode.CreateSshKey(name, pubKey)
 	} else if command == "help" {
 		PrintHelp()
 	}

@@ -24,3 +24,15 @@ func CreateServer(name string) {
 
 	fmt.Println(res, err)
 }
+
+func CreateSshKey(name, pubKey string) {
+	client, ctx := LinodeClient()
+	options := linodego.SSHKeyCreateOptions{
+		Label:  name,
+		SSHKey: pubKey,
+	}
+
+	res, err := client.CreateSSHKey(ctx, options)
+
+	fmt.Println(res, err)
+}
