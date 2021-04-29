@@ -134,9 +134,10 @@ func main() {
 	argMap := args.ToMap()
 
 	if command == "ls" {
-		digitalocean.ListDroplets()
-		vultr.ListServers()
-		linode.ListServers()
+		m := map[string]string{}
+		digitalocean.ListDroplets(m)
+		vultr.ListServers(m)
+		linode.ListServers(m)
 	} else if command == "keys" {
 		digitalocean.ListKeys()
 	} else if command == "sqlite" {

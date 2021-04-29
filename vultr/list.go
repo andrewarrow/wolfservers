@@ -10,14 +10,15 @@ import (
 	"golang.org/x/oauth2"
 )
 
-func ListServers() {
+func ListServers(ip2wolf map[string]string) {
 
 	client, ctx := VultrClient()
 	listOptions := &govultr.ListOptions{PerPage: 100}
 	i, _, _ := client.Instance.List(ctx, listOptions)
 	for _, v := range i {
-		fmt.Printf("%s [VULTR]  %s %s\n",
-
+		wolfName := ip2wolf[v.MainIP]
+		fmt.Printf("%s %s [VULTR]  %s %s\n",
+			wolfName,
 			display.LeftAligned(v.ID, 10),
 			display.LeftAligned(v.Label, 20),
 			display.LeftAligned("ssh aa@"+v.MainIP, 40))

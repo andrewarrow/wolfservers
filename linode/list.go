@@ -11,15 +11,16 @@ import (
 	"golang.org/x/oauth2"
 )
 
-func ListServers() {
+func ListServers(ip2wolf map[string]string) {
 
 	client, ctx := LinodeClient()
 	options := linodego.ListOptions{}
 
 	i, _ := client.ListInstances(ctx, &options)
 	for _, v := range i {
-		fmt.Printf("%s [LINODE] %s %s\n",
-
+		wolfName := ip2wolf[fmt.Sprintf("%v", v.IPv4[0])]
+		fmt.Printf("%s %s [LINODE] %s %s\n",
+			wolfName,
 			display.LeftAligned(v.ID, 10),
 			display.LeftAligned(v.Label, 20),
 			display.LeftAligned(fmt.Sprintf("ssh aa@%v", v.IPv4[0]), 40))

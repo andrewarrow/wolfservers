@@ -50,7 +50,7 @@ func GetClient() (*godo.Client, context.Context) {
 
 	return client, ctx
 }
-func ListDroplets() {
+func ListDroplets(ip2wolf map[string]string) {
 	client, ctx := GetClient()
 
 	opt := &godo.ListOptions{
@@ -65,8 +65,9 @@ func ListDroplets() {
 		if len(droplet.Networks.V4) < 2 {
 			continue
 		}
-		fmt.Printf("%s [DO]     %s %s\n",
-
+		wolfName := ip2wolf[droplet.Networks.V4[1].IPAddress]
+		fmt.Printf("%s %s [DO]     %s %s\n",
+			wolfName,
 			display.LeftAligned(droplet.ID, 10),
 			display.LeftAligned(droplet.Name, 20),
 			display.LeftAligned("ssh aa@"+droplet.Networks.V4[1].IPAddress, 40))
