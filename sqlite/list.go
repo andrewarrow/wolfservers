@@ -29,6 +29,6 @@ func ListRows(db *sql.DB) {
 		rows.Scan(&s1, &s2, &s3)
 		decodedBytes, _ := base64.StdEncoding.DecodeString(s3)
 		shhh := decrypt(decodedBytes, phrase)
-		fmt.Println(s1, s2, string(shhh))
+		fmt.Println(s1, s2, len(shhh))
 	}
 }
