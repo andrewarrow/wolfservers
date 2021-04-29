@@ -164,10 +164,21 @@ func main() {
 		MakeRelay(argMap["producer"])
 		ScpFile("setup.sh", dest)
 		ScpFile("relay.sh", dest)
+	} else if command == "update-ips" {
+		producer := argMap["producer"]
+		relay := argMap["relay"]
+		name := argMap["name"]
+		sqlite.UpdateIps(name, producer, relay)
 	} else if command == "fresh2linode" {
+		if argMap["sure"] == "" {
+			return
+		}
 		linode.CreateServer("producer")
 		linode.CreateServer("relay")
 	} else if command == "fresh2vultr" {
+		if argMap["sure"] == "" {
+			return
+		}
 		vultr.CreateServer("producer")
 		vultr.CreateServer("relay")
 	} else if command == "fresh2do" {

@@ -14,7 +14,7 @@ func List() {
 }
 
 func ListRows(db *sql.DB) {
-	rows, err := db.Query(fmt.Sprintf("select name,provider,ssh_key from stakes"))
+	rows, err := db.Query(fmt.Sprintf("select name,provider,ssh_key,producer,relay from stakes"))
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -26,10 +26,12 @@ func ListRows(db *sql.DB) {
 		var s1 string
 		var s2 string
 		var s3 string
-		rows.Scan(&s1, &s2, &s3)
+		var s4 string
+		var s5 string
+		rows.Scan(&s1, &s2, &s3, &s4, &s5)
 		decodedBytes, _ := base64.StdEncoding.DecodeString(s3)
 		shhh := decrypt(decodedBytes, phrase)
-		fmt.Println(s1, s2, len(shhh))
+		fmt.Println(s1, s2, len(shhh), s4, s5)
 	}
 }
 
