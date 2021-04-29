@@ -11,7 +11,7 @@ import (
 	"github.com/andrewarrow/wolfservers/sqlite"
 )
 
-func MakeEd() (string, string) {
+func MakeEd(provider string) (string, string) {
 	name := WolfName("wolf")
 	for {
 		filename := fmt.Sprintf("%s/.ssh/%s", files.UserHomeDir(), name)
@@ -29,6 +29,6 @@ func MakeEd() (string, string) {
 	privKey := string(b)
 	b, _ = ioutil.ReadFile(files.UserHomeDir() + "/.ssh/" + name + ".pub")
 	pubKey := string(b)
-	sqlite.InsertRow(name, privKey, pubKey)
+	sqlite.InsertRow(name, provider, privKey, pubKey)
 	return name, pubKey
 }

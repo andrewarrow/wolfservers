@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func InsertRow(name, privKey, pubKey string) {
+func InsertRow(name, provider, privKey, pubKey string) {
 	CreateSchema()
 	ts := time.Now()
 	db := OpenTheDB()
@@ -24,7 +24,7 @@ func InsertRow(name, privKey, pubKey string) {
 
 	s := `insert into stakes (name, provider, producer, relay, ssh_key, ssh_key_pub, created_at) values (?, ?, ?, ?, ?, ?, ?)`
 	thing, _ := tx.Prepare(s)
-	thing.Exec(name, "linode", "producer", "relay", encodedStr, pubKey, ts)
+	thing.Exec(name, provider, "producer", "relay", encodedStr, pubKey, ts)
 
 	tx.Commit()
 }
