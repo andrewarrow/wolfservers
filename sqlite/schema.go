@@ -2,7 +2,9 @@ package sqlite
 
 import (
 	"database/sql"
+	"encoding/base64"
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/andrewarrow/wolfservers/files"
@@ -38,9 +40,18 @@ func InsertStake() {
 	defer db.Close()
 	tx, _ := db.Begin()
 
+	phrase := os.Getenv("WOLF_PHRASE")
+	if len(phrase) < 36 {
+		fmt.Println("wolves use longer phrases.")
+		return
+	}
+	data := "ssh priv key"
+	shhh := encrypt([]byte(data), phrase)
+	encodedStr := base64.StdEncoding.EncodeToString(shhh)
+
 	s := `insert into stakes (provider, producer, relay, ssh_key, ssh_key_pub, created_at) values (?, ?, ?, ?, ?, ?)`
 	iia, _ := tx.Prepare(s)
-	iia.Exec("1", "2", "3", "4", "5", ts)
+	iia.Exec("1", "2", "3", encodedStr, "5", ts)
 
 	tx.Commit()
 	db.Close()
