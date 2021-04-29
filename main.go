@@ -90,8 +90,9 @@ func PrepDest(dest string) {
 	f, _ := os.OpenFile(files.UserHomeDir()+"/.ssh/known_hosts", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	f.WriteString(string(out))
 }
-func ScpFile(file, dest string) {
-	out, err := exec.Command("scp", file, "root@"+dest+":").Output()
+func ScpFile(name, file, dest string) {
+	out, err := exec.Command("scp", "-i",
+		files.UserHomeDir()+"/.ssh/"+name, file, "root@"+dest+":").Output()
 	fmt.Println(string(out), err)
 }
 func ScpFileFromRemote(orig string) {
@@ -133,11 +134,11 @@ func main() {
 	command := os.Args[1]
 	argMap := args.ToMap()
 
-	if command == "ls" {
-		db := sqlite.OpenTheDB()
-		defer db.Close()
-		m := sqlite.MakeIpMap(db)
+	db := sqlite.OpenTheDB()
+	defer db.Close()
+	m := sqlite.MakeIpMap(db)
 
+	if command == "ls" {
 		digitalocean.ListDroplets(m)
 		vultr.ListServers(m)
 		linode.ListServers(m)
@@ -162,8 +163,8 @@ func main() {
 		b1, _ := ioutil.ReadFile("scripts/node.setup")
 		ioutil.WriteFile("setup.sh", b1, 0755)
 		MakeRelay(argMap["producer"])
-		ScpFile("setup.sh", dest)
-		ScpFile("relay.sh", dest)
+		ScpFile(m[dest], "setup.sh", dest)
+		ScpFile(m[dest], "relay.sh", dest)
 	} else if command == "update-ips" {
 		producer := argMap["producer"]
 		relay := argMap["relay"]
@@ -198,8 +199,8 @@ func main() {
 		b1, _ := ioutil.ReadFile("node.setup")
 		ioutil.WriteFile("setup.sh", b1, 0755)
 		MakeProducer(argMap["relay"])
-		ScpFile("setup.sh", dest)
-		ScpFile("producer.sh", dest)
+		ScpFile(m[dest], "setup.sh", dest)
+		ScpFile(m[dest], "producer.sh", dest)
 	} else if command == "danger" {
 		if argMap["ID"] == "" {
 			return
