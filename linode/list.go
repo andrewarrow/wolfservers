@@ -22,8 +22,8 @@ func ListServers(ip2wolf map[string]string) {
 		fmt.Printf("%s %s [LINODE] %s %s\n",
 			wolfName,
 			display.LeftAligned(v.ID, 10),
-			display.LeftAligned(v.Label, 20),
-			display.LeftAligned(fmt.Sprintf("ssh aa@%v", v.IPv4[0]), 40))
+			display.LeftAligned(v.Label, 15),
+			display.LeftAligned(fmt.Sprintf("ssh aa@%v", v.IPv4[0]), 30))
 	}
 }
 

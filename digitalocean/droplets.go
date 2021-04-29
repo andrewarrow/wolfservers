@@ -66,10 +66,13 @@ func ListDroplets(ip2wolf map[string]string) {
 			continue
 		}
 		wolfName := ip2wolf[droplet.Networks.V4[1].IPAddress]
+		if wolfName == "" {
+			continue
+		}
 		fmt.Printf("%s %s [DO]     %s %s\n",
 			wolfName,
 			display.LeftAligned(droplet.ID, 10),
-			display.LeftAligned(droplet.Name, 20),
-			display.LeftAligned("ssh aa@"+droplet.Networks.V4[1].IPAddress, 40))
+			display.LeftAligned(droplet.Name, 15),
+			display.LeftAligned("ssh aa@"+droplet.Networks.V4[1].IPAddress, 30))
 	}
 }
