@@ -25,8 +25,13 @@ func CreateSchema() {
 	defer db.Close()
 
 	sqlStmt := `
-create table stakes (provider text, producer text, relay text, ssh_key text,
-              ssh_key_pub text, created_at datetime, amount integer not null default 100);`
+create table stakes (provider text, producer text, relay text, ssh_key text, ssh_key_pub text, created_at datetime, amount integer not null default 100);
+
+CREATE VIEW view_stakes as select provider, ssh_key from stakes order by created_at desc;
+
+
+`
+
 	_, err := db.Exec(sqlStmt)
 	if err != nil {
 		//fmt.Printf("%q\n", err)
@@ -54,5 +59,4 @@ func InsertStake() {
 	iia.Exec("1", "2", "3", encodedStr, "5", ts)
 
 	tx.Commit()
-	db.Close()
 }
