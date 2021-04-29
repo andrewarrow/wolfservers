@@ -134,7 +134,10 @@ func main() {
 	argMap := args.ToMap()
 
 	if command == "ls" {
-		m := map[string]string{}
+		db := sqlite.OpenTheDB()
+		defer db.Close()
+		m := sqlite.MakeIpMap(db)
+
 		digitalocean.ListDroplets(m)
 		vultr.ListServers(m)
 		linode.ListServers(m)

@@ -32,3 +32,22 @@ func ListRows(db *sql.DB) {
 		fmt.Println(s1, s2, len(shhh))
 	}
 }
+
+func MakeIpMap(db *sql.DB) map[string]string {
+	m := map[string]string{}
+	rows, err := db.Query(fmt.Sprintf("select name,producer,relay from stakes"))
+	if err != nil {
+		fmt.Println(err)
+		return m
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var s1 string
+		var s2 string
+		var s3 string
+		rows.Scan(&s1, &s2, &s3)
+		m[s2] = s1
+		m[s3] = s1
+	}
+	return m
+}
