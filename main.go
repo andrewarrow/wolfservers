@@ -17,6 +17,7 @@ import (
 	"github.com/andrewarrow/wolfservers/files"
 	"github.com/andrewarrow/wolfservers/keys"
 	"github.com/andrewarrow/wolfservers/linode"
+	"github.com/andrewarrow/wolfservers/sqlite"
 	"github.com/andrewarrow/wolfservers/vultr"
 )
 
@@ -31,6 +32,7 @@ func PrintHelp() {
 	fmt.Println("  wolfservers wolf         # user add for wolf user")
 	fmt.Println("  wolfservers images       # list images")
 	fmt.Println("  wolfservers tags         # list tags")
+	fmt.Println("  wolfservers sqlite       # list data in sqlite db")
 	fmt.Println("")
 }
 
@@ -137,6 +139,8 @@ func main() {
 		linode.ListServers()
 	} else if command == "keys" {
 		digitalocean.ListKeys()
+	} else if command == "sqlite" {
+		sqlite.List()
 	} else if command == "images" {
 		digitalocean.ListImages(1)
 		digitalocean.ListImages(2)

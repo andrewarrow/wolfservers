@@ -15,8 +15,9 @@ func CreateServer(name string) {
 		RootPass:        keys.RootPass(),
 		AuthorizedUsers: []string{os.Getenv("LINODE_USER")},
 		Image:           "linode/ubuntu18.04",
-		Type:            "g6-standard-4",
-		Region:          "us-west",
+		//Type:            "g6-standard-4",
+		Type:   "g6-standard-2",
+		Region: "us-west",
 	}
 
 	res, err := client.CreateInstance(ctx, instanceOptions)

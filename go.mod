@@ -5,6 +5,7 @@ go 1.16
 require (
 	github.com/digitalocean/godo v1.60.0
 	github.com/linode/linodego v1.0.0
+	github.com/mattn/go-sqlite3 v1.14.7
 	github.com/vultr/govultr/v2 v2.4.0
 	golang.org/x/oauth2 v0.0.0-20210413134643-5e61552d6c78
 )
