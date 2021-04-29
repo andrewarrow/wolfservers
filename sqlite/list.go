@@ -8,15 +8,13 @@ import (
 )
 
 func List() {
-	CreateSchema()
-	InsertStake()
 	db := OpenTheDB()
 	defer db.Close()
 	ListRows(db)
 }
 
 func ListRows(db *sql.DB) {
-	rows, err := db.Query(fmt.Sprintf("select provider,ssh_key from stakes"))
+	rows, err := db.Query(fmt.Sprintf("select name,provider,ssh_key from stakes"))
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -27,9 +25,10 @@ func ListRows(db *sql.DB) {
 	for rows.Next() {
 		var s1 string
 		var s2 string
-		rows.Scan(&s1, &s2)
-		decodedBytes, _ := base64.StdEncoding.DecodeString(s2)
+		var s3 string
+		rows.Scan(&s1, &s2, &s3)
+		decodedBytes, _ := base64.StdEncoding.DecodeString(s3)
 		shhh := decrypt(decodedBytes, phrase)
-		fmt.Println(s1, string(shhh))
+		fmt.Println(s1, s2, string(shhh))
 	}
 }
