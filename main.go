@@ -4,13 +4,19 @@ import (
 	"bytes"
 	"fmt"
 	"html/template"
+	"io"
 	"io/ioutil"
+	"log"
 	"math/rand"
 	"os"
 	"os/exec"
+	"os/signal"
 	"strconv"
 	"strings"
+	"syscall"
 	"time"
+
+	"golang.org/x/term"
 
 	"github.com/andrewarrow/wolfservers/args"
 	"github.com/andrewarrow/wolfservers/digitalocean"
@@ -19,6 +25,7 @@ import (
 	"github.com/andrewarrow/wolfservers/linode"
 	"github.com/andrewarrow/wolfservers/sqlite"
 	"github.com/andrewarrow/wolfservers/vultr"
+	"github.com/creack/pty"
 )
 
 func PrintHelp() {
@@ -117,9 +124,44 @@ func SshAsUser(user, name, ip string) {
 
 	fmt.Println("ssh", "-i",
 		files.UserHomeDir()+"/.ssh/wolf-jit", user+"@"+ip)
-	exec.Command("ssh", "-i",
-		files.UserHomeDir()+"/.ssh/wolf-jit", user+"@"+ip).Start()
+
+	cmd := exec.Command("ssh", "-i", files.UserHomeDir()+"/.ssh/wolf-jit", user+"@"+ip)
+	cmd.Env = os.Environ()
+	cmd.Env = append(cmd.Env, "TERM=xterm-256color")
+	test(cmd)
 }
+func test(c *exec.Cmd) error {
+
+	ptmx, err := pty.Start(c)
+	if err != nil {
+		return err
+	}
+	defer func() { _ = ptmx.Close() }()
+
+	ch := make(chan os.Signal, 1)
+	signal.Notify(ch, syscall.SIGWINCH)
+	go func() {
+		for range ch {
+			if err := pty.InheritSize(os.Stdin, ptmx); err != nil {
+				log.Printf("error resizing pty: %s", err)
+			}
+		}
+	}()
+	ch <- syscall.SIGWINCH
+	defer func() { signal.Stop(ch); close(ch) }()
+
+	oldState, err := term.MakeRaw(int(os.Stdin.Fd()))
+	if err != nil {
+		panic(err)
+	}
+	defer func() { _ = term.Restore(int(os.Stdin.Fd()), oldState) }()
+
+	go func() { _, _ = io.Copy(ptmx, os.Stdin) }()
+	_, _ = io.Copy(os.Stdout, ptmx)
+
+	return nil
+}
+
 func ScpFile(name, file, dest string) {
 	out, err := exec.Command("scp", "-i",
 		files.UserHomeDir()+"/.ssh/"+name, file, "root@"+dest+":").Output()
