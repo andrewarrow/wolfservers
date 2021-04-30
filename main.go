@@ -136,12 +136,13 @@ func main() {
 
 	db := sqlite.OpenTheDB()
 	defer db.Close()
-	m := sqlite.MakeIpMap(db)
+	ip2name := sqlite.MakeIpMap(db)
+	ip2id := sqlite.MakeIpToId(db)
 
 	if command == "ls" {
-		digitalocean.ListDroplets(m)
-		vultr.ListServers(m)
-		linode.ListServers(m)
+		digitalocean.ListDroplets(ip2name)
+		vultr.ListServers(ip2name)
+		linode.ListServers(ip2name)
 	} else if command == "keys" {
 		digitalocean.ListKeys()
 	} else if command == "sqlite" {
@@ -163,8 +164,8 @@ func main() {
 		b1, _ := ioutil.ReadFile("scripts/node.setup")
 		ioutil.WriteFile("setup.sh", b1, 0755)
 		MakeRelay(argMap["producer"])
-		ScpFile(m[dest], "setup.sh", dest)
-		ScpFile(m[dest], "relay.sh", dest)
+		ScpFile(ip2name[dest], "setup.sh", dest)
+		ScpFile(ip2name[dest], "relay.sh", dest)
 	} else if command == "update-ips" {
 		producer := argMap["producer"]
 		relay := argMap["relay"]
@@ -199,16 +200,25 @@ func main() {
 		b1, _ := ioutil.ReadFile("node.setup")
 		ioutil.WriteFile("setup.sh", b1, 0755)
 		MakeProducer(argMap["relay"])
-		ScpFile(m[dest], "setup.sh", dest)
-		ScpFile(m[dest], "producer.sh", dest)
-	} else if command == "danger" {
+		ScpFile(ip2name[dest], "setup.sh", dest)
+		ScpFile(ip2name[dest], "producer.sh", dest)
+	} else if command == "danger-do" {
 		if argMap["ID"] == "" {
 			return
 		}
-		//if false { // TODO rethink how to prevent disaster
 		id, _ := strconv.Atoi(argMap["ID"])
 		digitalocean.RemoveDroplet(id)
-		//}
+	} else if command == "danger" {
+		if argMap["name"] == "" {
+			return
+		}
+		for k, v := range ip2name {
+			if v == argMap["name"] {
+				sid := ip2id[k]
+				id, _ := strconv.Atoi(sid)
+				linode.RemoveServer(id)
+			}
+		}
 	} else if command == "ed255" {
 		name, pubKey := keys.MakeEd("LINODE")
 		linode.CreateSshKey(name, strings.TrimSpace(pubKey))

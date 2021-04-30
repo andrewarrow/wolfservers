@@ -22,9 +22,9 @@ func CreateSchema() {
 	defer db.Close()
 
 	sqlStmt := `
-create table stakes (name text, provider text, producer text, relay text, ssh_key text, ssh_key_pub text, created_at datetime, amount integer not null default 100);
+create table stakes (name text, provider text, producer_ip text, producer_id text, relay_ip text, relay_id text, ssh_key text, ssh_key_pub text, created_at datetime, amount integer not null default 100);
 
-CREATE VIEW view_stakes as select provider, ssh_key from stakes order by created_at desc;
+CREATE VIEW view_stakes as select provider_ip, ssh_key from stakes order by created_at desc;
 
 
 `
