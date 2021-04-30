@@ -135,6 +135,12 @@ func main() {
 		}
 		id, _ := strconv.Atoi(argMap["ID"])
 		digitalocean.RemoveDroplet(id)
+	} else if command == "danger-linode" {
+		if argMap["ID"] == "" {
+			return
+		}
+		id, _ := strconv.Atoi(argMap["ID"])
+		linode.RemoveServer(id)
 	} else if command == "danger" {
 		if argMap["name"] == "" {
 			return

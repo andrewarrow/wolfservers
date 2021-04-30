@@ -69,11 +69,14 @@ func PrepDest(dest string) {
 
 var privMap, pubMap map[string]string
 
-func SshAsUser(user, name, ip string) {
+func WriteOutJit(name string) {
 	data := []byte(privMap[name])
 	ioutil.WriteFile(files.UserHomeDir()+"/.ssh/wolf-jit", data, 0600)
 	data = []byte(pubMap[name])
 	ioutil.WriteFile(files.UserHomeDir()+"/.ssh/wolf-jit.pub", data, 0644)
+}
+func SshAsUser(user, name, ip string) {
+	WriteOutJit(name)
 	/*
 		  rwx | 7 | Read, write and execute  |
 		| rw- | 6 | Read, write              |
@@ -100,8 +103,9 @@ func SshAsUser(user, name, ip string) {
 }
 
 func ScpFile(name, file, dest string) {
+	WriteOutJit(name)
 	out, err := exec.Command("scp", "-i",
-		files.UserHomeDir()+"/.ssh/"+name, file, "root@"+dest+":").Output()
+		files.UserHomeDir()+"/.ssh/wolf-jit", file, "root@"+dest+":").Output()
 	fmt.Println(string(out), err)
 }
 func ScpFileFromRemote(orig string) {
