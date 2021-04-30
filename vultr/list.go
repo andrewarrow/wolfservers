@@ -2,7 +2,6 @@ package vultr
 
 import (
 	"context"
-	"fmt"
 	"os"
 
 	"github.com/andrewarrow/wolfservers/display"
@@ -17,11 +16,7 @@ func ListServers(ip2wolf map[string]string) {
 	i, _, _ := client.Instance.List(ctx, listOptions)
 	for _, v := range i {
 		wolfName := ip2wolf[v.MainIP]
-		fmt.Printf("%s %s [VULTR]  %s %s\n",
-			wolfName,
-			display.LeftAligned(v.ID, 10),
-			display.LeftAligned(v.Label, 15),
-			display.LeftAligned("ssh --ip="+v.MainIP, 30))
+		display.DisplayServer(wolfName, v.ID, "VULTR", v.Label, v.MainIP)
 	}
 }
 

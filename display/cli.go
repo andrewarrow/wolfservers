@@ -5,6 +5,15 @@ import (
 	"strings"
 )
 
+func DisplayServer(name, id, provider, label, ip interface{}) {
+	fmt.Printf("%v %s %v %s %s\n",
+		name,
+		LeftAligned(id, 10),
+		LeftAligned(provider, 7),
+		LeftAligned(label, 10),
+		LeftAligned(ip, 30))
+}
+
 func LeftAligned(thing interface{}, size int) string {
 	s := fmt.Sprintf("%v", thing)
 

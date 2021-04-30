@@ -19,11 +19,7 @@ func ListServers(ip2wolf map[string]string) {
 	i, _ := client.ListInstances(ctx, &options)
 	for _, v := range i {
 		wolfName := ip2wolf[fmt.Sprintf("%v", v.IPv4[0])]
-		fmt.Printf("%s %s [LINODE] %s %s\n",
-			wolfName,
-			display.LeftAligned(v.ID, 10),
-			display.LeftAligned(v.Label, 15),
-			display.LeftAligned(fmt.Sprintf("ssh --ip=%v", v.IPv4[0]), 30))
+		display.DisplayServer(wolfName, v.ID, "LINODE", v.Label, v.IPv4[0])
 	}
 }
 
