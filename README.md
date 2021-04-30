@@ -14,6 +14,20 @@ digitalocean,vultr,linode,google,and more.
 
 ./wolfservers ls
 
+./wolfservers relay --producer=ip1 --relay=ip2
+
+./wolfservers ssh --ip=ip2 --root
+setup.sh
+. .bashrc
+relay.sh
+
+./wolfservers producer --producer=ip1 --relay=ip2
+
+./wolfservers ssh --ip=ip1 --root
+setup.sh
+. .bashrc
+producer.sh
+
 # read more
 
 https://andrewarrow.substack.com/p/in-order-to-bank-in-the-modern-era
