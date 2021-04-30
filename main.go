@@ -95,6 +95,30 @@ func PrepDest(dest string) {
 var privMap, pubMap map[string]string
 
 func SshAsUser(user, name, ip string) {
+	data := []byte(privMap[name])
+	ioutil.WriteFile(files.UserHomeDir()+"/.ssh/wolf-jit", data, 0600)
+	data = []byte(pubMap[name])
+	ioutil.WriteFile(files.UserHomeDir()+"/.ssh/wolf-jit.pub", data, 0644)
+	/*
+		  rwx | 7 | Read, write and execute  |
+		| rw- | 6 | Read, write              |
+		| r-x | 5 | Read, and execute        |
+		| r-- | 4 | Read,                    |
+		| -wx | 3 | Write and execute        |
+		| -w- | 2 | Write                    |
+		| --x | 1 | Execute                  |
+		| --- | 0 | no permissions           |
+		| rwx------  | 0700 | User  |
+		| ---rwx---  | 0070 | Group |
+
+			-rw-------  1 andrewarrow  staff   399 Apr 26 19:28 wolf-91F4
+		  -rw-r--r--  1 andrewarrow  staff    81 Apr 26 19:28 wolf-91F4.pub
+	*/
+
+	fmt.Println("ssh", "-i",
+		files.UserHomeDir()+"/.ssh/wolf-jit", user+"@"+ip)
+	exec.Command("ssh", "-i",
+		files.UserHomeDir()+"/.ssh/wolf-jit", user+"@"+ip).Start()
 }
 func ScpFile(name, file, dest string) {
 	out, err := exec.Command("scp", "-i",

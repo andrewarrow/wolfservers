@@ -82,8 +82,8 @@ func SshKeysAsMap(db *sql.DB) (map[string]string, map[string]string) {
 		return m1, m2
 	}
 	defer rows.Close()
-	phrase := os.Getenv("WOLF_PHRASE")
 
+	phrase := os.Getenv("WOLF_PHRASE")
 	for rows.Next() {
 		var s1 string
 		var s2 string
