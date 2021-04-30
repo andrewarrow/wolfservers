@@ -33,6 +33,7 @@ func PrintHelp() {
 	fmt.Println("  wolfservers images       # list images")
 	fmt.Println("  wolfservers tags         # list tags")
 	fmt.Println("  wolfservers sqlite       # list data in sqlite db")
+	fmt.Println("  wolfservers ssh          # --ip=")
 	fmt.Println("")
 }
 
@@ -90,6 +91,11 @@ func PrepDest(dest string) {
 	f, _ := os.OpenFile(files.UserHomeDir()+"/.ssh/known_hosts", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	f.WriteString(string(out))
 }
+
+var privMap, pubMap map[string]string
+
+func SshAsUser(user, name, ip string) {
+}
 func ScpFile(name, file, dest string) {
 	out, err := exec.Command("scp", "-i",
 		files.UserHomeDir()+"/.ssh/"+name, file, "root@"+dest+":").Output()
@@ -138,6 +144,7 @@ func main() {
 	defer db.Close()
 	ip2name := sqlite.MakeIpMap(db)
 	ip2id := sqlite.MakeIpToId(db)
+	privMap, pubMap = sqlite.SshKeysAsMap(db)
 
 	if command == "ls" {
 		digitalocean.ListDroplets(ip2name)
@@ -171,6 +178,15 @@ func main() {
 		relay := argMap["relay"]
 		name := argMap["name"]
 		sqlite.UpdateIps(name, producer, relay)
+	} else if command == "ssh" {
+		ip := argMap["ip"]
+		name := ip2name[ip]
+		user := "aa"
+		if argMap["root"] == "true" {
+			user = "root"
+		}
+		SshAsUser(user, name, ip)
+
 	} else if command == "update-ed" {
 		name := argMap["name"]
 		keys.UpdateRowForEds(name)

@@ -73,3 +73,26 @@ func MakeIpToId(db *sql.DB) map[string]string {
 	}
 	return m
 }
+func SshKeysAsMap(db *sql.DB) (map[string]string, map[string]string) {
+	m1 := map[string]string{}
+	m2 := map[string]string{}
+	rows, err := db.Query("select name,ssh_key,ssh_key_pub from stakes")
+	if err != nil {
+		fmt.Println(err)
+		return m1, m2
+	}
+	defer rows.Close()
+	phrase := os.Getenv("WOLF_PHRASE")
+
+	for rows.Next() {
+		var s1 string
+		var s2 string
+		var s3 string
+		rows.Scan(&s1, &s2, &s3)
+		decodedBytes, _ := base64.StdEncoding.DecodeString(s2)
+		shhh := decrypt(decodedBytes, phrase)
+		m1[s1] = string(shhh)
+		m2[s1] = s3
+	}
+	return m1, m2
+}
