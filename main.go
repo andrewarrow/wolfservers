@@ -6,6 +6,7 @@ import (
 	"math/rand"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/andrewarrow/wolfservers/args"
@@ -76,6 +77,10 @@ func main() {
 		MakeProducer(argMap["relay"])
 		ScpFile(ip2name[dest], "setup.sh", dest)
 		ScpFile(ip2name[dest], "producer.sh", dest)
+		fmt.Println("1. ssh as root")
+		fmt.Println("2. run setup.sh")
+		fmt.Println("3. . .bashrc")
+		fmt.Println("4. run producer.sh")
 	} else if command == "relay" {
 		dest := argMap["relay"]
 		PrepDest(dest)
@@ -84,6 +89,10 @@ func main() {
 		MakeRelay(argMap["producer"])
 		ScpFile(ip2name[dest], "setup.sh", dest)
 		ScpFile(ip2name[dest], "relay.sh", dest)
+		fmt.Println("1. ssh as root")
+		fmt.Println("2. run setup.sh")
+		fmt.Println("3. . .bashrc")
+		fmt.Println("4. run relay.sh")
 	} else if command == "update-ips" {
 		producer := argMap["producer"]
 		relay := argMap["relay"]
@@ -152,12 +161,12 @@ func main() {
 			}
 		}
 	} else if command == "ed255" {
-		//name, pubKey := keys.MakeEd("LINODE")
 		ids := linode.ListKeys()
 		for _, id := range ids {
 			linode.DeleteSshKey(id)
 		}
-		//linode.CreateSshKey(name, strings.TrimSpace(pubKey))
+		name, pubKey := keys.MakeEd("LINODE")
+		linode.CreateSshKey(name, strings.TrimSpace(pubKey))
 	} else if command == "help" {
 		PrintHelp()
 	}

@@ -8,7 +8,6 @@ import (
 )
 
 func InsertRow(name, provider, privKey, pubKey string) {
-	CreateSchema()
 	ts := time.Now()
 	db := OpenTheDB()
 	defer db.Close()
@@ -22,7 +21,7 @@ func InsertRow(name, provider, privKey, pubKey string) {
 	shhh := encrypt([]byte(privKey), phrase)
 	encodedStr := base64.StdEncoding.EncodeToString(shhh)
 
-	s := `insert into stakes (name, provider, producer_ip, producer_id, relay_ip, relay_id, ssh_key, ssh_key_pub, created_at) values (?, ?, ?, ?, ?, ?, ?)`
+	s := `insert into stakes (name, provider, producer_ip, producer_id, relay_ip, relay_id, ssh_key, ssh_key_pub, created_at) values (?, ?, ?, ?, ?, ?, ?, ?, ?)`
 	thing, _ := tx.Prepare(s)
 	thing.Exec(name, provider, "producer", "", "relay", "", encodedStr, pubKey, ts)
 
