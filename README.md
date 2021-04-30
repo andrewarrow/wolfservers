@@ -24,7 +24,23 @@ A. Absolutely. [read this](https://andrewarrow.substack.com/p/in-order-to-bank-i
 
 Q. How does wolfservers store my keys?
 
-A. We use a sqlite database on your local hard drive but all the private keys we write to it are encrypted with a > 36 character phrase you have to memorize. Each morning I open my .bash_profile and write `export WOLF_PHRASE="something long and very secret and definitely something I will never forget"` and then every night I erase it from my .bash_profile. The actual wolf.db sqlite file is safe to email to yourself, store on dropbox, etc. You want many copies of this wolf.db file. You can never ever lose it.
+A. We use a sqlite database on your local hard drive but all the private keys we write to it are encrypted with a > 36 character phrase you have to memorize. Each morning I open my .bash_profile and write `export WOLF_PHRASE="something long and very secret and definitely something I will never forget"` and then every night I erase it from my .bash_profile. (It's not actually those words, OR IS IT???) The actual wolf.db sqlite file is safe to email to yourself, store on dropbox, etc. You want many copies of this wolf.db file. You can never `ever` lose it.
+
+Q. Which cloud providers API's are hooked up?
+
+A. [DigitalOcean](https://m.do.co/c/560b7001e430) and [Vultr](https://www.vultr.com/?ref=8507322) and [Linode](https://www.linode.com) but more are coming.
+
+Q. So I can create these money making machines with one click?
+
+A. We are getting there. But yes, the idea is once you have a credit card on file with a provider, it's just a matter of booting up as many of these nodes as you want to pay for.
+
+Q. How much ADA will I make with each node?
+
+A. Hard to answer. We are just getting started but will report back our findings as we observer them.
+
+Q. One more time, why not just use coinbase?
+
+A. Because they are taking a cut! If you run your own node and stake 1000 ADA, you can earn the rewards that ADA can generate. If those rewards > cost of server == profit.
 
 # example
 
