@@ -8,6 +8,14 @@ import (
 	"github.com/andrewarrow/wolfservers/sqlite"
 )
 
+func IssueOpCert(startKesPeriod string) {
+	exec.Command("cardano-cli", "node", "issue-op-cert",
+		"--kes-verification-key-file", "kes.vkey",
+		"--cold-signing-key-file", "node.skey",
+		"--operational-certificate-issue-counter", "node.counter",
+		"--kes-period", startKesPeriod,
+		"--out-file", "node.cert").Output()
+}
 func MakeNode(name string) {
 	exec.Command("cardano-cli", "node", "key-gen", "--cold-verification-key-file",
 		"node.vkey", "--cold-signing-key-file", "node.skey",

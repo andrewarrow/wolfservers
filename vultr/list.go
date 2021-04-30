@@ -19,6 +19,20 @@ func ListServers(ip2wolf map[string]string) {
 		display.DisplayServer(wolfName, v.ID, "VULTR", v.Label, v.MainIP)
 	}
 }
+func ListProducerIps() []string {
+
+	list := []string{}
+	client, ctx := VultrClient()
+	listOptions := &govultr.ListOptions{PerPage: 100}
+	i, _, _ := client.Instance.List(ctx, listOptions)
+	for _, v := range i {
+		if v.Label != "producer" {
+			continue
+		}
+		list = append(list, v.MainIP)
+	}
+	return list
+}
 
 func VultrClient() (*govultr.Client, context.Context) {
 	apiKey := os.Getenv("VULTR_PAT")

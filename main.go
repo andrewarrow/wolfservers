@@ -53,6 +53,14 @@ func main() {
 		digitalocean.ListDroplets(ip2name)
 		vultr.ListServers(ip2name)
 		linode.ListServers(ip2name)
+
+		if argMap["keys"] == "true" {
+			ips := vultr.ListProducerIps()
+			for _, ip := range ips {
+				out := SshAsUserRunOneThing("aa", ip2name[ip], ip)
+				fmt.Println(out)
+			}
+		}
 	} else if command == "keys" {
 		digitalocean.ListKeys()
 	} else if command == "sqlite" {
@@ -140,8 +148,7 @@ func main() {
 		digitalocean.CreateDroplet("relay", size, key)
 
 	} else if command == "node-keys" {
-		keys.MakeNode("wolf-C0B5")
-		keys.MakeNode("wolf-7C9E")
+		//keys.MakeNode("wolf-C0B5")
 	} else if command == "domains-do" {
 		digitalocean.ListDomainRecords("wolfschedule.com")
 	} else if command == "add-a-record" {
