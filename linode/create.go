@@ -16,7 +16,8 @@ func CreateServer(name string) {
 		AuthorizedUsers: []string{os.Getenv("LINODE_USER")},
 		Image:           "linode/ubuntu18.04",
 		//Type:            "g6-standard-4",
-		Type:   "g6-standard-2",
+		//Type:   "g6-standard-2",
+		Type:   "g6-standard-1",
 		Region: "us-west",
 	}
 

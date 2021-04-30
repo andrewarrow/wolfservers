@@ -61,7 +61,6 @@ EOF
 cd /usr/local/bin/
 ln -s /root/cardano-node cardano-node
 ln -s /root/cardano-cli cardano-cli
-cd cardano-my-node/
 
 mv $NODE_HOME/cardano-node.service /etc/systemd/system/cardano-node.service
 chmod 644 /etc/systemd/system/cardano-node.service
