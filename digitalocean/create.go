@@ -5,12 +5,10 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/andrewarrow/wolfservers/keys"
 	"github.com/digitalocean/godo"
 )
 
-func CreateDroplet(prefix, size, key string) {
-	dropletName := keys.WolfName(prefix)
+func CreateDroplet(dropletName, size, key string) {
 
 	imageIdString := os.Getenv("DO_IMAGE")
 

@@ -66,7 +66,7 @@ func ListDroplets(ip2wolf map[string]string) {
 			continue
 		}
 		wolfName := ip2wolf[droplet.Networks.V4[1].IPAddress]
-		if wolfName == "" {
+		if droplet.Name == "many.pw" {
 			continue
 		}
 		fmt.Printf("%s %s [DO]     %s %s\n",

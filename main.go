@@ -134,7 +134,8 @@ func main() {
 		// make 2 droplets, name one producer one relay, wait for their ips
 		// size := "s-4vcpu-8gb"
 		size := "s-1vcpu-2gb"
-		key := os.Getenv("DO_PRINT")
+		keys := digitalocean.ListKeyFingerprints()
+		key := keys[0]
 		digitalocean.CreateDroplet("producer", size, key)
 		digitalocean.CreateDroplet("relay", size, key)
 

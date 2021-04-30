@@ -48,3 +48,17 @@ func CreateKey(name, pubKey string) {
 func DeleteKey(id int) {
 	network.DoDelete(fmt.Sprintf("v2/account/keys/%d", id))
 }
+func ListKeyFingerprints() []string {
+	list := []string{}
+	jsonString := network.DoGet("v2/account/keys?per_page=100")
+	//fmt.Println(jsonString)
+	var keys Keys
+	json.Unmarshal([]byte(jsonString), &keys)
+	for _, s := range keys.Keys {
+		fmt.Println(display.LeftAligned(s.ID, 5),
+			display.LeftAligned(s.Fingerprint, 50),
+			display.LeftAligned(s.Name, 10))
+		list = append(list, s.Fingerprint)
+	}
+	return list
+}
