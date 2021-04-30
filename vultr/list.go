@@ -21,7 +21,7 @@ func ListServers(ip2wolf map[string]string) {
 			wolfName,
 			display.LeftAligned(v.ID, 10),
 			display.LeftAligned(v.Label, 15),
-			display.LeftAligned("ssh aa@"+v.MainIP, 30))
+			display.LeftAligned("ssh --ip="+v.MainIP, 30))
 	}
 }
 

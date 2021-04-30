@@ -73,6 +73,6 @@ func ListDroplets(ip2wolf map[string]string) {
 			wolfName,
 			display.LeftAligned(droplet.ID, 10),
 			display.LeftAligned(droplet.Name, 15),
-			display.LeftAligned("ssh aa@"+droplet.Networks.V4[1].IPAddress, 30))
+			display.LeftAligned("ssh --ip="+droplet.Networks.V4[1].IPAddress, 30))
 	}
 }
