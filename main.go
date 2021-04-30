@@ -171,6 +171,11 @@ func main() {
 		relay := argMap["relay"]
 		name := argMap["name"]
 		sqlite.UpdateIps(name, producer, relay)
+	} else if command == "update-ids" {
+		producer := argMap["producer"]
+		relay := argMap["relay"]
+		name := argMap["name"]
+		sqlite.UpdateIds(name, producer, relay)
 	} else if command == "fresh2linode" {
 		if argMap["sure"] == "" {
 			return
