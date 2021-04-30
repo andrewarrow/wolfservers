@@ -1,7 +1,6 @@
 package keys
 
 import (
-	"fmt"
 	"io/ioutil"
 	"os"
 	"os/exec"
@@ -14,9 +13,7 @@ import (
 func MakeEd(provider string) (string, string) {
 	name := WolfName("wolf")
 	for {
-		filename := fmt.Sprintf("%s/.ssh/%s", files.UserHomeDir(), name)
-		_, err := os.Stat(filename)
-		if err != nil {
+		if !sqlite.NameExists(name) {
 			break
 		}
 		time.Sleep(time.Second)
@@ -25,11 +22,15 @@ func MakeEd(provider string) (string, string) {
 	exec.Command("ssh-keygen", "-o", "-a", "100", "-t", "ed25519",
 		"-f", files.UserHomeDir()+"/.ssh/"+name, "-C", "wolfservers").Output()
 
-	b, _ := ioutil.ReadFile(files.UserHomeDir() + "/.ssh/" + name)
+	file1 := files.UserHomeDir() + "/.ssh/" + name
+	file2 := files.UserHomeDir() + "/.ssh/" + name + ".pub"
+	b, _ := ioutil.ReadFile(file1)
 	privKey := string(b)
-	b, _ = ioutil.ReadFile(files.UserHomeDir() + "/.ssh/" + name + ".pub")
+	b, _ = ioutil.ReadFile(file2)
 	pubKey := string(b)
 	sqlite.InsertRow(name, provider, privKey, pubKey)
+	os.Remove(file1)
+	os.Remove(file2)
 	return name, pubKey
 }
 
