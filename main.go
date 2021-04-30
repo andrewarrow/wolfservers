@@ -55,6 +55,7 @@ func main() {
 		vultr.ListServers(ip2name)
 		linode.ListServers(ip2name)
 
+		fmt.Println("")
 		if argMap["keys"] == "true" {
 			ips := vultr.ListProducerIps()
 			for _, ip := range ips {
@@ -65,7 +66,7 @@ func main() {
 				hoursMins := tokens[7]
 				ts, _ := time.Parse("Jan 2, 2006 15:04",
 					fmt.Sprintf("%s %s, 2021 %s", month, day, hoursMins))
-				fmt.Println(ts, timeago.FromDuration(time.Since(ts)))
+				fmt.Println(ip2name[ip], timeago.FromDuration(time.Since(ts)))
 
 			}
 		}
