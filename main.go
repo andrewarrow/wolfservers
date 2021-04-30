@@ -139,6 +139,12 @@ func main() {
 		digitalocean.CreateDroplet("producer", size, key)
 		digitalocean.CreateDroplet("relay", size, key)
 
+	} else if command == "domains-do" {
+		digitalocean.ListDomainRecords("wolfschedule.com")
+	} else if command == "add-a-record" {
+		ip := argMap["ip"]
+		name := argMap["name"]
+		digitalocean.AddRecord("wolfschedule.com", ip, name)
 	} else if command == "danger-do" {
 		if argMap["ID"] == "" {
 			return

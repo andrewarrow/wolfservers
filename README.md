@@ -28,6 +28,9 @@ setup.sh
 . .bashrc
 producer.sh
 
+
+./wolfservers add-a-record --name=wolf-ABCD-1 --ip=ip1
+
 # read more
 
 https://andrewarrow.substack.com/p/in-order-to-bank-in-the-modern-era
