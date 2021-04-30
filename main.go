@@ -68,6 +68,15 @@ func main() {
 	} else if command == "wolfit2" {
 		ip := argMap["producer"]
 		ScpFileToHot("airgapped/node.cert", ip)
+	} else if command == "producer" {
+		// https://www.coincashew.com/coins/overview-ada/guide-how-to-build-a-haskell-stakepool-node
+		dest := argMap["producer"]
+		PrepDest(dest)
+		b1, _ := ioutil.ReadFile("scripts/node.setup")
+		ioutil.WriteFile("setup.sh", b1, 0755)
+		MakeProducer(argMap["relay"])
+		ScpFile(ip2name[dest], "setup.sh", dest)
+		ScpFile(ip2name[dest], "producer.sh", dest)
 	} else if command == "relay" {
 		dest := argMap["relay"]
 		PrepDest(dest)
@@ -120,15 +129,6 @@ func main() {
 		digitalocean.CreateDroplet("producer", size, key)
 		digitalocean.CreateDroplet("relay", size, key)
 
-	} else if command == "producer" {
-		// https://www.coincashew.com/coins/overview-ada/guide-how-to-build-a-haskell-stakepool-node
-		dest := argMap["producer"]
-		PrepDest(dest)
-		b1, _ := ioutil.ReadFile("node.setup")
-		ioutil.WriteFile("setup.sh", b1, 0755)
-		MakeProducer(argMap["relay"])
-		ScpFile(ip2name[dest], "setup.sh", dest)
-		ScpFile(ip2name[dest], "producer.sh", dest)
 	} else if command == "danger-do" {
 		if argMap["ID"] == "" {
 			return
