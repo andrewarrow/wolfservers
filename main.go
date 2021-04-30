@@ -6,7 +6,6 @@ import (
 	"math/rand"
 	"os"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/andrewarrow/wolfservers/args"
@@ -153,8 +152,12 @@ func main() {
 			}
 		}
 	} else if command == "ed255" {
-		name, pubKey := keys.MakeEd("LINODE")
-		linode.CreateSshKey(name, strings.TrimSpace(pubKey))
+		//name, pubKey := keys.MakeEd("LINODE")
+		ids := linode.ListKeys()
+		for _, id := range ids {
+			linode.DeleteSshKey(id)
+		}
+		//linode.CreateSshKey(name, strings.TrimSpace(pubKey))
 	} else if command == "help" {
 		PrintHelp()
 	}

@@ -43,3 +43,16 @@ func LinodeClient() (*linodego.Client, context.Context) {
 	ctx := context.Background()
 	return &client, ctx
 }
+
+func ListKeys() []int {
+
+	list := []int{}
+	client, ctx := LinodeClient()
+	options := linodego.ListOptions{}
+
+	keys, _ := client.ListSSHKeys(ctx, &options)
+	for _, v := range keys {
+		list = append(list, v.ID)
+	}
+	return list
+}
