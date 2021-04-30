@@ -15,6 +15,7 @@ import (
 	"github.com/andrewarrow/wolfservers/linode"
 	"github.com/andrewarrow/wolfservers/sqlite"
 	"github.com/andrewarrow/wolfservers/vultr"
+	"github.com/justincampbell/timeago"
 )
 
 func PrintHelp() {
@@ -58,7 +59,14 @@ func main() {
 			ips := vultr.ListProducerIps()
 			for _, ip := range ips {
 				out := SshAsUserRunOneThing("aa", ip2name[ip], ip)
-				fmt.Println(out)
+				tokens := strings.Split(out, " ")
+				month := tokens[5]
+				day := tokens[6]
+				hoursMins := tokens[7]
+				ts, _ := time.Parse("Jan 2, 2006 15:04",
+					fmt.Sprintf("%s %s, 2021 %s", month, day, hoursMins))
+				fmt.Println(ts, timeago.FromDuration(time.Since(ts)))
+
 			}
 		}
 	} else if command == "keys" {
