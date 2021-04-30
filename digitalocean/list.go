@@ -73,3 +73,27 @@ func ListDroplets(ip2wolf map[string]string) {
 		display.DisplayServer(wolfName, droplet.ID, "DO", droplet.Name, ip)
 	}
 }
+
+func ListProducerIps() []string {
+	list := []string{}
+	client, ctx := GetClient()
+
+	opt := &godo.ListOptions{
+		Page:    1,
+		PerPage: 200,
+	}
+
+	droplets, _, _ := client.Droplets.List(ctx, opt)
+
+	for _, droplet := range droplets {
+		if len(droplet.Networks.V4) < 2 {
+			continue
+		}
+		if droplet.Name != "producer" {
+			continue
+		}
+		ip := droplet.Networks.V4[1].IPAddress
+		list = append(list, ip)
+	}
+	return list
+}

@@ -22,6 +22,21 @@ func ListServers(ip2wolf map[string]string) {
 		display.DisplayServer(wolfName, v.ID, "LINODE", v.Label, v.IPv4[0])
 	}
 }
+func ListProducerIps() []string {
+
+	list := []string{}
+	client, ctx := LinodeClient()
+	options := linodego.ListOptions{}
+
+	i, _ := client.ListInstances(ctx, &options)
+	for _, v := range i {
+		if v.Label != "producer" {
+			continue
+		}
+		list = append(list, fmt.Sprintf("%v", v.IPv4[0]))
+	}
+	return list
+}
 
 func LinodeClient() (*linodego.Client, context.Context) {
 	apiKey := os.Getenv("LINODE_PAT")

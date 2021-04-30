@@ -57,7 +57,12 @@ func main() {
 
 		fmt.Println("")
 		if argMap["keys"] == "true" {
-			ips := vultr.ListProducerIps()
+			vips := vultr.ListProducerIps()
+			lips := linode.ListProducerIps()
+			dips := digitalocean.ListProducerIps()
+
+			ips := append(vips, lips...)
+			ips = append(ips, dips...)
 			for _, ip := range ips {
 				out := SshAsUserRunOneThing("aa", ip2name[ip], ip)
 				tokens := strings.Split(out, " ")
