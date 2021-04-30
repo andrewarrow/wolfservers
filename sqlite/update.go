@@ -7,7 +7,6 @@ import (
 )
 
 func UpdateIps(name, producer, relay string) {
-	CreateSchema()
 	db := OpenTheDB()
 	defer db.Close()
 	tx, _ := db.Begin()
@@ -18,7 +17,6 @@ func UpdateIps(name, producer, relay string) {
 	tx.Commit()
 }
 func UpdateIds(name, producer, relay string) {
-	CreateSchema()
 	db := OpenTheDB()
 	defer db.Close()
 	tx, _ := db.Begin()
@@ -29,7 +27,6 @@ func UpdateIds(name, producer, relay string) {
 	tx.Commit()
 }
 func UpdateRow(name, privKey, pubKey string) {
-	CreateSchema()
 	db := OpenTheDB()
 	defer db.Close()
 	tx, _ := db.Begin()

@@ -139,6 +139,9 @@ func main() {
 		digitalocean.CreateDroplet("producer", size, key)
 		digitalocean.CreateDroplet("relay", size, key)
 
+	} else if command == "node-keys" {
+		keys.MakeNode("wolf-C0B5")
+		keys.MakeNode("wolf-7C9E")
 	} else if command == "domains-do" {
 		digitalocean.ListDomainRecords("wolfschedule.com")
 	} else if command == "add-a-record" {
