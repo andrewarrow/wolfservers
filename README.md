@@ -36,11 +36,15 @@ A. We are getting there. But yes, the idea is once you have a credit card on fil
 
 Q. How much ADA will I make with each node?
 
-A. Hard to answer. We are just getting started but will report back our findings as we observer them.
+A. Hard to answer. We are just getting started but will report back our findings as we observe them.
 
 Q. One more time, why not just use coinbase?
 
 A. Because they are taking a cut! If you run your own node and stake 1000 ADA, you can earn the rewards that ADA can generate. If those rewards > cost of server == profit.
+
+Q. What about estate planning?
+
+A. [Good question](https://law.stackexchange.com/questions/64558/how-does-estate-law-in-usa-ca-handle-crypto-on-hundreds-of-rented-servers-in-the).
 
 # example
 
