@@ -32,3 +32,11 @@ func MakeEd(provider string) (string, string) {
 	sqlite.InsertRow(name, provider, privKey, pubKey)
 	return name, pubKey
 }
+
+func UpdateRowForEds(name string) {
+	b, _ := ioutil.ReadFile(files.UserHomeDir() + "/.ssh/" + name)
+	privKey := string(b)
+	b, _ = ioutil.ReadFile(files.UserHomeDir() + "/.ssh/" + name + ".pub")
+	pubKey := string(b)
+	sqlite.UpdateRow(name, privKey, pubKey)
+}
