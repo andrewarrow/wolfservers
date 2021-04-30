@@ -40,7 +40,7 @@ func DoHttpRead(verb, route string, client *http.Client, request *http.Request) 
 			os.Exit(1)
 			return ""
 		}
-		if resp.StatusCode == 200 || resp.StatusCode == 201 {
+		if resp.StatusCode == 200 || resp.StatusCode == 201 || resp.StatusCode == 204 {
 			return string(body)
 		} else {
 			fmt.Printf("\n\nERROR: %d %s\n\n", resp.StatusCode, string(body))
@@ -53,12 +53,25 @@ func DoHttpRead(verb, route string, client *http.Client, request *http.Request) 
 	return ""
 }
 
-func DoPost(uid, username, route string, payload []byte) string {
+func DoPost(route string, payload []byte) string {
+	pat := os.Getenv("DO_PAT")
 	body := bytes.NewBuffer(payload)
 	urlString := fmt.Sprintf("%s%s", BaseUrl(), route)
 	request, _ := http.NewRequest("POST", urlString, body)
 	request.Header.Set("Content-Type", "application/json")
+	request.Header.Set("Authorization", fmt.Sprintf("Bearer %s", pat))
 	client := &http.Client{Timeout: time.Second * 50}
 
 	return DoHttpRead("POST", route, client, request)
+}
+func DoDelete(route string) string {
+	pat := os.Getenv("DO_PAT")
+	body := bytes.NewBuffer([]byte{})
+	urlString := fmt.Sprintf("%s%s", BaseUrl(), route)
+	request, _ := http.NewRequest("DELETE", urlString, body)
+	request.Header.Set("Content-Type", "application/json")
+	request.Header.Set("Authorization", fmt.Sprintf("Bearer %s", pat))
+	client := &http.Client{Timeout: time.Second * 50}
+
+	return DoHttpRead("DELETE", route, client, request)
 }

@@ -132,7 +132,8 @@ func main() {
 			return
 		}
 		// make 2 droplets, name one producer one relay, wait for their ips
-		size := "s-4vcpu-8gb"
+		// size := "s-4vcpu-8gb"
+		size := "s-1vcpu-2gb"
 		key := os.Getenv("DO_PRINT")
 		digitalocean.CreateDroplet("producer", size, key)
 		digitalocean.CreateDroplet("relay", size, key)
@@ -161,12 +162,26 @@ func main() {
 			}
 		}
 	} else if command == "ed255" {
-		ids := linode.ListKeys()
-		for _, id := range ids {
-			linode.DeleteSshKey(id)
+		if argMap["provider"] == "" {
+			return
 		}
-		name, pubKey := keys.MakeEd("LINODE")
-		linode.CreateSshKey(name, strings.TrimSpace(pubKey))
+		provider := argMap["provider"]
+
+		if provider == "linode" {
+			ids := linode.ListKeys()
+			for _, id := range ids {
+				linode.DeleteSshKey(id)
+			}
+			name, pubKey := keys.MakeEd("LINODE")
+			linode.CreateSshKey(name, strings.TrimSpace(pubKey))
+		} else if provider == "do" {
+			ids := digitalocean.ListKeys()
+			for _, id := range ids {
+				digitalocean.DeleteKey(id)
+			}
+			name, pubKey := keys.MakeEd("DO")
+			digitalocean.CreateKey(name, pubKey)
+		}
 	} else if command == "help" {
 		PrintHelp()
 	}
