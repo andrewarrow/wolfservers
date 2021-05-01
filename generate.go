@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"os"
 	"os/exec"
+	"strconv"
 	"strings"
 
 	"github.com/andrewarrow/wolfservers/files"
@@ -81,7 +82,18 @@ func RunHot(name, ip string) {
 	WriteOutJit(name)
 	o, _ := exec.Command("ssh", "-i",
 		files.UserHomeDir()+"/.ssh/wolf-jit", "aa@"+ip, command).Output()
-	fmt.Println(string(o))
+	slotsPerKESPeriod := strings.TrimSpace(string(o))
+
+	env := "CARDANO_NODE_SOCKET_PATH=/root/cardano-my-node/db/socket"
+	command = fmt.Sprintf("%s sudo -E cardano-cli query tip --mainnet | jq -r '.slot'", env)
+	o, _ = exec.Command("ssh", "-i",
+		files.UserHomeDir()+"/.ssh/wolf-jit", "aa@"+ip, command).Output()
+	slot := strings.TrimSpace(string(o))
+
+	slotsPerKESPeriodInt, _ := strconv.Atoi(slotsPerKESPeriod)
+	slotInt, _ := strconv.Atoi(slot)
+	startKesPeriod := slotInt / slotsPerKESPeriodInt
+	fmt.Println(startKesPeriod)
 }
 func SshAsUserRunOneThing(name, ip string) string {
 	WriteOutJit(name)
