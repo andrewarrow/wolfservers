@@ -27,6 +27,8 @@ func InsertRow(name, provider, privKey, pubKey string) {
 
 	tx.Commit()
 }
+func InsertPaymentRow(name, pv, ps, sv, ss, sa, pa string) {
+}
 func InsertNodeRow(name, v, s, c string) {
 	ts := time.Now()
 	db := OpenTheDB()

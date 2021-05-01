@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 	"os/exec"
+	"strings"
 
 	"github.com/andrewarrow/wolfservers/sqlite"
 )
@@ -34,6 +35,41 @@ func MakeNode(name string) {
 	os.Remove("node.vkey")
 	os.Remove("node.skey")
 	os.Remove("node.counter")
+}
+func ToTokens(s string) []string {
+	return strings.Split(s, " ")
+}
+func MakePayment(name string) {
+	cmd := "cardano-cli"
+	tokens := ToTokens("address key-gen --verification-key-file payment.vkey --signing-key-file payment.skey")
+	exec.Command(cmd, tokens...).Output()
+	tokens = ToTokens("stake-address key-gen --verification-key-file stake.vkey --signing-key-file stake.skey")
+	exec.Command(cmd, tokens...).Output()
+	tokens = ToTokens("stake-address build --stake-verification-key-file stake.vkey --out-file stake.addr --mainnet")
+	exec.Command(cmd, tokens...).Output()
+	tokens = ToTokens("address build --payment-verification-key-file payment.vkey --stake-verification-key-file stake.vkey --out-file payment.addr --mainnet")
+	exec.Command(cmd, tokens...).Output()
+
+	b, _ := ioutil.ReadFile("payment.vkey")
+	pv := string(b)
+	b, _ = ioutil.ReadFile("payment.skey")
+	ps := string(b)
+	b, _ = ioutil.ReadFile("stake.vkey")
+	sv := string(b)
+	b, _ = ioutil.ReadFile("stake.skey")
+	ss := string(b)
+	b, _ = ioutil.ReadFile("stake.addr")
+	sa := string(b)
+	b, _ = ioutil.ReadFile("payment.addr")
+	pa := string(b)
+	sqlite.InsertPaymentRow(name, pv, ps, sv, ss, sa, pa)
+
+	os.Remove("payment.vkey")
+	os.Remove("payment.skey")
+	os.Remove("stake.vkey")
+	os.Remove("stake.skey")
+	os.Remove("stake.addr")
+	os.Remove("payment.addr")
 }
 
 func Step1() {
