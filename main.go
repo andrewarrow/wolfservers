@@ -75,8 +75,8 @@ func main() {
 				ts, _ := time.Parse("Jan 2, 2006 15:04",
 					fmt.Sprintf("%s %s, 2021 %s", month, day, hoursMins))
 
-				fmt.Printf("%s EPOCH(%d) Key Evolving Signature Age(%s) \n",
-					ip2name[ip], rsd.Tip.Epoch, timeago.FromDuration(time.Since(ts)))
+				fmt.Printf("%s (%d,%d,%d) Key Evolving Signature Age(%s) \n",
+					ip2name[ip], rsd.Tip.Epoch, rsd.Tip.Block, rsd.Tip.Slot, timeago.FromDuration(time.Since(ts)))
 				fmt.Printf("    |------> %s\n", rsd.SpecialFiles)
 
 			}
