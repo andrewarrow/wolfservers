@@ -91,8 +91,14 @@ func main() {
 		startKesPeriod := RunHot(name, ip)
 		// 4. keys.IssueOpCert(startKesPeriod)
 		keys.IssueOpCert(startKesPeriod)
-		// 5. delete local kes.vkey, node.skey
-		// 6. upload node.cert to hot
+		// 5. upload node.cert to hot
+		// TODO
+		// 6. delete local kes.vkey, node.skey
+		os.Remove("kes.vkey")
+		//os.Remove("node.cert")
+		os.Remove("node.counter")
+		os.Remove("node.skey")
+		os.Remove("node.vkey")
 	} else if command == "sqlite" {
 		sqlite.List()
 	} else if command == "images" {
