@@ -77,7 +77,11 @@ func WriteOutJit(name string) {
 }
 func SshAsUserRunOneThing(name, ip string) string {
 	WriteOutJit(name)
+	// cardano-cli query tip --mainnet
 	o, _ := exec.Command("ssh", "-i",
+		files.UserHomeDir()+"/.ssh/wolf-jit", "aa@"+ip, "CARDANO_NODE_SOCKET_PATH=/root/cardano-my-node/db/socket sudo -E cardano-cli query tip --mainnet").Output()
+	fmt.Println(string(o))
+	o, _ = exec.Command("ssh", "-i",
 		files.UserHomeDir()+"/.ssh/wolf-jit", "aa@"+ip, "sudo ls -l /root/cardano-my-node/kes.vkey").Output()
 	return string(o)
 }
