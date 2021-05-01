@@ -106,6 +106,9 @@ func main() {
 		nodeKeySize := sqlite.NodeKeysQuery(name)
 		paymentKeySize := sqlite.PaymentKeysQuery(name)
 		fmt.Println(nodeKeySize, paymentKeySize)
+		if paymentKeySize == 0 {
+			keys.MakePayment(name)
+		}
 	} else if command == "keys" {
 		digitalocean.ListKeys()
 	} else if command == "hot" {

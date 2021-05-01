@@ -26,6 +26,13 @@ func InsertRow(name, provider, privKey, pubKey string) {
 	thing.Exec(name, provider, "producer", "", "relay", "", encodedStr, pubKey, ts)
 
 	tx.Commit()
+	DisplayCopyDropboxNotice()
+}
+func DisplayCopyDropboxNotice() {
+	fmt.Println("")
+	fmt.Println("cp ~/wolf.db ~/Dropbox/db-work/")
+	fmt.Println("scp -i ~/.ssh/wolf-91F4  ~/wolf.db root@cyborg.st:")
+	fmt.Println("")
 }
 func InsertPaymentRow(name, pv, ps, sv, ss, sa, pa string) {
 	ts := time.Now()
@@ -61,6 +68,7 @@ func InsertPaymentRow(name, pv, ps, sv, ss, sa, pa string) {
 		ts)
 
 	tx.Commit()
+	DisplayCopyDropboxNotice()
 }
 func InsertNodeRow(name, v, s, c string) {
 	ts := time.Now()
@@ -85,4 +93,5 @@ func InsertNodeRow(name, v, s, c string) {
 	thing.Exec(name, encodedC, encodedV, encodedS, ts)
 
 	tx.Commit()
+	DisplayCopyDropboxNotice()
 }

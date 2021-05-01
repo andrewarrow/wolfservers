@@ -15,6 +15,7 @@ func UpdateIps(name, producer, relay string) {
 	thing, _ := tx.Prepare(s)
 	thing.Exec(producer, relay, name)
 	tx.Commit()
+	DisplayCopyDropboxNotice()
 }
 func UpdateIds(name, producer, relay string) {
 	db := OpenTheDB()
@@ -25,6 +26,7 @@ func UpdateIds(name, producer, relay string) {
 	thing, _ := tx.Prepare(s)
 	thing.Exec(producer, relay, name)
 	tx.Commit()
+	DisplayCopyDropboxNotice()
 }
 func UpdateRow(name, privKey, pubKey string) {
 	db := OpenTheDB()
@@ -44,4 +46,5 @@ func UpdateRow(name, privKey, pubKey string) {
 	thing.Exec(encodedStr, pubKey, name)
 
 	tx.Commit()
+	DisplayCopyDropboxNotice()
 }
