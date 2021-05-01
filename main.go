@@ -32,6 +32,7 @@ func PrintHelp() {
 	fmt.Println("  wolfservers tags         # list tags")
 	fmt.Println("  wolfservers sqlite       # list data in sqlite db")
 	fmt.Println("  wolfservers ssh          # --ip=")
+	fmt.Println("  wolfservers phases       # how to do what when")
 	fmt.Println("")
 }
 
@@ -80,6 +81,25 @@ func main() {
 
 			}
 		}
+	} else if command == "phases" {
+		fmt.Println("")
+		fmt.Println(" 1. Seed     : new VM from provider, ip address known")
+		fmt.Println(" 2. Growing  : cardano-node installed, sync started")
+		fmt.Println(" 3. Growing  : sync complete, now generate block-producer keys")
+		fmt.Println(" 4. Growing  : also setup payment and stake keys")
+		fmt.Println(" 5. Growing  : then register your stake address")
+		fmt.Println(" 6. Growing  : register your stake pool with DNS A record")
+		fmt.Println(" 7. Growing  : pool.cert,deleg.cert to hot")
+		fmt.Println(" 8. Growing  : build 1st tx, copy tx.raw to cold")
+		fmt.Println(" 9. Growing  : make and copy tx.signed to hot. Execute")
+		fmt.Println("10. Exciting : find your data on block explorers pooltool.io")
+		fmt.Println("11. Next     : configure your topology files")
+		fmt.Println("12. Next     : wait four hours!")
+		fmt.Println("13. Then     : fetch your relay node buddies")
+		fmt.Println("14. MakeSure : must see the Processed TX number increasing")
+		fmt.Println("15. AndThen  : wait an epoch or two and then...")
+		fmt.Println("16. OMG      : checking stake pool rewards!")
+		fmt.Println("")
 	} else if command == "keys" {
 		digitalocean.ListKeys()
 	} else if command == "hot" {
