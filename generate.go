@@ -87,16 +87,26 @@ type Tip struct {
 	Era   string
 }
 
-func SshAsUserRunOneThing(name, ip string) (Tip, string) {
+type ReturnSshData struct {
+	Tip          Tip
+	Date         string
+	SpecialFiles []string
+}
+
+func SshAsUserRunOneThing(name, ip string) ReturnSshData {
 	runner.WriteOutJit(name)
+	rsd := ReturnSshData{}
+	rsd.SpecialFiles = []string{}
 	// cardano-cli query tip --mainnet
 	o, _ := exec.Command("ssh", "-i",
 		files.UserHomeDir()+"/.ssh/wolf-jit", "aa@"+ip, "CARDANO_NODE_SOCKET_PATH=/root/cardano-my-node/db/socket sudo -E cardano-cli query tip --mainnet").Output()
 	var tip Tip
 	json.Unmarshal(o, &tip)
+	rsd.Tip = tip
 	o, _ = exec.Command("ssh", "-i",
 		files.UserHomeDir()+"/.ssh/wolf-jit", "aa@"+ip, "sudo ls -l /root/cardano-my-node/kes.vkey").Output()
-	return tip, string(o)
+	rsd.Date = string(o)
+	return rsd
 }
 func CatKesV(name, ip string) {
 	runner.WriteOutJit(name)
