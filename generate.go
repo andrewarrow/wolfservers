@@ -76,7 +76,7 @@ func WriteOutJit(name string) {
 	data = []byte(pubMap[name])
 	ioutil.WriteFile(files.UserHomeDir()+"/.ssh/wolf-jit.pub", data, 0644)
 }
-func RunHot(name, ip string) {
+func RunHot(name, ip string) int {
 	nodeHome := "/root/cardano-my-node"
 	command := fmt.Sprintf("sudo cat %s/mainnet-shelley-genesis.json | jq -r '.slotsPerKESPeriod'", nodeHome)
 	WriteOutJit(name)
@@ -93,7 +93,7 @@ func RunHot(name, ip string) {
 	slotsPerKESPeriodInt, _ := strconv.Atoi(slotsPerKESPeriod)
 	slotInt, _ := strconv.Atoi(slot)
 	startKesPeriod := slotInt / slotsPerKESPeriodInt
-	fmt.Println(startKesPeriod)
+	return startKesPeriod
 }
 func SshAsUserRunOneThing(name, ip string) string {
 	WriteOutJit(name)

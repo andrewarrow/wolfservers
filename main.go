@@ -80,6 +80,19 @@ func main() {
 	} else if command == "hot" {
 		ip := argMap["ip"]
 		RunHot(ip2name[ip], ip)
+	} else if command == "issue-op-cert" {
+		ip := argMap["ip"]
+		name := ip2name[ip]
+		// 1. download kes.vkey
+		ScpFileFromX(name, ip)
+		// 2. use node.skey from sqlite
+		sqlite.CreateNodeKeysOnDisk(name)
+		// 3. get startKesPeriod from hot
+		startKesPeriod := RunHot(name, ip)
+		// 4. keys.IssueOpCert(startKesPeriod)
+		keys.IssueOpCert(startKesPeriod)
+		// 5. delete local kes.vkey, node.skey
+		// 6. upload node.cert to hot
 	} else if command == "sqlite" {
 		sqlite.List()
 	} else if command == "images" {
