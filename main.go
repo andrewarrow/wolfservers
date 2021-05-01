@@ -77,6 +77,9 @@ func main() {
 		}
 	} else if command == "keys" {
 		digitalocean.ListKeys()
+	} else if command == "hot" {
+		ip := argMap["ip"]
+		RunHot(ip2name[ip], ip)
 	} else if command == "sqlite" {
 		sqlite.List()
 	} else if command == "images" {

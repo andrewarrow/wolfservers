@@ -75,6 +75,14 @@ func WriteOutJit(name string) {
 	data = []byte(pubMap[name])
 	ioutil.WriteFile(files.UserHomeDir()+"/.ssh/wolf-jit.pub", data, 0644)
 }
+func RunHot(name, ip string) {
+	nodeHome := "/root/cardano-my-node"
+	command := fmt.Sprintf("sudo cat %s/mainnet-shelley-genesis.json | jq -r '.slotsPerKESPeriod'", nodeHome)
+	WriteOutJit(name)
+	o, _ := exec.Command("ssh", "-i",
+		files.UserHomeDir()+"/.ssh/wolf-jit", "aa@"+ip, command).Output()
+	fmt.Println(string(o))
+}
 func SshAsUserRunOneThing(name, ip string) string {
 	WriteOutJit(name)
 	// cardano-cli query tip --mainnet
