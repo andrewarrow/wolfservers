@@ -100,6 +100,12 @@ func main() {
 		fmt.Println("15. AndThen  : wait an epoch or two and then...")
 		fmt.Println("16. OMG      : checking stake pool rewards!")
 		fmt.Println("")
+	} else if command == "next" {
+		ip := argMap["ip"]
+		name := ip2name[ip]
+		nodeKeySize := sqlite.NodeKeysQuery(name)
+		paymentKeySize := sqlite.PaymentKeysQuery(name)
+		fmt.Println(nodeKeySize, paymentKeySize)
 	} else if command == "keys" {
 		digitalocean.ListKeys()
 	} else if command == "hot" {

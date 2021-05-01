@@ -27,6 +27,36 @@ func NameExists(name string) bool {
 	return false
 }
 
+func PaymentKeysQuery(name string) int {
+	db := OpenTheDB()
+	defer db.Close()
+	rows, err := db.Query("select pv from payment where name=?", name)
+	if err != nil {
+		fmt.Println(err)
+		return 0
+	}
+	defer rows.Close()
+
+	rows.Next()
+	var s1 string
+	rows.Scan(&s1)
+	return len(s1)
+}
+func NodeKeysQuery(name string) int {
+	db := OpenTheDB()
+	defer db.Close()
+	rows, err := db.Query("select vkey from nodes where name=?", name)
+	if err != nil {
+		fmt.Println(err)
+		return 0
+	}
+	defer rows.Close()
+
+	rows.Next()
+	var s1 string
+	rows.Scan(&s1)
+	return len(s1)
+}
 func CreateNodeKeysOnDisk(name string) {
 	db := OpenTheDB()
 	defer db.Close()
