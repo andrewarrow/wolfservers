@@ -28,6 +28,39 @@ func InsertRow(name, provider, privKey, pubKey string) {
 	tx.Commit()
 }
 func InsertPaymentRow(name, pv, ps, sv, ss, sa, pa string) {
+	ts := time.Now()
+	db := OpenTheDB()
+	defer db.Close()
+	tx, _ := db.Begin()
+
+	phrase := os.Getenv("WOLF_PHRASE")
+	if len(phrase) < 36 {
+		fmt.Println("wolves use longer phrases.")
+		return
+	}
+	shhh := encrypt([]byte(pv), phrase)
+	encodedPV := base64.StdEncoding.EncodeToString(shhh)
+	shhh = encrypt([]byte(ps), phrase)
+	encodedPS := base64.StdEncoding.EncodeToString(shhh)
+
+	shhh = encrypt([]byte(sv), phrase)
+	encodedSV := base64.StdEncoding.EncodeToString(shhh)
+	shhh = encrypt([]byte(ss), phrase)
+	encodedSS := base64.StdEncoding.EncodeToString(shhh)
+
+	shhh = encrypt([]byte(sa), phrase)
+	encodedSA := base64.StdEncoding.EncodeToString(shhh)
+	shhh = encrypt([]byte(pa), phrase)
+	encodedPA := base64.StdEncoding.EncodeToString(shhh)
+
+	sql := `insert into payment (name, pv, ps, sv, ss, sa, pa, created_at) values (?, ?, ?, ?, ?, ?, ?, ?)`
+	thing, _ := tx.Prepare(sql)
+	thing.Exec(name, encodedPV, encodedPS,
+		encodedSV, encodedSS,
+		encodedSA, encodedPA,
+		ts)
+
+	tx.Commit()
 }
 func InsertNodeRow(name, v, s, c string) {
 	ts := time.Now()
