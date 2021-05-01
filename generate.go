@@ -107,30 +107,29 @@ func SshAsUserRunOneThing(name, ip string) ReturnSshData {
 	rsd := ReturnSshData{}
 	rsd.SpecialFiles = []string{}
 	// cardano-cli query tip --mainnet
+	fmt.Println("speed1")
 	o, _ := exec.Command("ssh", "-i",
 		files.UserHomeDir()+"/.ssh/wolf-jit", "aa@"+ip, "CARDANO_NODE_SOCKET_PATH=/root/cardano-my-node/db/socket sudo -E cardano-cli query tip --mainnet").Output()
+	fmt.Println("speed2")
 	var tip Tip
 	json.Unmarshal(o, &tip)
 	rsd.Tip = tip
 	o, _ = exec.Command("ssh", "-i",
 		files.UserHomeDir()+"/.ssh/wolf-jit", "aa@"+ip, "sudo ls -l /root/cardano-my-node/").Output()
+	fmt.Println("speed3")
+
+	special := []string{"node.cert", "payment.addr", "stake.cert", "tx.raw", "tx.signed", "poolMetaData.json"}
 	for _, line := range strings.Split(string(o), "\n") {
 		if strings.Contains(line, "kes.vkey") {
 			rsd.Date = line[31:]
 		}
+		for _, s := range special {
+			if strings.Contains(line, s) {
+				rsd.SpecialFiles = append(rsd.SpecialFiles, s)
+			}
+		}
 	}
 
-	/*
-		rsd.Date = string(o)
-
-		rsd.SpecialFiles = AppendIfNeeded(rsd.SpecialFiles, ip, "node.cert")
-		rsd.SpecialFiles = AppendIfNeeded(rsd.SpecialFiles, ip, "node.cert")
-		rsd.SpecialFiles = AppendIfNeeded(rsd.SpecialFiles, ip, "payment.addr")
-		rsd.SpecialFiles = AppendIfNeeded(rsd.SpecialFiles, ip, "stake.cert")
-		rsd.SpecialFiles = AppendIfNeeded(rsd.SpecialFiles, ip, "tx.raw")
-		rsd.SpecialFiles = AppendIfNeeded(rsd.SpecialFiles, ip, "tx.signed")
-		rsd.SpecialFiles = AppendIfNeeded(rsd.SpecialFiles, ip, "poolMetaData.json")
-	*/
 	return rsd
 }
 func CatKesV(name, ip string) {
