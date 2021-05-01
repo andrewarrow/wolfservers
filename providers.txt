@@ -1,0 +1,15 @@
+https://www.brightbox.com/pricing/
+https://github.com/brightbox/gobrightbox
+
+https://www.cloudscale.ch/en/api/v1
+https://github.com/cloudscale-ch/cloudscale-go-sdk
+Zurich Switzerland
+
+
+https://docs.cloudsigma.com/en/2.14.1/
+https://github.com/russmack/cloudsigma
+https://docs.cloudsigma.com/en/latest/
+https://www.cloudsigma.com
+
+https://libcloud.readthedocs.io/en/stable/supported_providers.html
+
