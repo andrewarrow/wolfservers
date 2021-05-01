@@ -48,6 +48,20 @@ A. [Good question](https://law.stackexchange.com/questions/64558/how-does-estate
 
 # example
 
+```
+[~/wolfservers] $ ./wolfservers ls --keys
+wolf-7C9E 243973181  DO      producer   143.110.224.250               
+wolf-7C9E 243973183  DO      relay      143.110.232.71                
+wolf-91F4 084d110e-c VULTR   producer   149.28.82.104                 
+wolf-91F4 02484165-0 VULTR   relay      207.246.102.45                
+wolf-C0B5 26496237   LINODE  producer   173.230.150.181               
+wolf-C0B5 26496242   LINODE  relay      23.239.20.15                  
+
+wolf-91F4 263 Key Evolving Signature Age: 4 days 
+wolf-C0B5 256 Key Evolving Signature Age: 1 day 
+wolf-7C9E 260 Key Evolving Signature Age: 1 day 
+```
+
 ./wolfservers ed255
 
 ./wolfservers sqlite

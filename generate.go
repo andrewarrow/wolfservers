@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"io/ioutil"
@@ -77,15 +78,25 @@ func RunHot(name, ip string) int {
 	startKesPeriod := slotInt / slotsPerKESPeriodInt
 	return startKesPeriod
 }
-func SshAsUserRunOneThing(name, ip string) string {
+
+type Tip struct {
+	Epoch int64
+	Hash  string
+	Slot  int64
+	Block int64
+	Era   string
+}
+
+func SshAsUserRunOneThing(name, ip string) (Tip, string) {
 	runner.WriteOutJit(name)
 	// cardano-cli query tip --mainnet
 	o, _ := exec.Command("ssh", "-i",
 		files.UserHomeDir()+"/.ssh/wolf-jit", "aa@"+ip, "CARDANO_NODE_SOCKET_PATH=/root/cardano-my-node/db/socket sudo -E cardano-cli query tip --mainnet").Output()
-	fmt.Println(string(o))
+	var tip Tip
+	json.Unmarshal(o, &tip)
 	o, _ = exec.Command("ssh", "-i",
 		files.UserHomeDir()+"/.ssh/wolf-jit", "aa@"+ip, "sudo ls -l /root/cardano-my-node/kes.vkey").Output()
-	return string(o)
+	return tip, string(o)
 }
 func CatKesV(name, ip string) {
 	runner.WriteOutJit(name)

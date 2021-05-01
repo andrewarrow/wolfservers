@@ -65,14 +65,15 @@ func main() {
 			ips := append(vips, lips...)
 			ips = append(ips, dips...)
 			for _, ip := range ips {
-				out := SshAsUserRunOneThing(ip2name[ip], ip)
+				tip, out := SshAsUserRunOneThing(ip2name[ip], ip)
 				tokens := strings.Split(out, " ")
 				month := tokens[5]
 				day := tokens[6]
 				hoursMins := tokens[7]
 				ts, _ := time.Parse("Jan 2, 2006 15:04",
 					fmt.Sprintf("%s %s, 2021 %s", month, day, hoursMins))
-				fmt.Println(ip2name[ip], timeago.FromDuration(time.Since(ts)))
+
+				fmt.Printf("%s %d Key Evolving Signature Age: %s \n", ip2name[ip], tip.Epoch, timeago.FromDuration(time.Since(ts)))
 
 			}
 		}
