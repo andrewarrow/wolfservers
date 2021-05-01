@@ -105,11 +105,12 @@ func SshAsUserRunOneThing(name, ip string) string {
 		files.UserHomeDir()+"/.ssh/wolf-jit", "aa@"+ip, "sudo ls -l /root/cardano-my-node/kes.vkey").Output()
 	return string(o)
 }
-func ScpFileFromX(name, ip string) {
+func CatKesV(name, ip string) {
 	WriteOutJit(name)
-	out, err := exec.Command("scp", "-i", files.UserHomeDir()+"/.ssh/wolf-jit",
-		"aa@"+ip+":kes.vkey", ".").Output()
-	fmt.Println(string(out), err)
+	out, _ := exec.Command("ssh", "-i",
+		files.UserHomeDir()+"/.ssh/wolf-jit", "aa@"+ip, "sudo cat /root/cardano-my-node/kes.vkey").Output()
+	data := strings.TrimSpace(string(out))
+	ioutil.WriteFile("kes.vkey", []byte(data), 0755)
 }
 
 func SshAsUser(user, name, ip string) {

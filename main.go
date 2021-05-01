@@ -84,7 +84,7 @@ func main() {
 		ip := argMap["ip"]
 		name := ip2name[ip]
 		// 1. download kes.vkey
-		ScpFileFromX(name, ip)
+		CatKesV(name, ip)
 		// 2. use node.skey from sqlite
 		sqlite.CreateNodeKeysOnDisk(name)
 		// 3. get startKesPeriod from hot
