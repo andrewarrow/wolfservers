@@ -39,6 +39,12 @@ func MakeNode(name string) {
 func ToTokens(s string) []string {
 	return strings.Split(s, " ")
 }
+func MakeStakeCert(name string) {
+	cmd := "cardano-cli"
+	tokens := ToTokens("stake-address registration-certificate --stake-verification-key-file stake.vkey --out-file stake.cert")
+	exec.Command(cmd, tokens...).Output()
+	//os.Remove("stake.cert")
+}
 func MakePayment(name string) {
 	cmd := "cardano-cli"
 	tokens := ToTokens("address key-gen --verification-key-file payment.vkey --signing-key-file payment.skey")

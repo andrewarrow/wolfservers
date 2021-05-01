@@ -183,6 +183,8 @@ func main() {
 	} else if command == "node-keys" {
 		//keys.MakeNode("wolf-C0B5")
 		//keys.MakePayment("wolf-C0B5")
+		//ScpFileToHot("payment.addr", ip)
+		//keys.MakeStakeCert(name)
 	} else if command == "domains-do" {
 		digitalocean.ListDomainRecords("wolfschedule.com")
 	} else if command == "add-a-record" {
