@@ -113,16 +113,24 @@ func SshAsUserRunOneThing(name, ip string) ReturnSshData {
 	json.Unmarshal(o, &tip)
 	rsd.Tip = tip
 	o, _ = exec.Command("ssh", "-i",
-		files.UserHomeDir()+"/.ssh/wolf-jit", "aa@"+ip, "sudo ls -l /root/cardano-my-node/kes.vkey").Output()
-	rsd.Date = string(o)
+		files.UserHomeDir()+"/.ssh/wolf-jit", "aa@"+ip, "sudo ls -l /root/cardano-my-node/").Output()
+	for _, line := range strings.Split(string(o), "\n") {
+		if strings.Contains(line, "kes.vkey") {
+			rsd.Date = line[31:]
+		}
+	}
 
-	rsd.SpecialFiles = AppendIfNeeded(rsd.SpecialFiles, ip, "node.cert")
-	rsd.SpecialFiles = AppendIfNeeded(rsd.SpecialFiles, ip, "node.cert")
-	rsd.SpecialFiles = AppendIfNeeded(rsd.SpecialFiles, ip, "payment.addr")
-	rsd.SpecialFiles = AppendIfNeeded(rsd.SpecialFiles, ip, "stake.cert")
-	rsd.SpecialFiles = AppendIfNeeded(rsd.SpecialFiles, ip, "tx.raw")
-	rsd.SpecialFiles = AppendIfNeeded(rsd.SpecialFiles, ip, "tx.signed")
-	rsd.SpecialFiles = AppendIfNeeded(rsd.SpecialFiles, ip, "poolMetaData.json")
+	/*
+		rsd.Date = string(o)
+
+		rsd.SpecialFiles = AppendIfNeeded(rsd.SpecialFiles, ip, "node.cert")
+		rsd.SpecialFiles = AppendIfNeeded(rsd.SpecialFiles, ip, "node.cert")
+		rsd.SpecialFiles = AppendIfNeeded(rsd.SpecialFiles, ip, "payment.addr")
+		rsd.SpecialFiles = AppendIfNeeded(rsd.SpecialFiles, ip, "stake.cert")
+		rsd.SpecialFiles = AppendIfNeeded(rsd.SpecialFiles, ip, "tx.raw")
+		rsd.SpecialFiles = AppendIfNeeded(rsd.SpecialFiles, ip, "tx.signed")
+		rsd.SpecialFiles = AppendIfNeeded(rsd.SpecialFiles, ip, "poolMetaData.json")
+	*/
 	return rsd
 }
 func CatKesV(name, ip string) {

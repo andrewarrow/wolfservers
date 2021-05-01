@@ -66,10 +66,11 @@ func main() {
 			ips = append(ips, dips...)
 			for _, ip := range ips {
 				rsd := SshAsUserRunOneThing(ip2name[ip], ip)
+				// Apr 27 19:16 kes.vkey
 				tokens := strings.Split(rsd.Date, " ")
-				month := tokens[5]
-				day := tokens[6]
-				hoursMins := tokens[7]
+				month := tokens[0]
+				day := tokens[1]
+				hoursMins := tokens[2]
 				ts, _ := time.Parse("Jan 2, 2006 15:04",
 					fmt.Sprintf("%s %s, 2021 %s", month, day, hoursMins))
 
