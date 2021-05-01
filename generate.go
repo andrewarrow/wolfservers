@@ -50,17 +50,6 @@ func MakeProducer(ip string) {
 	t.Execute(&buff, r)
 	ioutil.WriteFile("producer.sh", buff.Bytes(), 0755)
 }
-func MakeAirGap(StartKesPeriod string) {
-	b2, _ := ioutil.ReadFile("scripts/airgapped.keys")
-	blob := string(b2)
-	t := template.Must(template.New("thing").
-		Parse(blob))
-	var buff bytes.Buffer
-	r := Replacer{}
-	r.StartKesPeriod = StartKesPeriod
-	t.Execute(&buff, r)
-	ioutil.WriteFile("airgapped/airgapped.sh", buff.Bytes(), 0755)
-}
 
 func PrepDest(dest string) {
 	out, _ := exec.Command("ssh-keyscan", "-H", dest).Output()
@@ -144,11 +133,6 @@ func ScpFile(name, file, dest string) {
 	WriteOutJit(name)
 	out, err := exec.Command("scp", "-i",
 		files.UserHomeDir()+"/.ssh/wolf-jit", file, "root@"+dest+":").Output()
-	fmt.Println(string(out), err)
-}
-func ScpFileFromRemote(orig string) {
-	out, err := exec.Command("mkdir", "airgapped").Output()
-	out, err = exec.Command("scp", "aa@"+orig+":kes*", "airgapped/").Output()
 	fmt.Println(string(out), err)
 }
 func ScpFileToHot(file, dest string) {

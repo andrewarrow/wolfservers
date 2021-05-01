@@ -92,10 +92,10 @@ func main() {
 		// 4. keys.IssueOpCert(startKesPeriod)
 		keys.IssueOpCert(startKesPeriod)
 		// 5. upload node.cert to hot
-		// TODO
+		ScpFileToHot("node.cert", ip)
 		// 6. delete local kes.vkey, node.skey
 		os.Remove("kes.vkey")
-		//os.Remove("node.cert")
+		os.Remove("node.cert")
 		os.Remove("node.counter")
 		os.Remove("node.skey")
 		os.Remove("node.vkey")
@@ -104,14 +104,6 @@ func main() {
 	} else if command == "images" {
 		digitalocean.ListImages(1)
 		digitalocean.ListImages(2)
-	} else if command == "wolfit" {
-		ip := argMap["producer"]
-		startKesPeriod := ScpFileToNodeHome("scripts/producer.keys", ip)
-		ScpFileFromRemote(ip)
-		MakeAirGap(startKesPeriod)
-	} else if command == "wolfit2" {
-		ip := argMap["producer"]
-		ScpFileToHot("airgapped/node.cert", ip)
 	} else if command == "producer" {
 		// https://www.coincashew.com/coins/overview-ada/guide-how-to-build-a-haskell-stakepool-node
 		dest := argMap["producer"]
