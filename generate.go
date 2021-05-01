@@ -11,6 +11,7 @@ import (
 	"strings"
 
 	"github.com/andrewarrow/wolfservers/files"
+	"github.com/andrewarrow/wolfservers/runner"
 )
 
 func unescape(s string) template.HTML {
@@ -57,18 +58,10 @@ func PrepDest(dest string) {
 	f.WriteString(string(out))
 }
 
-var privMap, pubMap map[string]string
-
-func WriteOutJit(name string) {
-	data := []byte(privMap[name])
-	ioutil.WriteFile(files.UserHomeDir()+"/.ssh/wolf-jit", data, 0600)
-	data = []byte(pubMap[name])
-	ioutil.WriteFile(files.UserHomeDir()+"/.ssh/wolf-jit.pub", data, 0644)
-}
 func RunHot(name, ip string) int {
 	nodeHome := "/root/cardano-my-node"
 	command := fmt.Sprintf("sudo cat %s/mainnet-shelley-genesis.json | jq -r '.slotsPerKESPeriod'", nodeHome)
-	WriteOutJit(name)
+	runner.WriteOutJit(name)
 	o, _ := exec.Command("ssh", "-i",
 		files.UserHomeDir()+"/.ssh/wolf-jit", "aa@"+ip, command).Output()
 	slotsPerKESPeriod := strings.TrimSpace(string(o))
@@ -85,7 +78,7 @@ func RunHot(name, ip string) int {
 	return startKesPeriod
 }
 func SshAsUserRunOneThing(name, ip string) string {
-	WriteOutJit(name)
+	runner.WriteOutJit(name)
 	// cardano-cli query tip --mainnet
 	o, _ := exec.Command("ssh", "-i",
 		files.UserHomeDir()+"/.ssh/wolf-jit", "aa@"+ip, "CARDANO_NODE_SOCKET_PATH=/root/cardano-my-node/db/socket sudo -E cardano-cli query tip --mainnet").Output()
@@ -95,7 +88,7 @@ func SshAsUserRunOneThing(name, ip string) string {
 	return string(o)
 }
 func CatKesV(name, ip string) {
-	WriteOutJit(name)
+	runner.WriteOutJit(name)
 	out, _ := exec.Command("ssh", "-i",
 		files.UserHomeDir()+"/.ssh/wolf-jit", "aa@"+ip, "sudo cat /root/cardano-my-node/kes.vkey").Output()
 	data := strings.TrimSpace(string(out))
@@ -103,7 +96,7 @@ func CatKesV(name, ip string) {
 }
 
 func SshAsUser(user, name, ip string) {
-	WriteOutJit(name)
+	runner.WriteOutJit(name)
 	/*
 		  rwx | 7 | Read, write and execute  |
 		| rw- | 6 | Read, write              |
@@ -130,7 +123,7 @@ func SshAsUser(user, name, ip string) {
 }
 
 func ScpFile(name, file, dest string) {
-	WriteOutJit(name)
+	runner.WriteOutJit(name)
 	out, err := exec.Command("scp", "-i",
 		files.UserHomeDir()+"/.ssh/wolf-jit", file, "root@"+dest+":").Output()
 	fmt.Println(string(out), err)

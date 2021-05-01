@@ -1,7 +1,10 @@
 package runner
 
 import (
+	"fmt"
 	"io/ioutil"
+	"os/exec"
+	"strings"
 
 	"github.com/andrewarrow/wolfservers/files"
 )
@@ -15,5 +18,11 @@ func WriteOutJit(name string) {
 	ioutil.WriteFile(files.UserHomeDir()+"/.ssh/wolf-jit.pub", data, 0644)
 }
 
-func HotExec(command string) {
+func HotExec(name, ip, command string) string {
+	WriteOutJit(name)
+	env := "CARDANO_NODE_SOCKET_PATH=/root/cardano-my-node/db/socket"
+	fullCommand := fmt.Sprintf("%s sudo -E %s", env, command)
+	o, _ := exec.Command("ssh", "-i",
+		files.UserHomeDir()+"/.ssh/wolf-jit", "aa@"+ip, fullCommand).Output()
+	return strings.TrimSpace(string(o))
 }

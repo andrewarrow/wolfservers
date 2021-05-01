@@ -13,6 +13,7 @@ import (
 	"github.com/andrewarrow/wolfservers/digitalocean"
 	"github.com/andrewarrow/wolfservers/keys"
 	"github.com/andrewarrow/wolfservers/linode"
+	"github.com/andrewarrow/wolfservers/runner"
 	"github.com/andrewarrow/wolfservers/sqlite"
 	"github.com/andrewarrow/wolfservers/vultr"
 	"github.com/justincampbell/timeago"
@@ -48,7 +49,7 @@ func main() {
 	defer db.Close()
 	ip2name := sqlite.MakeIpMap(db)
 	ip2id := sqlite.MakeIpToId(db)
-	privMap, pubMap = sqlite.SshKeysAsMap(db)
+	runner.PrivMap, runner.PubMap = sqlite.SshKeysAsMap(db)
 
 	if command == "ls" {
 		digitalocean.ListDroplets(ip2name)
@@ -99,6 +100,10 @@ func main() {
 		os.Remove("node.counter")
 		os.Remove("node.skey")
 		os.Remove("node.vkey")
+	} else if command == "ready-params" {
+		ip := argMap["ip"]
+		name := ip2name[ip]
+		runner.HotExec(name, ip, "cardano-cli query protocol-parameters --mainnet --out-file params.json")
 	} else if command == "sqlite" {
 		sqlite.List()
 	} else if command == "images" {
