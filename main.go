@@ -64,7 +64,7 @@ func main() {
 			ips := append(vips, lips...)
 			ips = append(ips, dips...)
 			for _, ip := range ips {
-				out := SshAsUserRunOneThing("aa", ip2name[ip], ip)
+				out := SshAsUserRunOneThing(ip2name[ip], ip)
 				tokens := strings.Split(out, " ")
 				month := tokens[5]
 				day := tokens[6]

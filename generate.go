@@ -75,11 +75,17 @@ func WriteOutJit(name string) {
 	data = []byte(pubMap[name])
 	ioutil.WriteFile(files.UserHomeDir()+"/.ssh/wolf-jit.pub", data, 0644)
 }
-func SshAsUserRunOneThing(user, name, ip string) string {
+func SshAsUserRunOneThing(name, ip string) string {
 	WriteOutJit(name)
 	o, _ := exec.Command("ssh", "-i",
-		files.UserHomeDir()+"/.ssh/wolf-jit", user+"@"+ip, "sudo ls -l /root/cardano-my-node/kes.vkey").Output()
+		files.UserHomeDir()+"/.ssh/wolf-jit", "aa@"+ip, "sudo ls -l /root/cardano-my-node/kes.vkey").Output()
 	return string(o)
+}
+func ScpFileFromX(name, ip string) {
+	WriteOutJit(name)
+	out, err := exec.Command("scp", "-i", files.UserHomeDir()+"/.ssh/wolf-jit",
+		"aa@"+ip+":kes.vkey", ".").Output()
+	fmt.Println(string(out), err)
 }
 
 func SshAsUser(user, name, ip string) {
