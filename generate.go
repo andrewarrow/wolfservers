@@ -187,10 +187,15 @@ func ScpFile(name, file, dest string) {
 }
 func ScpFileToHot(name, filename, dest string) {
 	runner.WriteOutJit(name)
+	shortFilename := filename
+	if strings.Contains(filename, "/") {
+		tokens := strings.Split(filename, "/")
+		shortFilename = tokens[1]
+	}
 	out, err := exec.Command("scp", "-i", files.UserHomeDir()+"/.ssh/wolf-jit", filename, "aa@"+dest+":").Output()
 	fmt.Println(string(out), err)
 	out, _ = exec.Command("ssh", "-i", files.UserHomeDir()+"/.ssh/wolf-jit", "aa@"+dest,
-		fmt.Sprintf("sudo cp %s /root/cardano-my-node; rm %s;", filename, filename)).CombinedOutput()
+		fmt.Sprintf("sudo cp %s /root/cardano-my-node; rm %s;", shortFilename, shortFilename)).CombinedOutput()
 	fmt.Println(string(out))
 }
 func ScpFileToNodeHome(file, dest string) string {

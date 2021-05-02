@@ -201,13 +201,19 @@ func main() {
 		os.Remove("node.counter")
 		os.Remove("node.skey")
 		os.Remove("node.vkey")
+	} else if command == "temp" {
+		ip := argMap["ip"]
+		name := ip2name[ip]
+		ScpFileToHot(name, "scripts/stake.register", ip)
+		ScpFileToHot(name, "scripts/delegate.pool", ip)
 	} else if command == "poolMetaData" {
 		code := argMap["code"]
 		GenPoolMetaData(code)
 	} else if command == "ready-params" {
 		ip := argMap["ip"]
 		name := ip2name[ip]
-		runner.HotExec(name, ip, "cardano-cli query protocol-parameters --mainnet --out-file params.json")
+		o := runner.HotExec(name, ip, "cardano-cli query protocol-parameters --mainnet --out-file /root/cardano-my-node/params.json")
+		fmt.Println(o)
 	} else if command == "sqlite" {
 		sqlite.List()
 	} else if command == "images" {
