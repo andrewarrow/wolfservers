@@ -126,7 +126,7 @@ func main() {
 		// 4. keys.IssueOpCert(startKesPeriod)
 		keys.IssueOpCert(startKesPeriod)
 		// 5. upload node.cert to hot
-		ScpFileToHot("node.cert", ip)
+		ScpFileToHot(name, "node.cert", ip)
 		// 6. delete local kes.vkey, node.skey
 		os.Remove("kes.vkey")
 		os.Remove("node.cert")
