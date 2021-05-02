@@ -109,6 +109,18 @@ func main() {
 		//if paymentAddr == "" {
 		//	keys.MakePayment(name)
 		//}
+	} else if command == "tx" {
+		ip := argMap["ip"]
+		name := ip2name[ip]
+		ps, ss := sqlite.PaymentAndStakeSigning(name)
+		ioutil.WriteFile("payment.skey", []byte(ps), 0755)
+		ioutil.WriteFile("stake.skey", []byte(ss), 0755)
+		keys.SignTx()
+		ScpFileToHot(name, "tx.signed", ip)
+		os.Remove("tx.raw")
+		os.Remove("tx.signed")
+		os.Remove("payment.skey")
+		os.Remove("stake.skey")
 	} else if command == "stake.cert" {
 		ip := argMap["ip"]
 		name := ip2name[ip]

@@ -27,6 +27,30 @@ func NameExists(name string) bool {
 	return false
 }
 
+func PaymentAndStakeSigning(name string) (string, string) {
+	db := OpenTheDB()
+	defer db.Close()
+	rows, err := db.Query("select ps,ss from payment where name=?", name)
+	if err != nil {
+		fmt.Println(err)
+		return "", ""
+	}
+	defer rows.Close()
+	phrase := os.Getenv("WOLF_PHRASE")
+
+	rows.Next()
+	var s1 string
+	var s2 string
+	rows.Scan(&s1, &s2)
+	if s1 == "" {
+		return "", ""
+	}
+	decodedBytes, _ := base64.StdEncoding.DecodeString(s1)
+	shhh1 := decrypt(decodedBytes, phrase)
+	decodedBytes, _ = base64.StdEncoding.DecodeString(s2)
+	shhh2 := decrypt(decodedBytes, phrase)
+	return string(shhh1), string(shhh2)
+}
 func PaymentStakeV(name string) string {
 	db := OpenTheDB()
 	defer db.Close()
