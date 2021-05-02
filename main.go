@@ -121,6 +121,19 @@ func main() {
 		os.Remove("tx.signed")
 		os.Remove("payment.skey")
 		os.Remove("stake.skey")
+	} else if command == "deleg.cert" {
+		ip := argMap["ip"]
+		name := ip2name[ip]
+		sv := sqlite.PaymentStakeV(name)
+		ioutil.WriteFile("stake.vkey", []byte(sv), 0755)
+		sqlite.CreateNodeKeysOnDisk(name)
+		keys.Delegation()
+		ScpFileToHot(name, "deleg.cert", ip)
+		os.Remove("stake.vkey")
+		os.Remove("node.counter")
+		os.Remove("node.skey")
+		os.Remove("node.vkey")
+		os.Remove("deleg.cert")
 	} else if command == "pool.cert" {
 		ip := argMap["ip"]
 		name := ip2name[ip]

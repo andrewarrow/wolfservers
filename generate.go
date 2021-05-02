@@ -118,7 +118,7 @@ func SshAsUserRunOneThing(name, ip string) ReturnSshData {
 		files.UserHomeDir()+"/.ssh/wolf-jit", "aa@"+ip, "sudo ls -l /root/cardano-my-node/").Output()
 	fmt.Println("speed3")
 
-	special := []string{"params.json", "node.cert", "payment.addr", "stake.cert", "tx.raw", "tx.signed", "poolMetaData.json"}
+	special := []string{"pool.cert", "params.json", "node.cert", "payment.addr", "stake.cert", "tx.raw", "tx.signed", "poolMetaData.json"}
 	for _, line := range strings.Split(string(o), "\n") {
 		if strings.Contains(line, "kes.vkey") {
 			rsd.Date = line[31:]

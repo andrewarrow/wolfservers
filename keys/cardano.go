@@ -46,6 +46,11 @@ func StakePoolRegCert() {
 	o, _ := exec.Command(cmd, tokens...).CombinedOutput()
 	fmt.Println(string(o))
 }
+func Delegation() {
+	cmd := "cardano-cli"
+	tokens := ToTokens("stake-address delegation-certificate --stake-verification-key-file stake.vkey --cold-verification-key-file node.vkey --out-file deleg.cert")
+	exec.Command(cmd, tokens...).Output()
+}
 func SignTx() {
 	cmd := "cardano-cli"
 	tokens := ToTokens("transaction sign --tx-body-file tx.raw --signing-key-file payment.skey --signing-key-file stake.skey --mainnet --out-file tx.signed")
