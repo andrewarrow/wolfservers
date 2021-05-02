@@ -201,6 +201,9 @@ func main() {
 		os.Remove("node.counter")
 		os.Remove("node.skey")
 		os.Remove("node.vkey")
+	} else if command == "poolMetaData" {
+		code := argMap["code"]
+		GenPoolMetaData(code)
 	} else if command == "ready-params" {
 		ip := argMap["ip"]
 		name := ip2name[ip]

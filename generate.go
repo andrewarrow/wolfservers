@@ -24,6 +24,7 @@ type Replacer struct {
 	LtLt           string
 	ProducerIP     string
 	StartKesPeriod string
+	Code           string
 }
 
 func MakeRelay(ip string) {
@@ -38,6 +39,17 @@ func MakeRelay(ip string) {
 	r.LtLt = "<<"
 	t.Execute(&buff, r)
 	ioutil.WriteFile("relay.sh", buff.Bytes(), 0755)
+}
+func GenPoolMetaData(code string) {
+	b2, _ := ioutil.ReadFile("scripts/poolMetaData.json")
+	blob := string(b2)
+	t := template.Must(template.New("thing").
+		Parse(blob))
+	var buff bytes.Buffer
+	r := Replacer{}
+	r.Code = code
+	t.Execute(&buff, r)
+	ioutil.WriteFile("poolMetaData.json", buff.Bytes(), 0755)
 }
 func MakeProducer(ip string) {
 	b2, _ := ioutil.ReadFile("scripts/producer.history")

@@ -1,0 +1,6 @@
+{
+  "name": "Wolf Schedule",
+  "description": "get in sync",
+  "ticker": "{{.Code}}",
+  "homepage": "https://wolfschedule.com"
+}
