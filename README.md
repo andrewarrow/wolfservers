@@ -75,17 +75,10 @@ wolf-7C9E 260 Key Evolving Signature Age: 1 day
 ./wolfservers relay --producer=ip1 --relay=ip2
 
 ./wolfservers ssh --ip=ip2 --root
-setup.sh
-. .bashrc
-relay.sh
 
 ./wolfservers producer --producer=ip1 --relay=ip2
 
 ./wolfservers ssh --ip=ip1 --root
-setup.sh
-. .bashrc
-producer.sh
-
 
 ./wolfservers add-a-record --name=wolf-ABCD-1 --ip=ip1
 
