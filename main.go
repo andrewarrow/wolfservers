@@ -217,10 +217,10 @@ func main() {
 		// https://www.coincashew.com/coins/overview-ada/guide-how-to-build-a-haskell-stakepool-node
 		dest := argMap["producer"]
 		PrepDest(dest)
-		b1, _ := ioutil.ReadFile("scripts/node.setup")
-		ioutil.WriteFile("setup.sh", b1, 0755)
 		MakeProducer(argMap["relay"])
-		ScpFile(ip2name[dest], "setup.sh", dest)
+		ScpFile(ip2name[dest], "scripts/node.setup", dest)
+		ScpFile(ip2name[dest], "scripts/stake.register", dest)
+		ScpFile(ip2name[dest], "scripts/delegate.pool", dest)
 		ScpFile(ip2name[dest], "producer.sh", dest)
 		fmt.Println("1. ssh as root")
 		fmt.Println("2. run setup.sh")
@@ -229,10 +229,10 @@ func main() {
 	} else if command == "relay" {
 		dest := argMap["relay"]
 		PrepDest(dest)
-		b1, _ := ioutil.ReadFile("scripts/node.setup")
-		ioutil.WriteFile("setup.sh", b1, 0755)
 		MakeRelay(argMap["producer"])
-		ScpFile(ip2name[dest], "setup.sh", dest)
+		ScpFile(ip2name[dest], "scripts/node.setup", dest)
+		ScpFile(ip2name[dest], "scripts/stake.register", dest)
+		ScpFile(ip2name[dest], "scripts/delegate.pool", dest)
 		ScpFile(ip2name[dest], "relay.sh", dest)
 		fmt.Println("1. ssh as root")
 		fmt.Println("2. run setup.sh")
