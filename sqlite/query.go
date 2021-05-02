@@ -27,20 +27,47 @@ func NameExists(name string) bool {
 	return false
 }
 
-func PaymentKeysQuery(name string) int {
+func PaymentStakeV(name string) string {
 	db := OpenTheDB()
 	defer db.Close()
-	rows, err := db.Query("select pv from payment where name=?", name)
+	rows, err := db.Query("select sv from payment where name=?", name)
 	if err != nil {
 		fmt.Println(err)
-		return 0
+		return ""
 	}
 	defer rows.Close()
+	phrase := os.Getenv("WOLF_PHRASE")
 
 	rows.Next()
 	var s1 string
 	rows.Scan(&s1)
-	return len(s1)
+	if s1 == "" {
+		return ""
+	}
+	decodedBytes, _ := base64.StdEncoding.DecodeString(s1)
+	shhh := decrypt(decodedBytes, phrase)
+	return string(shhh)
+}
+func PaymentKeysQuery(name string) string {
+	db := OpenTheDB()
+	defer db.Close()
+	rows, err := db.Query("select pa from payment where name=?", name)
+	if err != nil {
+		fmt.Println(err)
+		return ""
+	}
+	defer rows.Close()
+	phrase := os.Getenv("WOLF_PHRASE")
+
+	rows.Next()
+	var s1 string
+	rows.Scan(&s1)
+	if s1 == "" {
+		return ""
+	}
+	decodedBytes, _ := base64.StdEncoding.DecodeString(s1)
+	shhh := decrypt(decodedBytes, phrase)
+	return string(shhh)
 }
 func NodeKeysQuery(name string) int {
 	db := OpenTheDB()

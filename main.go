@@ -104,11 +104,20 @@ func main() {
 		ip := argMap["ip"]
 		name := ip2name[ip]
 		nodeKeySize := sqlite.NodeKeysQuery(name)
-		paymentKeySize := sqlite.PaymentKeysQuery(name)
-		fmt.Println(nodeKeySize, paymentKeySize)
-		if paymentKeySize == 0 {
-			keys.MakePayment(name)
-		}
+		paymentAddr := sqlite.PaymentKeysQuery(name)
+		fmt.Println(nodeKeySize, paymentAddr)
+		//if paymentAddr == "" {
+		//	keys.MakePayment(name)
+		//}
+	} else if command == "stake.cert" {
+		ip := argMap["ip"]
+		name := ip2name[ip]
+		sv := sqlite.PaymentStakeV(name)
+		ioutil.WriteFile("stake.vkey", []byte(sv), 0755)
+		keys.MakeStakeCert()
+		ScpFileToHot(name, "stake.cert", ip)
+		os.Remove("stake.vkey")
+		os.Remove("stake.cert")
 	} else if command == "keys" {
 		digitalocean.ListKeys()
 	} else if command == "hot" {
@@ -217,7 +226,6 @@ func main() {
 		//keys.MakeNode("wolf-C0B5")
 		//keys.MakePayment("wolf-C0B5")
 		//ScpFileToHot("payment.addr", ip)
-		//keys.MakeStakeCert(name)
 	} else if command == "domains-do" {
 		digitalocean.ListDomainRecords("wolfschedule.com")
 	} else if command == "add-a-record" {
