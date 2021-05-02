@@ -109,6 +109,22 @@ func main() {
 		//if paymentAddr == "" {
 		//	keys.MakePayment(name)
 		//}
+	} else if command == "tx-delegate" {
+		ip := argMap["ip"]
+		name := ip2name[ip]
+		ps, ss := sqlite.PaymentAndStakeSigning(name)
+		ioutil.WriteFile("payment.skey", []byte(ps), 0755)
+		ioutil.WriteFile("stake.skey", []byte(ss), 0755)
+		sqlite.CreateNodeKeysOnDisk(name)
+		keys.SignTxDelegate()
+		ScpFileToHot(name, "tx.signed", ip)
+		os.Remove("tx.raw")
+		os.Remove("tx.signed")
+		os.Remove("payment.skey")
+		os.Remove("stake.skey")
+		os.Remove("node.counter")
+		os.Remove("node.skey")
+		os.Remove("node.vkey")
 	} else if command == "tx" {
 		ip := argMap["ip"]
 		name := ip2name[ip]

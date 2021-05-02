@@ -56,6 +56,11 @@ func SignTx() {
 	tokens := ToTokens("transaction sign --tx-body-file tx.raw --signing-key-file payment.skey --signing-key-file stake.skey --mainnet --out-file tx.signed")
 	exec.Command(cmd, tokens...).Output()
 }
+func SignTxDelegate() {
+	cmd := "cardano-cli"
+	tokens := ToTokens("transaction sign --tx-body-file tx.raw --signing-key-file payment.skey --signing-key-file node.skey --signing-key-file stake.skey --mainnet --out-file tx.signed")
+	exec.Command(cmd, tokens...).Output()
+}
 func MakeStakeCert() {
 	cmd := "cardano-cli"
 	tokens := ToTokens("stake-address registration-certificate --stake-verification-key-file stake.vkey --out-file stake.cert")
