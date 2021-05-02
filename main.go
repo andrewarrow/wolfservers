@@ -111,6 +111,9 @@ func main() {
 		nodeKeySize := sqlite.NodeKeysQuery(name)
 		paymentAddr := sqlite.PaymentKeysQuery(name)
 		fmt.Println(nodeKeySize, paymentAddr)
+		ioutil.WriteFile("payment.addr", []byte(paymentAddr), 0755)
+		ScpFileToHot(name, "payment.addr", ip)
+		os.Remove("payment.addr")
 		//if paymentAddr == "" {
 		//	keys.MakePayment(name)
 		//}
@@ -179,6 +182,10 @@ func main() {
 		os.Remove("stake.cert")
 	} else if command == "keys" {
 		digitalocean.ListKeys()
+	} else if command == "cold" {
+		ip := argMap["ip"]
+		name := ip2name[ip]
+		runner.ScpFileToCold(name, "tx.raw", ip)
 	} else if command == "hot" {
 		ip := argMap["ip"]
 		RunHot(ip2name[ip], ip)
