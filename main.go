@@ -72,6 +72,12 @@ func main() {
 				month := tokens[0]
 				day := tokens[1]
 				hoursMins := tokens[2]
+				if len(tokens) == 5 {
+					month = tokens[0]
+					day = tokens[2]
+					hoursMins = tokens[3]
+				}
+
 				ts, _ := time.Parse("Jan 2, 2006 15:04",
 					fmt.Sprintf("%s %s, 2021 %s", month, day, hoursMins))
 

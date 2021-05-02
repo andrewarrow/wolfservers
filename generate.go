@@ -121,7 +121,7 @@ func SshAsUserRunOneThing(name, ip string) ReturnSshData {
 	special := []string{"pool.cert", "params.json", "node.cert", "payment.addr", "stake.cert", "tx.raw", "tx.signed", "poolMetaData.json"}
 	for _, line := range strings.Split(string(o), "\n") {
 		if strings.Contains(line, "kes.vkey") {
-			rsd.Date = line[31:]
+			rsd.Date = strings.TrimSpace(line[31:])
 		}
 		for _, s := range special {
 			if strings.Contains(line, s) {
