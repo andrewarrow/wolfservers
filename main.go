@@ -133,6 +133,8 @@ func main() {
 		os.Remove("node.counter")
 		os.Remove("node.skey")
 		os.Remove("node.vkey")
+		result := runner.HotExec(name, ip, "cardano-cli transaction submit --tx-file /root/cardano-my-node/tx.signed --mainnet")
+		fmt.Println(result)
 	} else if command == "tx" {
 		ip := argMap["ip"]
 		name := ip2name[ip]
@@ -145,6 +147,8 @@ func main() {
 		os.Remove("tx.signed")
 		os.Remove("payment.skey")
 		os.Remove("stake.skey")
+		result := runner.HotExec(name, ip, "cardano-cli transaction submit --tx-file /root/cardano-my-node/tx.signed --mainnet")
+		fmt.Println(result)
 	} else if command == "deleg.cert" {
 		ip := argMap["ip"]
 		name := ip2name[ip]
@@ -163,6 +167,7 @@ func main() {
 		name := ip2name[ip]
 		sv := sqlite.PaymentStakeV(name)
 		ioutil.WriteFile("stake.vkey", []byte(sv), 0755)
+		runner.ScpFileToCold(name, "vrf.vkey", ip)
 		sqlite.CreateNodeKeysOnDisk(name)
 		keys.StakePoolRegCert()
 		ScpFileToHot(name, "pool.cert", ip)

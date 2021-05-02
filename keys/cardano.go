@@ -42,7 +42,7 @@ func ToTokens(s string) []string {
 
 func StakePoolRegCert() {
 	cmd := "cardano-cli"
-	tokens := ToTokens("stake-pool registration-certificate --cold-verification-key-file node.vkey --vrf-verification-key-file vrf.vkey --pool-pledge 100000000 --pool-cost 340000000 --pool-margin 0.05 --pool-reward-account-verification-key-file stake.vkey --pool-owner-stake-verification-key-file stake.vkey --mainnet --single-host-pool-relay relay1-7c9e.wolfschedule.com --pool-relay-port 6000 --metadata-url https://wolfschedule.com/assets/7C9E.json --metadata-hash 91ec38c7af74813060d11de07c6cbb2550d57864f78db41a94f21d8f35337542 --out-file pool.cert")
+	tokens := ToTokens("stake-pool registration-certificate --cold-verification-key-file node.vkey --vrf-verification-key-file vrf.vkey --pool-pledge 200000000 --pool-cost 340000000 --pool-margin 0.05 --pool-reward-account-verification-key-file stake.vkey --pool-owner-stake-verification-key-file stake.vkey --mainnet --single-host-pool-relay relay1-c0b5.wolfschedule.com --pool-relay-port 6000 --metadata-url https://wolfschedule.com/assets/C0B5.json --metadata-hash a1cc60cd581058f40be5ddc6c2296e220ec07bdbe0883ea4bee985d17e992a00 --out-file pool.cert")
 	o, _ := exec.Command(cmd, tokens...).CombinedOutput()
 	fmt.Println(string(o))
 }
