@@ -8,11 +8,22 @@ import (
 )
 
 // /v2/domains/$DOMAIN_NAME/records
+type DomainRecord struct {
+	Name string
+	Data string
+}
+type DomainRecordsThing struct {
+	DomainRecords []DomainRecord `json:"domain_records"`
+}
 
 func ListDomainRecords(domain string) []string {
 	list := []string{}
 	jsonString := network.DoGet(fmt.Sprintf("v2/domains/%s/records?per_page=100", domain))
-	fmt.Println(jsonString)
+	var drt DomainRecordsThing
+	json.Unmarshal([]byte(jsonString), &drt)
+	for _, thing := range drt.DomainRecords {
+		fmt.Printf("%30s.wolfschedule.com %30s\n", thing.Name, thing.Data)
+	}
 	return list
 }
 
