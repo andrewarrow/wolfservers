@@ -2,7 +2,6 @@ package vultr
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/vultr/govultr/v2"
 )
@@ -13,6 +12,7 @@ func BoolToBoolPtr(value bool) *bool {
 }
 
 func CreateServer(name string) {
+	keys := ListKeys()
 	client, ctx := VultrClient()
 	instanceOptions := &govultr.InstanceCreateReq{
 		Label:      name,
@@ -22,7 +22,7 @@ func CreateServer(name string) {
 		OsID:       270,
 		//Plan:       "vc2-4c-8gb",
 		Plan:    "vc2-2c-4gb",
-		SSHKeys: []string{os.Getenv("VULTR_SSH")},
+		SSHKeys: keys,
 		Region:  "lax",
 	}
 

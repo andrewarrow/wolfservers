@@ -19,6 +19,5 @@ add-apt-repository "deb https://releases.algorand.com/deb/ stable main"
 apt-get update
 
 apt-get install -y algorand-devtools
-apt-get install -y algorand
 
 algod -v
