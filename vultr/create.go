@@ -17,7 +17,7 @@ func CreateServer(name string) {
 	instanceOptions := &govultr.InstanceCreateReq{
 		Label:      name,
 		Hostname:   name,
-		Backups:    "false",
+		Backups:    "disabled",
 		EnableIPv6: BoolToBoolPtr(false),
 		OsID:       270,
 		//Plan:       "vc2-4c-8gb",

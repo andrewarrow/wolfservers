@@ -49,7 +49,7 @@ func main() {
 	db := sqlite.OpenTheDB()
 	defer db.Close()
 	ip2name := sqlite.MakeIpMap(db)
-	ip2id := sqlite.MakeIpToId(db)
+	//ip2id := sqlite.MakeIpToId(db)
 	runner.PrivMap, runner.PubMap = sqlite.SshKeysAsMap(db)
 
 	if command == "ls" {
@@ -318,23 +318,17 @@ func main() {
 		}
 		id, _ := strconv.Atoi(argMap["ID"])
 		digitalocean.RemoveDroplet(id)
+	} else if command == "danger-vultr" {
+		if argMap["ID"] == "" {
+			return
+		}
+		vultr.RemoveServer(argMap["ID"])
 	} else if command == "danger-linode" {
 		if argMap["ID"] == "" {
 			return
 		}
 		id, _ := strconv.Atoi(argMap["ID"])
 		linode.RemoveServer(id)
-	} else if command == "danger" {
-		if argMap["name"] == "" {
-			return
-		}
-		for k, v := range ip2name {
-			if v == argMap["name"] {
-				sid := ip2id[k]
-				id, _ := strconv.Atoi(sid)
-				linode.RemoveServer(id)
-			}
-		}
 	} else if command == "ed255" {
 		if argMap["provider"] == "" {
 			return
@@ -354,14 +348,14 @@ func main() {
 				vultr.DeleteKey(id)
 			}
 			name, pubKey := keys.MakeEd("VULTR")
-			vultr.CreateKey(name, pubKey)
+			vultr.CreateKey(name, strings.TrimSpace(pubKey))
 		} else if provider == "do" {
 			ids := digitalocean.ListKeys()
 			for _, id := range ids {
 				digitalocean.DeleteKey(id)
 			}
 			name, pubKey := keys.MakeEd("DO")
-			digitalocean.CreateKey(name, pubKey)
+			digitalocean.CreateKey(name, strings.TrimSpace(pubKey))
 		}
 	} else if command == "help" {
 		PrintHelp()
