@@ -20,9 +20,10 @@ func CreateServer(name string) {
 		Backups:    "false",
 		EnableIPv6: BoolToBoolPtr(false),
 		OsID:       270,
-		Plan:       "vc2-4c-8gb",
-		SSHKeys:    []string{os.Getenv("VULTR_SSH")},
-		Region:     "lax",
+		//Plan:       "vc2-4c-8gb",
+		Plan:    "vc2-2c-4gb",
+		SSHKeys: []string{os.Getenv("VULTR_SSH")},
+		Region:  "lax",
 	}
 
 	res, err := client.Instance.Create(ctx, instanceOptions)

@@ -348,6 +348,13 @@ func main() {
 			}
 			name, pubKey := keys.MakeEd("LINODE")
 			linode.CreateSshKey(name, strings.TrimSpace(pubKey))
+		} else if provider == "vultr" {
+			ids := vultr.ListKeys()
+			for _, id := range ids {
+				vultr.DeleteKey(id)
+			}
+			name, pubKey := keys.MakeEd("VULTR")
+			vultr.CreateKey(name, pubKey)
 		} else if provider == "do" {
 			ids := digitalocean.ListKeys()
 			for _, id := range ids {
