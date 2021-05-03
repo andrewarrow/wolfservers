@@ -1,5 +1,5 @@
 # wolfservers
-go cli to help create cardano proof-of-stake nodes at places like aws,
+go cli to help create cardano or algorand proof-of-stake nodes at places like aws,
 digitalocean,vultr,linode,google,and more.
 
 # about
@@ -14,9 +14,9 @@ Q. Why not just use coinbase?
 
 A. You can and many people should. But if you are a programmer and grok SSH keys, or think you can learn, you'll make more money this way.
 
-Q. New blockchain?
+Q. New blockchains?
 
-A. Yeah it's [cardano, aka ADA](https://roadmap.cardano.org/) and it changes the whole bitcoin or etherum mining concepts.
+A. Yeah it's [cardano, aka ADA](https://roadmap.cardano.org/) and it changes the whole bitcoin or etherum mining concepts. Also [algorand](https://developer.algorand.org/).
 
 Q. Can I mess this up?
 
@@ -34,7 +34,7 @@ Q. So I can create these money making machines with one click?
 
 A. We are getting there. But yes, the idea is once you have a credit card on file with a provider, it's just a matter of booting up as many of these nodes as you want to pay for.
 
-Q. How much ADA will I make with each node?
+Q. How much ADA or ALGO will I make with each node?
 
 A. Hard to answer. We are just getting started but will report back our findings as we observe them.
 

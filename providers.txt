@@ -1,3 +1,7 @@
+https://www.scaleway.com/en/
+https://developers.scaleway.com/en/
+https://github.com/scaleway/scaleway-sdk-go
+
 https://www.brightbox.com/pricing/
 https://github.com/brightbox/gobrightbox
 
