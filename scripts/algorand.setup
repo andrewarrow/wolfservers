@@ -1,0 +1,24 @@
+useradd -c 'aa' -m -d /home/aa -s /bin/bash -G sudo aa
+rsync --archive --chown=aa:aa ~/.ssh /home/aa
+echo "aa ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/99_sudo_include_file
+
+    fallocate -l 4G /swapfile
+    chmod 600 /swapfile
+    mkswap /swapfile
+    swapon /swapfile
+    echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+    sysctl vm.swappiness=10
+    echo 'vm.swappiness=10' | sudo tee -a /etc/sysctl.conf
+    echo 'vm.vfs_cache_pressure=50' | sudo tee -a /etc/sysctl.conf
+
+apt-get update
+apt-get install -y gnupg2 curl software-properties-common
+curl -O https://releases.algorand.com/key.pub
+apt-key add key.pub
+add-apt-repository "deb https://releases.algorand.com/deb/ stable main"
+apt-get update
+
+apt-get install -y algorand-devtools
+apt-get install -y algorand
+
+algod -v

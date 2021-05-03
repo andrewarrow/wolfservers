@@ -1,3 +1,4 @@
+
 useradd -c 'aa' -m -d /home/aa -s /bin/bash -G sudo aa
 rsync --archive --chown=aa:aa ~/.ssh /home/aa
 echo "aa ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/99_sudo_include_file

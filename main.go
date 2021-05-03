@@ -236,7 +236,7 @@ func main() {
 		dest := argMap["producer"]
 		PrepDest(dest)
 		MakeProducer(argMap["relay"])
-		ScpFile(ip2name[dest], "scripts/node.setup", dest)
+		ScpFile(ip2name[dest], "scripts/cardano.setup", dest)
 		ScpFile(ip2name[dest], "scripts/stake.register", dest)
 		ScpFile(ip2name[dest], "scripts/delegate.pool", dest)
 		ScpFile(ip2name[dest], "producer.sh", dest)
@@ -248,7 +248,7 @@ func main() {
 		dest := argMap["relay"]
 		PrepDest(dest)
 		MakeRelay(argMap["producer"])
-		ScpFile(ip2name[dest], "scripts/node.setup", dest)
+		ScpFile(ip2name[dest], "scripts/cardano.setup", dest)
 		ScpFile(ip2name[dest], "scripts/stake.register", dest)
 		ScpFile(ip2name[dest], "scripts/delegate.pool", dest)
 		ScpFile(ip2name[dest], "relay.sh", dest)
