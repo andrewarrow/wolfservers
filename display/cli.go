@@ -6,9 +6,9 @@ import (
 )
 
 func DisplayServer(name, id, provider, label, ip interface{}) {
-	fmt.Printf("%v %s %v %s %s\n",
+	fmt.Printf("%v %v %s %s\n",
 		name,
-		LeftAligned(id, 10),
+		//LeftAligned(id, 10),
 		LeftAligned(provider, 7),
 		LeftAligned(label, 10),
 		LeftAligned(ip, 30))
