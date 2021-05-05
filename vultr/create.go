@@ -11,9 +11,9 @@ func BoolToBoolPtr(value bool) *bool {
 	return &b
 }
 
-func CreateServer(name string) {
-	keys := ListKeys()
-	client, ctx := VultrClient()
+func CreateServer(pat, name string) {
+	keys := ListKeys(pat)
+	client, ctx := VultrClient(pat)
 	instanceOptions := &govultr.InstanceCreateReq{
 		Label:      name,
 		Hostname:   name,

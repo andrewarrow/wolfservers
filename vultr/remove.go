@@ -2,8 +2,8 @@ package vultr
 
 import "fmt"
 
-func RemoveServer(id string) {
-	client, ctx := VultrClient()
+func RemoveServer(pat, id string) {
+	client, ctx := VultrClient(pat)
 	e := client.Instance.Delete(ctx, id)
 	fmt.Println(e)
 }

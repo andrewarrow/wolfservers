@@ -4,8 +4,8 @@ import (
 	"fmt"
 )
 
-func RemoveServer(id int) {
-	client, ctx := LinodeClient()
+func RemoveServer(pat string, id int) {
+	client, ctx := LinodeClient(pat)
 
 	err := client.DeleteInstance(ctx, id)
 

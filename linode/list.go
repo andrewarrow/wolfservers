@@ -4,16 +4,15 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"os"
 
 	"github.com/andrewarrow/wolfservers/display"
 	"github.com/linode/linodego"
 	"golang.org/x/oauth2"
 )
 
-func ListServers(ip2wolf map[string]string) {
+func ListServers(pat string, ip2wolf map[string]string) {
 
-	client, ctx := LinodeClient()
+	client, ctx := LinodeClient(pat)
 	options := linodego.ListOptions{}
 
 	i, _ := client.ListInstances(ctx, &options)
@@ -22,10 +21,10 @@ func ListServers(ip2wolf map[string]string) {
 		display.DisplayServer(wolfName, v.ID, "LINODE", v.Label, v.IPv4[0])
 	}
 }
-func ListProducerIps() []string {
+func ListProducerIps(pat string) []string {
 
 	list := []string{}
-	client, ctx := LinodeClient()
+	client, ctx := LinodeClient(pat)
 	options := linodego.ListOptions{}
 
 	i, _ := client.ListInstances(ctx, &options)
@@ -38,10 +37,8 @@ func ListProducerIps() []string {
 	return list
 }
 
-func LinodeClient() (*linodego.Client, context.Context) {
-	apiKey := os.Getenv("LINODE_PAT")
-
-	tokenSource := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: apiKey})
+func LinodeClient(pat string) (*linodego.Client, context.Context) {
+	tokenSource := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: pat})
 
 	oauth2Client := &http.Client{
 		Transport: &oauth2.Transport{
@@ -55,10 +52,10 @@ func LinodeClient() (*linodego.Client, context.Context) {
 	return &client, ctx
 }
 
-func ListKeys() []int {
+func ListKeys(pat string) []int {
 
 	list := []int{}
-	client, ctx := LinodeClient()
+	client, ctx := LinodeClient(pat)
 	options := linodego.ListOptions{}
 
 	keys, _ := client.ListSSHKeys(ctx, &options)

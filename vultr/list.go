@@ -2,16 +2,15 @@ package vultr
 
 import (
 	"context"
-	"os"
 
 	"github.com/andrewarrow/wolfservers/display"
 	"github.com/vultr/govultr/v2"
 	"golang.org/x/oauth2"
 )
 
-func ListServers(ip2wolf map[string]string) {
+func ListServers(pat string, ip2wolf map[string]string) {
 
-	client, ctx := VultrClient()
+	client, ctx := VultrClient(pat)
 	listOptions := &govultr.ListOptions{PerPage: 100}
 	i, _, _ := client.Instance.List(ctx, listOptions)
 	for _, v := range i {
@@ -20,10 +19,10 @@ func ListServers(ip2wolf map[string]string) {
 		//fmt.Println(v.ID)
 	}
 }
-func ListProducerIps() []string {
+func ListProducerIps(pat string) []string {
 
 	list := []string{}
-	client, ctx := VultrClient()
+	client, ctx := VultrClient(pat)
 	listOptions := &govultr.ListOptions{PerPage: 100}
 	i, _, _ := client.Instance.List(ctx, listOptions)
 	for _, v := range i {
@@ -35,12 +34,10 @@ func ListProducerIps() []string {
 	return list
 }
 
-func VultrClient() (*govultr.Client, context.Context) {
-	apiKey := os.Getenv("VULTR_PAT")
-
+func VultrClient(pat string) (*govultr.Client, context.Context) {
 	config := &oauth2.Config{}
 	ctx := context.Background()
-	ts := config.TokenSource(ctx, &oauth2.Token{AccessToken: apiKey})
+	ts := config.TokenSource(ctx, &oauth2.Token{AccessToken: pat})
 	client := govultr.NewClient(oauth2.NewClient(ctx, ts))
 	return client, ctx
 }

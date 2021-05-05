@@ -56,13 +56,13 @@ func main() {
 
 	if command == "ls" {
 		digitalocean.ListDroplets(pats["do"], ip2name)
-		vultr.ListServers(ip2name)
-		linode.ListServers(ip2name)
+		vultr.ListServers(pats["vultr"], ip2name)
+		linode.ListServers(pats["linode"], ip2name)
 
 		fmt.Println("")
 		if argMap["keys"] == "true" {
-			vips := vultr.ListProducerIps()
-			lips := linode.ListProducerIps()
+			vips := vultr.ListProducerIps(pats["vultr"])
+			lips := linode.ListProducerIps(pats["linode"])
 			dips := digitalocean.ListProducerIps(pats["do"])
 
 			ips := append(vips, lips...)
@@ -290,14 +290,14 @@ func main() {
 		if argMap["sure"] == "" {
 			return
 		}
-		linode.CreateServer("producer")
-		linode.CreateServer("relay")
+		linode.CreateServer(pats["linode"], "producer")
+		linode.CreateServer(pats["linode"], "relay")
 	} else if command == "fresh2vultr" {
 		if argMap["sure"] == "" {
 			return
 		}
-		vultr.CreateServer("producer")
-		vultr.CreateServer("relay")
+		vultr.CreateServer(pats["vultr"], "producer")
+		vultr.CreateServer(pats["vultr"], "relay")
 	} else if command == "fresh2do" {
 		if argMap["sure"] == "" {
 			return
@@ -330,13 +330,13 @@ func main() {
 		if argMap["ID"] == "" {
 			return
 		}
-		vultr.RemoveServer(argMap["ID"])
+		vultr.RemoveServer(pats["vultr"], argMap["ID"])
 	} else if command == "danger-linode" {
 		if argMap["ID"] == "" {
 			return
 		}
 		id, _ := strconv.Atoi(argMap["ID"])
-		linode.RemoveServer(id)
+		linode.RemoveServer(pats["linode"], id)
 	} else if command == "ed255" {
 		if argMap["provider"] == "" {
 			return
@@ -344,19 +344,19 @@ func main() {
 		provider := argMap["provider"]
 
 		if provider == "linode" {
-			ids := linode.ListKeys()
+			ids := linode.ListKeys(pats["linode"])
 			for _, id := range ids {
-				linode.DeleteSshKey(id)
+				linode.DeleteSshKey(pats["linode"], id)
 			}
 			name, pubKey := keys.MakeEd("LINODE")
-			linode.CreateSshKey(name, strings.TrimSpace(pubKey))
+			linode.CreateSshKey(pats["linode"], name, strings.TrimSpace(pubKey))
 		} else if provider == "vultr" {
-			ids := vultr.ListKeys()
+			ids := vultr.ListKeys(pats["vultr"])
 			for _, id := range ids {
-				vultr.DeleteKey(id)
+				vultr.DeleteKey(pats["vultr"], id)
 			}
 			name, pubKey := keys.MakeEd("VULTR")
-			vultr.CreateKey(name, strings.TrimSpace(pubKey))
+			vultr.CreateKey(pats["vultr"], name, strings.TrimSpace(pubKey))
 		} else if provider == "do" {
 			ids := digitalocean.ListKeys()
 			for _, id := range ids {

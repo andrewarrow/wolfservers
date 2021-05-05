@@ -8,8 +8,8 @@ import (
 	"github.com/linode/linodego"
 )
 
-func CreateServer(name string) {
-	client, ctx := LinodeClient()
+func CreateServer(pat, name string) {
+	client, ctx := LinodeClient(pat)
 	instanceOptions := linodego.InstanceCreateOptions{
 		Label:           name,
 		RootPass:        keys.RootPass(),
@@ -26,8 +26,8 @@ func CreateServer(name string) {
 	fmt.Println(res, err)
 }
 
-func CreateSshKey(name, pubKey string) {
-	client, ctx := LinodeClient()
+func CreateSshKey(pat, name, pubKey string) {
+	client, ctx := LinodeClient(pat)
 	options := linodego.SSHKeyCreateOptions{
 		Label:  name,
 		SSHKey: pubKey,
