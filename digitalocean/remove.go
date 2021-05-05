@@ -2,8 +2,8 @@ package digitalocean
 
 import "fmt"
 
-func RemoveDroplet(id int) {
-	client, ctx := GetClient()
+func RemoveDroplet(pat string, id int) {
+	client, ctx := GetClient(pat)
 
 	resp, err := client.Droplets.Delete(ctx, id)
 	if err != nil {

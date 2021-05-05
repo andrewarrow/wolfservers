@@ -8,7 +8,7 @@ import (
 	"github.com/digitalocean/godo"
 )
 
-func CreateDroplet(dropletName, size, key string) {
+func CreateDroplet(pat, dropletName, size, key string) {
 
 	imageIdString := os.Getenv("DO_IMAGE")
 
@@ -30,7 +30,7 @@ func CreateDroplet(dropletName, size, key string) {
 		SSHKeys: sshList,
 		Image:   dci,
 	}
-	client, ctx := GetClient()
+	client, ctx := GetClient(pat)
 	r, _, err := client.Droplets.Create(ctx, createRequest)
 	if err != nil {
 		fmt.Printf("err: %v\n\n", err)

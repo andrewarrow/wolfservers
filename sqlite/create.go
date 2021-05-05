@@ -7,15 +7,45 @@ import (
 	"time"
 )
 
+func GetWolfPhrase() string {
+	phrase := os.Getenv("WOLF_PHRASE")
+	if len(phrase) < 36 {
+		fmt.Println("wolves use longer phrases.")
+		return ""
+	}
+	return phrase
+}
+
+func InsertPat(provider, pat string) {
+	ts := time.Now()
+	db := OpenTheDB()
+	defer db.Close()
+	tx, _ := db.Begin()
+
+	phrase := GetWolfPhrase()
+	if phrase == "" {
+		return
+	}
+
+	shhh := encrypt([]byte(pat), phrase)
+	encodedStr := base64.StdEncoding.EncodeToString(shhh)
+
+	s := `insert into pats (provider, pat, created_at) values (?, ?, ?)`
+	thing, _ := tx.Prepare(s)
+	thing.Exec(provider, encodedStr, ts)
+
+	tx.Commit()
+	DisplayCopyDropboxNotice()
+}
+
 func InsertRow(name, provider, privKey, pubKey string) {
 	ts := time.Now()
 	db := OpenTheDB()
 	defer db.Close()
 	tx, _ := db.Begin()
 
-	phrase := os.Getenv("WOLF_PHRASE")
-	if len(phrase) < 36 {
-		fmt.Println("wolves use longer phrases.")
+	phrase := GetWolfPhrase()
+	if phrase == "" {
 		return
 	}
 	shhh := encrypt([]byte(privKey), phrase)
@@ -40,9 +70,8 @@ func InsertPaymentRow(name, pv, ps, sv, ss, sa, pa string) {
 	defer db.Close()
 	tx, _ := db.Begin()
 
-	phrase := os.Getenv("WOLF_PHRASE")
-	if len(phrase) < 36 {
-		fmt.Println("wolves use longer phrases.")
+	phrase := GetWolfPhrase()
+	if phrase == "" {
 		return
 	}
 	shhh := encrypt([]byte(pv), phrase)
@@ -76,9 +105,8 @@ func InsertNodeRow(name, v, s, c string) {
 	defer db.Close()
 	tx, _ := db.Begin()
 
-	phrase := os.Getenv("WOLF_PHRASE")
-	if len(phrase) < 36 {
-		fmt.Println("wolves use longer phrases.")
+	phrase := GetWolfPhrase()
+	if phrase == "" {
 		return
 	}
 	shhh := encrypt([]byte(v), phrase)

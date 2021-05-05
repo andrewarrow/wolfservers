@@ -4,16 +4,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"os"
 
 	"github.com/andrewarrow/wolfservers/display"
 	"github.com/andrewarrow/wolfservers/network"
 	"github.com/digitalocean/godo"
 	"golang.org/x/oauth2"
-)
-
-var (
-	pat = os.Getenv("DO_PAT")
 )
 
 type TokenSource struct {
@@ -39,7 +34,7 @@ func ListSizes() {
 		//fmt.Println(strings.Join(s.Regions, ","))
 	}
 }
-func GetClient() (*godo.Client, context.Context) {
+func GetClient(pat string) (*godo.Client, context.Context) {
 	tokenSource := &TokenSource{
 		AccessToken: pat,
 	}
@@ -50,8 +45,8 @@ func GetClient() (*godo.Client, context.Context) {
 
 	return client, ctx
 }
-func ListDroplets(ip2wolf map[string]string) {
-	client, ctx := GetClient()
+func ListDroplets(pat string, ip2wolf map[string]string) {
+	client, ctx := GetClient(pat)
 
 	opt := &godo.ListOptions{
 		Page:    1,
@@ -74,9 +69,9 @@ func ListDroplets(ip2wolf map[string]string) {
 	}
 }
 
-func ListProducerIps() []string {
+func ListProducerIps(pat string) []string {
 	list := []string{}
-	client, ctx := GetClient()
+	client, ctx := GetClient(pat)
 
 	opt := &godo.ListOptions{
 		Page:    1,

@@ -27,6 +27,29 @@ func NameExists(name string) bool {
 	return false
 }
 
+func LoadPats() map[string]string {
+	db := OpenTheDB()
+	defer db.Close()
+	m := map[string]string{}
+	rows, err := db.Query("select provider,pat from pats")
+	if err != nil {
+		fmt.Println(err)
+		return m
+	}
+	defer rows.Close()
+	phrase := os.Getenv("WOLF_PHRASE")
+
+	for rows.Next() {
+		var s1 string
+		var s2 string
+		rows.Scan(&s1, &s2)
+		decodedBytes, _ := base64.StdEncoding.DecodeString(s2)
+		shhh := decrypt(decodedBytes, phrase)
+		m[s1] = string(shhh)
+	}
+	return m
+}
+
 func PaymentAndStakeSigning(name string) (string, string) {
 	db := OpenTheDB()
 	defer db.Close()

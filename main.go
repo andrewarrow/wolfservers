@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/andrewarrow/wolfservers/algorand"
 	"github.com/andrewarrow/wolfservers/args"
 	"github.com/andrewarrow/wolfservers/digitalocean"
 	"github.com/andrewarrow/wolfservers/keys"
@@ -49,11 +50,12 @@ func main() {
 	db := sqlite.OpenTheDB()
 	defer db.Close()
 	ip2name := sqlite.MakeIpMap(db)
+	pats := sqlite.LoadPats()
 	//ip2id := sqlite.MakeIpToId(db)
 	runner.PrivMap, runner.PubMap = sqlite.SshKeysAsMap(db)
 
 	if command == "ls" {
-		digitalocean.ListDroplets(ip2name)
+		digitalocean.ListDroplets(pats["do"], ip2name)
 		vultr.ListServers(ip2name)
 		linode.ListServers(ip2name)
 
@@ -61,7 +63,7 @@ func main() {
 		if argMap["keys"] == "true" {
 			vips := vultr.ListProducerIps()
 			lips := linode.ListProducerIps()
-			dips := digitalocean.ListProducerIps()
+			dips := digitalocean.ListProducerIps(pats["do"])
 
 			ips := append(vips, lips...)
 			ips = append(ips, dips...)
@@ -213,6 +215,12 @@ func main() {
 		os.Remove("node.counter")
 		os.Remove("node.skey")
 		os.Remove("node.vkey")
+	} else if command == "algorand" {
+		algorand.Query()
+	} else if command == "add-pat" {
+		provider := argMap["provider"]
+		pat := argMap["pat"]
+		sqlite.InsertPat(provider, pat)
 	} else if command == "temp" {
 		ip := argMap["ip"]
 		name := ip2name[ip]
@@ -299,8 +307,8 @@ func main() {
 		size := "s-1vcpu-2gb"
 		keys := digitalocean.ListKeyFingerprints()
 		key := keys[0]
-		digitalocean.CreateDroplet("producer", size, key)
-		digitalocean.CreateDroplet("relay", size, key)
+		digitalocean.CreateDroplet(pats["do"], "producer", size, key)
+		digitalocean.CreateDroplet(pats["do"], "relay", size, key)
 
 	} else if command == "node-keys" {
 		//keys.MakeNode("wolf-C0B5")
@@ -317,7 +325,7 @@ func main() {
 			return
 		}
 		id, _ := strconv.Atoi(argMap["ID"])
-		digitalocean.RemoveDroplet(id)
+		digitalocean.RemoveDroplet(pats["do"], id)
 	} else if command == "danger-vultr" {
 		if argMap["ID"] == "" {
 			return
