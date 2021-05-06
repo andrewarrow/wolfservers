@@ -11,7 +11,7 @@ func RemoveComments(in string) {
 	s := string(b)
 	lines := strings.Split(s, "\n")
 	for _, line := range lines {
-		if strings.HasPrefix(line, "//") == false {
+		if strings.HasPrefix(strings.TrimSpace(line), "//") == false {
 			buff = append(buff, line)
 		}
 	}
