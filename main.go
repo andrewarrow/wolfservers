@@ -12,6 +12,7 @@ import (
 	"github.com/andrewarrow/wolfservers/algorand"
 	"github.com/andrewarrow/wolfservers/args"
 	"github.com/andrewarrow/wolfservers/digitalocean"
+	"github.com/andrewarrow/wolfservers/files"
 	"github.com/andrewarrow/wolfservers/keys"
 	"github.com/andrewarrow/wolfservers/linode"
 	"github.com/andrewarrow/wolfservers/runner"
@@ -53,6 +54,13 @@ func main() {
 	pats := sqlite.LoadPats()
 	//ip2id := sqlite.MakeIpToId(db)
 	runner.PrivMap, runner.PubMap = sqlite.SshKeysAsMap(db)
+
+	tokens := strings.Split(command, ".")
+	if len(tokens) == 4 {
+		name := ip2name[command]
+		SshAsUser("aa", name, command)
+		return
+	}
 
 	if command == "ls" {
 		digitalocean.ListDroplets(pats["do"], ip2name)
@@ -221,6 +229,9 @@ func main() {
 		provider := argMap["provider"]
 		pat := argMap["pat"]
 		sqlite.InsertPat(provider, pat)
+	} else if command == "comments" {
+		in := argMap["in"]
+		files.RemoveComments(in)
 	} else if command == "temp" {
 		ip := argMap["ip"]
 		name := ip2name[ip]
