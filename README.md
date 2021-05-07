@@ -1,6 +1,6 @@
 # wolfservers
 go cli to help create cardano or algorand proof-of-stake nodes at places like aws,
-digitalocean,vultr,linode,google,and more.
+digitalocean, vultr, linode, google, and more.
 
 # about
 
