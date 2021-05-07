@@ -26,6 +26,7 @@ create table stakes (name text, provider text, producer_ip text, producer_id tex
 create table nodes (name text, counter text, vkey text, skey text, created_at datetime);
 create table payment (name text, pv text, ps text, sv text, ss text, sa text, pa text, created_at datetime);
 create table pats (provider text, pat text, created_at datetime);
+create table oaths (name text, seed text, username text, password text, created_at datetime);
 
 CREATE VIEW view_stakes as select provider_ip, ssh_key from stakes order by created_at desc;
 

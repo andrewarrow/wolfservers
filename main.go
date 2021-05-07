@@ -229,6 +229,12 @@ func main() {
 		provider := argMap["provider"]
 		pat := argMap["pat"]
 		sqlite.InsertPat(provider, pat)
+	} else if command == "add-oath" {
+		name := argMap["name"]
+		seed := argMap["seed"]
+		username := argMap["username"]
+		password := argMap["password"]
+		sqlite.InsertOath(name, seed, username, password)
 	} else if command == "comments" {
 		in := argMap["in"]
 		files.RemoveComments(in)

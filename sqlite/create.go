@@ -16,6 +16,34 @@ func GetWolfPhrase() string {
 	return phrase
 }
 
+func InsertOath(name, seed, username, password string) {
+	ts := time.Now()
+	db := OpenTheDB()
+	defer db.Close()
+	tx, _ := db.Begin()
+
+	phrase := GetWolfPhrase()
+	if phrase == "" {
+		return
+	}
+
+	shhh := encrypt([]byte(seed), phrase)
+	seedPriv := base64.StdEncoding.EncodeToString(shhh)
+	shhh = encrypt([]byte(username), phrase)
+	usernamePriv := base64.StdEncoding.EncodeToString(shhh)
+	shhh = encrypt([]byte(password), phrase)
+	passwordPriv := base64.StdEncoding.EncodeToString(shhh)
+	shhh = encrypt([]byte(name), phrase)
+	namePriv := base64.StdEncoding.EncodeToString(shhh)
+
+	s := `insert into oaths (name, seed, username, password, created_at) values (?, ?, ?, ?, ?)`
+	thing, e := tx.Prepare(s)
+	fmt.Println(e)
+	thing.Exec(namePriv, seedPriv, usernamePriv, passwordPriv, ts)
+
+	tx.Commit()
+	DisplayCopyDropboxNotice()
+}
 func InsertPat(provider, pat string) {
 	ts := time.Now()
 	db := OpenTheDB()
