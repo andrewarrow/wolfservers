@@ -229,6 +229,9 @@ func main() {
 		provider := argMap["provider"]
 		pat := argMap["pat"]
 		sqlite.InsertPat(provider, pat)
+	} else if command == "show-oath" {
+		// oathtool --totp -b ''
+		sqlite.ShowOaths()
 	} else if command == "add-oath" {
 		name := argMap["name"]
 		seed := argMap["seed"]

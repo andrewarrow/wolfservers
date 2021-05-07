@@ -27,6 +27,38 @@ func NameExists(name string) bool {
 	return false
 }
 
+func ShowOaths() {
+	db := OpenTheDB()
+	defer db.Close()
+	rows, err := db.Query("select name,seed,username,password from oaths")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer rows.Close()
+	phrase := os.Getenv("WOLF_PHRASE")
+
+	for rows.Next() {
+		var s1 string
+		var s2 string
+		var s3 string
+		var s4 string
+		rows.Scan(&s1, &s2, &s3, &s4)
+		decodedBytes, _ := base64.StdEncoding.DecodeString(s1)
+		shhh := decrypt(decodedBytes, phrase)
+		name := string(shhh)
+		decodedBytes, _ = base64.StdEncoding.DecodeString(s2)
+		shhh = decrypt(decodedBytes, phrase)
+		seed := string(shhh)
+		decodedBytes, _ = base64.StdEncoding.DecodeString(s3)
+		shhh = decrypt(decodedBytes, phrase)
+		username := string(shhh)
+		decodedBytes, _ = base64.StdEncoding.DecodeString(s4)
+		shhh = decrypt(decodedBytes, phrase)
+		password := string(shhh)
+		fmt.Println(name, seed, username, password)
+	}
+}
 func LoadPats() map[string]string {
 	db := OpenTheDB()
 	defer db.Close()
