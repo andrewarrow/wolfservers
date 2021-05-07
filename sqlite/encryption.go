@@ -5,6 +5,7 @@ import (
 	"crypto/cipher"
 	"crypto/md5"
 	"encoding/hex"
+	"fmt"
 	"math/rand"
 )
 
@@ -40,7 +41,8 @@ func decrypt(data []byte, passphrase string) []byte {
 	nonce, ciphertext := data[:nonceSize], data[nonceSize:]
 	plaintext, err := gcm.Open(nil, nonce, ciphertext, nil)
 	if err != nil {
-		panic(err.Error())
+		fmt.Println(err)
+		return []byte{}
 	}
 	return plaintext
 }
