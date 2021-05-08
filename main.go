@@ -42,6 +42,16 @@ func PrintHelp() {
 	fmt.Println("")
 }
 
+func ProducerIps(pats map[string]string) []string {
+	vips := vultr.ListProducerIps(pats["vultr"])
+	lips := linode.ListProducerIps(pats["linode"])
+	dips := digitalocean.ListProducerIps(pats["do"])
+
+	ips := append(vips, lips...)
+	ips = append(ips, dips...)
+	return ips
+}
+
 func main() {
 	rand.Seed(time.Now().UnixNano())
 
@@ -73,13 +83,7 @@ func main() {
 
 		fmt.Println("")
 		if argMap["keys"] == "true" {
-			vips := vultr.ListProducerIps(pats["vultr"])
-			lips := linode.ListProducerIps(pats["linode"])
-			dips := digitalocean.ListProducerIps(pats["do"])
-
-			ips := append(vips, lips...)
-			ips = append(ips, dips...)
-			for _, ip := range ips {
+			for _, ip := range ProducerIps(pats) {
 				jsonString := network.DoIpGet(ip)
 				var ls LsDataHolder
 				json.Unmarshal([]byte(jsonString), &ls)
@@ -261,6 +265,11 @@ func main() {
 			log.Printf("Authenticated")
 		} else {
 			log.Fatal("Failed to authenticate")
+		}
+	} else if command == "deploy" {
+		for _, ip := range ProducerIps(pats) {
+			name := ip2name[ip]
+			ScpFileToAa(name, "eyes.next", ip)
 		}
 	} else if command == "temp" {
 		ip := argMap["ip"]

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"os/exec"
 	"strings"
 
@@ -24,9 +25,13 @@ type Tip struct {
 func StartEyes() {
 	r := gin.Default()
 	r.GET("/hi", func(c *gin.Context) {
+		jsonString := RunQueryTip()
+		var tip Tip
+		json.Unmarshal([]byte(jsonString), &tip)
+
 		o, _ := exec.Command("ls", "-l", "/root/cardano-my-node/").Output()
 		ls := LsData{}
-		ls.Tip = Tip{}
+		ls.Tip = tip
 		ls.SpecialFiles = []string{}
 
 		special := []string{"pool.cert", "params.json", "node.cert", "payment.addr", "stake.cert", "tx.raw", "tx.signed", "poolMetaData.json"}

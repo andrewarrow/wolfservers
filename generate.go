@@ -117,38 +117,6 @@ func AppendIfNeeded(thing []string, ip, filename string) []string {
 	return thing
 }
 
-/*
-func SshAsUserRunOneThing(name, ip string) ReturnSshData {
-	runner.WriteOutJit(name)
-	rsd := ReturnSshData{}
-	rsd.SpecialFiles = []string{}
-	// cardano-cli query tip --mainnet
-	fmt.Println("speed1")
-	o, _ := exec.Command("ssh", "-i",
-		files.UserHomeDir()+"/.ssh/wolf-jit", "aa@"+ip, "CARDANO_NODE_SOCKET_PATH=/root/cardano-my-node/db/socket sudo -E cardano-cli query tip --mainnet").Output()
-	fmt.Println("speed2")
-	var tip Tip
-	json.Unmarshal(o, &tip)
-	rsd.Tip = tip
-	o, _ = exec.Command("ssh", "-i",
-		files.UserHomeDir()+"/.ssh/wolf-jit", "aa@"+ip, "sudo ls -l /root/cardano-my-node/").Output()
-	fmt.Println("speed3")
-
-	special := []string{"pool.cert", "params.json", "node.cert", "payment.addr", "stake.cert", "tx.raw", "tx.signed", "poolMetaData.json"}
-	for _, line := range strings.Split(string(o), "\n") {
-		if strings.Contains(line, "kes.vkey") {
-			rsd.Date = strings.TrimSpace(line[31:])
-		}
-		for _, s := range special {
-			if strings.Contains(line, s) {
-				rsd.SpecialFiles = append(rsd.SpecialFiles, s)
-			}
-		}
-	}
-
-	return rsd
-}
-*/
 func CatKesV(name, ip string) {
 	runner.WriteOutJit(name)
 	out, _ := exec.Command("ssh", "-i",
@@ -188,6 +156,11 @@ func ScpFile(name, file, dest string) {
 	runner.WriteOutJit(name)
 	out, err := exec.Command("scp", "-i",
 		files.UserHomeDir()+"/.ssh/wolf-jit", file, "root@"+dest+":").Output()
+	fmt.Println(string(out), err)
+}
+func ScpFileToAa(name, filename, dest string) {
+	runner.WriteOutJit(name)
+	out, err := exec.Command("scp", "-i", files.UserHomeDir()+"/.ssh/wolf-jit", filename, "aa@"+dest+":").Output()
 	fmt.Println(string(out), err)
 }
 func ScpFileToHot(name, filename, dest string) {
