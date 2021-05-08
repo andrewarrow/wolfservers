@@ -1,4 +1,5 @@
 vendor
+eyes/eyes
 producer.sh
 airgapped
 .DS_Store
