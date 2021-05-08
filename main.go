@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"log"
 	"math/rand"
 	"os"
 	"strconv"
@@ -19,6 +20,7 @@ import (
 	"github.com/andrewarrow/wolfservers/sqlite"
 	"github.com/andrewarrow/wolfservers/vultr"
 	"github.com/justincampbell/timeago"
+	touchid "github.com/lox/go-touchid"
 )
 
 func PrintHelp() {
@@ -241,6 +243,18 @@ func main() {
 	} else if command == "comments" {
 		in := argMap["in"]
 		files.RemoveComments(in)
+	} else if command == "touch" {
+
+		ok, err := touchid.Authenticate("access llamas")
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		if ok {
+			log.Printf("Authenticated")
+		} else {
+			log.Fatal("Failed to authenticate")
+		}
 	} else if command == "temp" {
 		ip := argMap["ip"]
 		name := ip2name[ip]
