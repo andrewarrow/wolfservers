@@ -101,9 +101,9 @@ func main() {
 				ts, _ := time.Parse("Jan 2, 2006 15:04",
 					fmt.Sprintf("%s %s, 2021 %s", month, day, hoursMins))
 				ago := timeago.FromDuration(time.Since(ts))
-				fmt.Printf("%s %s %d\n", ip2name[ip],
+				fmt.Printf("%s %s %d %d\n", ip2name[ip],
 					display.LeftAligned(ago, 20),
-					ls.M.Tip.Epoch)
+					ls.M.Tip.Epoch, ls.M.Amount)
 
 				/*
 					// Apr 27 19:16 kes.vkey

@@ -98,6 +98,7 @@ type LsData struct {
 	Tip          Tip      `json:"tip"`
 	Date         string   `json:"date"`
 	SpecialFiles []string `json:"special_files"`
+	Amount       int64    `json:"amount"`
 }
 
 type Tip struct {
