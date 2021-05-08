@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -20,6 +21,7 @@ import (
 	"github.com/andrewarrow/wolfservers/runner"
 	"github.com/andrewarrow/wolfservers/sqlite"
 	"github.com/andrewarrow/wolfservers/vultr"
+	"github.com/justincampbell/timeago"
 	touchid "github.com/lox/go-touchid"
 )
 
@@ -79,21 +81,24 @@ func main() {
 			ips = append(ips, dips...)
 			for _, ip := range ips {
 				jsonString := network.DoIpGet(ip)
-				fmt.Println(len(jsonString))
+				var ls LsDataHolder
+				json.Unmarshal([]byte(jsonString), &ls)
+				tokens := strings.Split(ls.M.Date, " ")
+				month := tokens[0]
+				day := tokens[1]
+				hoursMins := tokens[2]
+				if len(tokens) == 5 {
+					month = tokens[0]
+					day = tokens[2]
+					hoursMins = tokens[3]
+				}
+
+				ts, _ := time.Parse("Jan 2, 2006 15:04",
+					fmt.Sprintf("%s %s, 2021 %s", month, day, hoursMins))
+				ago := timeago.FromDuration(time.Since(ts))
+				fmt.Printf("%s %s\n", ip2name[ip], ago)
 				/*
 					// Apr 27 19:16 kes.vkey
-					tokens := strings.Split(rsd.Date, " ")
-					month := tokens[0]
-					day := tokens[1]
-					hoursMins := tokens[2]
-					if len(tokens) == 5 {
-						month = tokens[0]
-						day = tokens[2]
-						hoursMins = tokens[3]
-					}
-
-					ts, _ := time.Parse("Jan 2, 2006 15:04",
-						fmt.Sprintf("%s %s, 2021 %s", month, day, hoursMins))
 
 					fmt.Printf("%s (%d,%d,%d) Key Evolving Signature Age(%s) \n",
 						ip2name[ip], rsd.Tip.Epoch, rsd.Tip.Block, rsd.Tip.Slot, timeago.FromDuration(time.Since(ts)))

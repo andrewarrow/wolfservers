@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
 	"html/template"
 	"io/ioutil"
@@ -91,18 +90,22 @@ func RunHot(name, ip string) int {
 	return startKesPeriod
 }
 
-type Tip struct {
-	Epoch int64
-	Hash  string
-	Slot  int64
-	Block int64
-	Era   string
+type LsDataHolder struct {
+	M LsData `json:"m"`
 }
 
-type ReturnSshData struct {
-	Tip          Tip
-	Date         string
-	SpecialFiles []string
+type LsData struct {
+	Tip          Tip      `json:"tip"`
+	Date         string   `json:"date"`
+	SpecialFiles []string `json:"special_files"`
+}
+
+type Tip struct {
+	Epoch int64  `json:"epoch"`
+	Hash  string `json:"hash"`
+	Slot  int64  `json:"slot"`
+	Block int64  `json:"block"`
+	Era   string `json:"era"`
 }
 
 func AppendIfNeeded(thing []string, ip, filename string) []string {
@@ -114,6 +117,7 @@ func AppendIfNeeded(thing []string, ip, filename string) []string {
 	return thing
 }
 
+/*
 func SshAsUserRunOneThing(name, ip string) ReturnSshData {
 	runner.WriteOutJit(name)
 	rsd := ReturnSshData{}
@@ -144,6 +148,7 @@ func SshAsUserRunOneThing(name, ip string) ReturnSshData {
 
 	return rsd
 }
+*/
 func CatKesV(name, ip string) {
 	runner.WriteOutJit(name)
 	out, _ := exec.Command("ssh", "-i",

@@ -14,11 +14,11 @@ type LsData struct {
 }
 
 type Tip struct {
-	Epoch int64  `json:"tip1"`
-	Hash  string `json:"tip2"`
-	Slot  int64  `json:"tip3"`
-	Block int64  `json:"tip4"`
-	Era   string `json:"tip5"`
+	Epoch int64  `json:"epoch"`
+	Hash  string `json:"hash"`
+	Slot  int64  `json:"slot"`
+	Block int64  `json:"block"`
+	Era   string `json:"era"`
 }
 
 func StartEyes() {
