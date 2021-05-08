@@ -20,12 +20,11 @@ func BaseUrl() string {
 func DoGet(route string) string {
 	agent := "agent"
 
-	pat := os.Getenv("DO_PAT")
 	urlString := fmt.Sprintf("%s%s", BaseUrl(), route)
 	request, _ := http.NewRequest("GET", urlString, nil)
 	request.Header.Set("User-Agent", agent)
 	request.Header.Set("Content-Type", "application/json")
-	request.Header.Set("Authorization", fmt.Sprintf("Bearer %s", pat))
+	//request.Header.Set("Authorization", fmt.Sprintf("Bearer %s", pat))
 	client := &http.Client{Timeout: time.Second * 500}
 	return DoHttpRead("GET", route, client, request)
 }
@@ -54,23 +53,21 @@ func DoHttpRead(verb, route string, client *http.Client, request *http.Request) 
 }
 
 func DoPost(route string, payload []byte) string {
-	pat := os.Getenv("DO_PAT")
 	body := bytes.NewBuffer(payload)
 	urlString := fmt.Sprintf("%s%s", BaseUrl(), route)
 	request, _ := http.NewRequest("POST", urlString, body)
 	request.Header.Set("Content-Type", "application/json")
-	request.Header.Set("Authorization", fmt.Sprintf("Bearer %s", pat))
+	//request.Header.Set("Authorization", fmt.Sprintf("Bearer %s", pat))
 	client := &http.Client{Timeout: time.Second * 50}
 
 	return DoHttpRead("POST", route, client, request)
 }
 func DoDelete(route string) string {
-	pat := os.Getenv("DO_PAT")
 	body := bytes.NewBuffer([]byte{})
 	urlString := fmt.Sprintf("%s%s", BaseUrl(), route)
 	request, _ := http.NewRequest("DELETE", urlString, body)
 	request.Header.Set("Content-Type", "application/json")
-	request.Header.Set("Authorization", fmt.Sprintf("Bearer %s", pat))
+	//request.Header.Set("Authorization", fmt.Sprintf("Bearer %s", pat))
 	client := &http.Client{Timeout: time.Second * 50}
 
 	return DoHttpRead("DELETE", route, client, request)
