@@ -17,9 +17,11 @@ func RunQueryTip() string {
 }
 
 func RunPaymentAmount() int64 {
+	fmt.Println("1111111111")
 	b, _ := ioutil.ReadFile("/root/cardano-my-node/payment.addr")
-	o, _ := exec.Command("cardano-cli", "query", "utxo", "--address",
-		string(b), "--mainnet").Output()
+	o, e := exec.Command("cardano-cli", "query", "utxo", "--address",
+		strings.TrimSpace(string(b)), "--mainnet").CombinedOutput()
+	fmt.Println(e, string(o))
 	for _, line := range strings.Split(string(o), "\n") {
 		tokens := strings.Split(line, " ")
 		fmt.Println("tokens", strings.Join(tokens, "|"))

@@ -84,6 +84,7 @@ func main() {
 
 		fmt.Println("")
 		if argMap["keys"] == "true" {
+			sum := int64(0)
 			for _, ip := range ProducerIps(pats) {
 				jsonString := network.DoIpGet(ip)
 				var ls LsDataHolder
@@ -101,9 +102,10 @@ func main() {
 				ts, _ := time.Parse("Jan 2, 2006 15:04",
 					fmt.Sprintf("%s %s, 2021 %s", month, day, hoursMins))
 				ago := timeago.FromDuration(time.Since(ts))
-				fmt.Printf("%s %s %d %d\n", ip2name[ip],
+				fmt.Printf("%s %s %d %0.2f\n", ip2name[ip],
 					display.LeftAligned(ago, 20),
-					ls.M.Tip.Epoch, ls.M.Amount)
+					ls.M.Tip.Epoch, float64(ls.M.Amount)/1000000.0)
+				sum += ls.M.Amount
 
 				/*
 					// Apr 27 19:16 kes.vkey
@@ -113,6 +115,7 @@ func main() {
 					fmt.Printf("    |------> %s\n", rsd.SpecialFiles)
 				*/
 			}
+			fmt.Printf("Total %0.2f\n", float64(sum)/1000000.0)
 		}
 	} else if command == "phases" {
 		fmt.Println("")
