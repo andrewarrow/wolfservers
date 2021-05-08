@@ -199,7 +199,7 @@ func main() {
 		ioutil.WriteFile("stake.vkey", []byte(sv), 0755)
 		runner.ScpFileToCold(name, "vrf.vkey", ip)
 		sqlite.CreateNodeKeysOnDisk(name)
-		keys.StakePoolRegCert()
+		keys.StakePoolRegCert(10000, 2)
 		ScpFileToHot(name, "pool.cert", ip)
 		os.Remove("stake.vkey")
 		os.Remove("node.counter")
