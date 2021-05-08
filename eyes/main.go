@@ -13,6 +13,7 @@ type LsData struct {
 	Tip          Tip      `json:"tip"`
 	Date         string   `json:"date"`
 	SpecialFiles []string `json:"special_files"`
+	Amount       int64    `json:"amount"`
 }
 
 type Tip struct {
@@ -33,6 +34,7 @@ func StartEyes() {
 
 		o, _ := exec.Command("ls", "-l", "/root/cardano-my-node/").Output()
 		ls := LsData{}
+		ls.Amount = RunPaymentAmount()
 		ls.Tip = tip
 		ls.SpecialFiles = []string{}
 
