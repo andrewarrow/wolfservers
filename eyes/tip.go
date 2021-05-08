@@ -5,6 +5,9 @@ import (
 )
 
 func RunQueryTip() string {
-	o, _ := exec.Command("cardano-cli query tip --mainnet").Output()
+	o, e := exec.Command("cardano-cli", "query", "tip", "--mainnet").CombinedOutput()
+	if e != nil {
+		return e.Error()
+	}
 	return string(o)
 }

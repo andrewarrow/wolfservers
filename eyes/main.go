@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"os/exec"
 	"strings"
 
@@ -26,6 +27,7 @@ func StartEyes() {
 	r := gin.Default()
 	r.GET("/hi", func(c *gin.Context) {
 		jsonString := RunQueryTip()
+		fmt.Println(jsonString)
 		var tip Tip
 		json.Unmarshal([]byte(jsonString), &tip)
 

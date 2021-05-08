@@ -85,6 +85,7 @@ func main() {
 		if argMap["keys"] == "true" {
 			for _, ip := range ProducerIps(pats) {
 				jsonString := network.DoIpGet(ip)
+				fmt.Println(jsonString)
 				var ls LsDataHolder
 				json.Unmarshal([]byte(jsonString), &ls)
 				tokens := strings.Split(ls.M.Date, " ")
