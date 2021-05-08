@@ -14,6 +14,7 @@ import (
 	"github.com/andrewarrow/wolfservers/algorand"
 	"github.com/andrewarrow/wolfservers/args"
 	"github.com/andrewarrow/wolfservers/digitalocean"
+	"github.com/andrewarrow/wolfservers/display"
 	"github.com/andrewarrow/wolfservers/files"
 	"github.com/andrewarrow/wolfservers/keys"
 	"github.com/andrewarrow/wolfservers/linode"
@@ -85,7 +86,6 @@ func main() {
 		if argMap["keys"] == "true" {
 			for _, ip := range ProducerIps(pats) {
 				jsonString := network.DoIpGet(ip)
-				fmt.Println(jsonString)
 				var ls LsDataHolder
 				json.Unmarshal([]byte(jsonString), &ls)
 				tokens := strings.Split(ls.M.Date, " ")
@@ -101,7 +101,10 @@ func main() {
 				ts, _ := time.Parse("Jan 2, 2006 15:04",
 					fmt.Sprintf("%s %s, 2021 %s", month, day, hoursMins))
 				ago := timeago.FromDuration(time.Since(ts))
-				fmt.Printf("%s %s\n", ip2name[ip], ago)
+				fmt.Printf("%s %s %d\n", ip2name[ip],
+					display.LeftAligned(ago, 20),
+					ls.M.Tip.Epoch)
+
 				/*
 					// Apr 27 19:16 kes.vkey
 
