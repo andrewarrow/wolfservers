@@ -89,6 +89,8 @@ func main() {
 	} else if command == "ssh" {
 		MainSsh()
 	} else if command == "show-oath" {
+		// oathtool --totp -b ''
+		sqlite.ShowOaths()
 	} else if command == "stake.cert" {
 	} else if command == "sqlite" {
 	} else if command == "touch" {

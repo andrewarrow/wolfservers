@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -20,7 +19,6 @@ import (
 	"github.com/andrewarrow/wolfservers/sqlite"
 	"github.com/andrewarrow/wolfservers/vultr"
 	"github.com/justincampbell/timeago"
-	"github.com/lox/go-touchid"
 )
 
 func AddARecord() {
@@ -204,8 +202,6 @@ func foo() {
 		pat := argMap["pat"]
 		sqlite.InsertPat(provider, pat)
 	} else if command == "show-oath" {
-		// oathtool --totp -b ''
-		sqlite.ShowOaths()
 	} else if command == "add-oath" {
 		name := argMap["name"]
 		seed := argMap["seed"]
@@ -217,16 +213,6 @@ func foo() {
 		files.RemoveComments(in)
 	} else if command == "touch" {
 
-		ok, err := touchid.Authenticate("access llamas")
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		if ok {
-			log.Printf("Authenticated")
-		} else {
-			log.Fatal("Failed to authenticate")
-		}
 	} else if command == "deploy" {
 		for _, ip := range ProducerIps(pats) {
 			name := ip2name[ip]

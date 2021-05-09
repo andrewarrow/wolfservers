@@ -4,7 +4,10 @@ import (
 	"encoding/base64"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
+
+	"github.com/lox/go-touchid"
 )
 
 func NameExists(name string) bool {
@@ -26,8 +29,25 @@ func NameExists(name string) bool {
 	}
 	return false
 }
+func BioMetricNo() bool {
+	ok, err := touchid.Authenticate("access llamas")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if ok {
+		log.Printf("Authenticated")
+		return false
+	} else {
+		log.Fatal("Failed to authenticate")
+	}
+	return true
+}
 
 func ShowOaths() {
+	if BioMetricNo() {
+		return
+	}
 	db := OpenTheDB()
 	defer db.Close()
 	rows, err := db.Query("select name,seed,username,password from oaths")
@@ -83,6 +103,9 @@ func LoadPats() map[string]string {
 }
 
 func PaymentAndStakeSigning(name string) (string, string) {
+	if BioMetricNo() {
+		return "", ""
+	}
 	db := OpenTheDB()
 	defer db.Close()
 	rows, err := db.Query("select ps,ss from payment where name=?", name)
@@ -107,6 +130,9 @@ func PaymentAndStakeSigning(name string) (string, string) {
 	return string(shhh1), string(shhh2)
 }
 func PaymentStakeV(name string) string {
+	if BioMetricNo() {
+		return ""
+	}
 	db := OpenTheDB()
 	defer db.Close()
 	rows, err := db.Query("select sv from payment where name=?", name)
@@ -164,6 +190,9 @@ func NodeKeysQuery(name string) int {
 	return len(s1)
 }
 func CreateNodeKeysOnDisk(name string) {
+	if BioMetricNo() {
+		return
+	}
 	db := OpenTheDB()
 	defer db.Close()
 	rows, err := db.Query("select counter, vkey, skey from nodes where name=?", name)
