@@ -153,26 +153,29 @@ func PaymentStakeV(name string) string {
 	shhh := decrypt(decodedBytes, phrase)
 	return string(shhh)
 }
-func PaymentKeysQuery(name string) string {
+func PaymentAddressQuery(name string) (string, string) {
 	db := OpenTheDB()
 	defer db.Close()
-	rows, err := db.Query("select pa from payment where name=?", name)
+	rows, err := db.Query("select pa,sa from payment where name=?", name)
 	if err != nil {
 		fmt.Println(err)
-		return ""
+		return "", ""
 	}
 	defer rows.Close()
 	phrase := os.Getenv("WOLF_PHRASE")
 
 	rows.Next()
 	var s1 string
-	rows.Scan(&s1)
+	var s2 string
+	rows.Scan(&s1, &s2)
 	if s1 == "" {
-		return ""
+		return "", ""
 	}
 	decodedBytes, _ := base64.StdEncoding.DecodeString(s1)
-	shhh := decrypt(decodedBytes, phrase)
-	return string(shhh)
+	shhh1 := decrypt(decodedBytes, phrase)
+	decodedBytes, _ = base64.StdEncoding.DecodeString(s2)
+	shhh2 := decrypt(decodedBytes, phrase)
+	return string(shhh1), string(shhh2)
 }
 func NodeKeysQuery(name string) int {
 	db := OpenTheDB()

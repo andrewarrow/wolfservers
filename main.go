@@ -62,6 +62,8 @@ func main() {
 		AddARecord()
 	} else if command == "add-pat" {
 	} else if command == "add-oath" {
+	} else if command == "address" {
+		PaymentAddress()
 	} else if command == "cold" {
 	} else if command == "comments" {
 	} else if command == "danger-do" {
@@ -69,6 +71,7 @@ func main() {
 	} else if command == "danger-linode" {
 	} else if command == "deleg.cert" {
 	} else if command == "deploy" {
+		DeployEyes()
 	} else if command == "domains-do" {
 	} else if command == "ed255" {
 	} else if command == "fresh2linode" {

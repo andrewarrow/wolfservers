@@ -81,6 +81,18 @@ func Phases() {
 	fmt.Println("")
 }
 
+func IpAndName() (string, string) {
+	ip := argMap["ip"]
+	name := ip2name[ip]
+	return ip, name
+}
+
+func PaymentAddress() {
+	_, name := IpAndName()
+	pa, sa := sqlite.PaymentAddressQuery(name)
+	fmt.Println(pa, sa)
+}
+
 func foo() {
 	command := ""
 	if command == "" {
@@ -89,11 +101,11 @@ func foo() {
 		ip := argMap["ip"]
 		name := ip2name[ip]
 		nodeKeySize := sqlite.NodeKeysQuery(name)
-		paymentAddr := sqlite.PaymentKeysQuery(name)
-		fmt.Println(nodeKeySize, paymentAddr)
-		ioutil.WriteFile("payment.addr", []byte(paymentAddr), 0755)
-		ScpFileToHot(name, "payment.addr", ip)
-		os.Remove("payment.addr")
+		//paymentAddr := sqlite.PaymentKeysQuery(name)
+		fmt.Println(nodeKeySize)
+		//ioutil.WriteFile("payment.addr", []byte(paymentAddr), 0755)
+		//ScpFileToHot(name, "payment.addr", ip)
+		//os.Remove("payment.addr")
 		//if paymentAddr == "" {
 		//	keys.MakePayment(name)
 		//}
@@ -214,10 +226,6 @@ func foo() {
 	} else if command == "touch" {
 
 	} else if command == "deploy" {
-		for _, ip := range ProducerIps(pats) {
-			name := ip2name[ip]
-			ScpFileToAa(name, "eyes.next", ip)
-		}
 	} else if command == "temp" {
 		ip := argMap["ip"]
 		name := ip2name[ip]
@@ -368,4 +376,12 @@ func UpdateIps() {
 	relay := argMap["relay"]
 	name := argMap["name"]
 	sqlite.UpdateIps(name, producer, relay)
+}
+
+func DeployEyes() {
+	for _, ip := range ProducerIps(pats) {
+		name := ip2name[ip]
+		fmt.Println(name)
+		ScpFileToAa(name, "eyes.next", ip)
+	}
 }

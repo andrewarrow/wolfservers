@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"os/exec"
@@ -35,4 +36,25 @@ func RunPaymentAmount() int64 {
 	}
 
 	return sum
+}
+
+func QueryStakeAddress() int64 {
+	b, _ := ioutil.ReadFile("/root/cardano-my-node/stake.addr")
+	o, _ := exec.Command("cardano-cli", "query", "stake-address-info",
+		"--address", strings.TrimSpace(string(b)), "--mainnet").CombinedOutput()
+	/*
+		[
+		    {
+		        "address": "stake1uxju8kl78g40zm5fnffwz8mgrl22yp80c4dvzdtpw9m8rpcavekux",
+		        "rewardAccountBalance": 0,
+		        "delegation": "pool1fqnluegrkns2jj49vgvn8vvn5u8y4m2m3xptx4wngvf4cnwa2fk"
+		    }
+		]
+
+	*/
+	var list []interface{}
+	json.Unmarshal(o, &list)
+	m := list[0].(map[string]interface{})
+	balance := m["rewardAccountBalance"].(int64)
+	return balance
 }

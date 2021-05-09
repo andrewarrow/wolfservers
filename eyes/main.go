@@ -14,6 +14,7 @@ type LsData struct {
 	Date         string   `json:"date"`
 	SpecialFiles []string `json:"special_files"`
 	Amount       int64    `json:"amount"`
+	Balance      int64    `json:"balance"`
 }
 
 type Tip struct {
@@ -35,6 +36,7 @@ func StartEyes() {
 		o, _ := exec.Command("ls", "-l", "/root/cardano-my-node/").Output()
 		ls := LsData{}
 		ls.Amount = RunPaymentAmount()
+		ls.Balance = QueryStakeAddress()
 		ls.Tip = tip
 		ls.SpecialFiles = []string{}
 
