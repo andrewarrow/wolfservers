@@ -51,10 +51,10 @@ func MainList() {
 			ts, _ := time.Parse("Jan 2, 2006 15:04",
 				fmt.Sprintf("%s %s, 2021 %s", month, day, hoursMins))
 			ago := timeago.FromDuration(time.Since(ts))
-			fmt.Printf("%s %s %d %0.2f %d %d\n", ip2name[ip],
+			fmt.Printf("%s %s %d %0.2f %d %d %d\n", ip2name[ip],
 				display.LeftAligned(ago, 20),
 				ls.M.Tip.Epoch, float64(ls.M.Amount)/1000000.0, ls.M.Tip.Slot,
-				ls.M.Tip.Block)
+				ls.M.Tip.Block, ls.M.Balance)
 			sum += ls.M.Amount
 		}
 		fmt.Printf("Total %0.2f\n", float64(sum)/1000000.0)
