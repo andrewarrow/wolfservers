@@ -195,11 +195,15 @@ func main() {
 	} else if command == "pool.cert" {
 		ip := argMap["ip"]
 		name := ip2name[ip]
+		hash := "5318dc07f229acbace49e666124b528c99a36763857f67a2f379d428166577fa"
+		code := "3A81"
 		sv := sqlite.PaymentStakeV(name)
 		ioutil.WriteFile("stake.vkey", []byte(sv), 0755)
 		runner.ScpFileToCold(name, "vrf.vkey", ip)
 		sqlite.CreateNodeKeysOnDisk(name)
-		keys.StakePoolRegCert(10000, 2)
+		// 9997821299
+		// 9997.82
+		keys.StakePoolRegCert(9000, 2, hash, code)
 		ScpFileToHot(name, "pool.cert", ip)
 		os.Remove("stake.vkey")
 		os.Remove("node.counter")
@@ -306,7 +310,7 @@ func main() {
 		ScpFile(ip2name[dest], "scripts/delegate.pool", dest)
 		ScpFile(ip2name[dest], "producer.sh", dest)
 		fmt.Println("1. ssh as root")
-		fmt.Println("2. run setup.sh")
+		fmt.Println("2. run cardano.setup")
 		fmt.Println("3. . .bashrc")
 		fmt.Println("4. run producer.sh")
 	} else if command == "relay" {
@@ -318,7 +322,7 @@ func main() {
 		ScpFile(ip2name[dest], "scripts/delegate.pool", dest)
 		ScpFile(ip2name[dest], "relay.sh", dest)
 		fmt.Println("1. ssh as root")
-		fmt.Println("2. run setup.sh")
+		fmt.Println("2. run cardano.setup")
 		fmt.Println("3. . .bashrc")
 		fmt.Println("4. run relay.sh")
 	} else if command == "update-ips" {
@@ -368,9 +372,11 @@ func main() {
 		digitalocean.CreateDroplet(pats["do"], "relay", size, key)
 
 	} else if command == "node-keys" {
-		//keys.MakeNode("wolf-C0B5")
-		//keys.MakePayment("wolf-C0B5")
-		//ScpFileToHot("payment.addr", ip)
+		ip := argMap["ip"]
+		name := ip2name[ip]
+		keys.MakeNode(name)
+		keys.MakePayment(name)
+		ScpFileToHot(name, "payment.addr", ip)
 	} else if command == "domains-do" {
 		digitalocean.ListDomainRecords(pats["do"], "wolfschedule.com")
 	} else if command == "add-a-record" {

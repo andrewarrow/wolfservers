@@ -40,9 +40,10 @@ func ToTokens(s string) []string {
 	return strings.Split(s, " ")
 }
 
-func StakePoolRegCert(ada int64, margin int) {
+func StakePoolRegCert(ada int64, margin int, hash, code string) {
 	cmd := "cardano-cli"
-	tokens := ToTokens(fmt.Sprintf("stake-pool registration-certificate --cold-verification-key-file node.vkey --vrf-verification-key-file vrf.vkey --pool-pledge %d000000 --pool-cost 340000000 --pool-margin 0.%02d --pool-reward-account-verification-key-file stake.vkey --pool-owner-stake-verification-key-file stake.vkey --mainnet --single-host-pool-relay relay1-c0b5.wolfschedule.com --pool-relay-port 6000 --metadata-url https://wolfschedule.com/assets/C0B5.json --metadata-hash a1cc60cd581058f40be5ddc6c2296e220ec07bdbe0883ea4bee985d17e992a00 --out-file pool.cert", ada, margin))
+	lower := strings.ToLower(code)
+	tokens := ToTokens(fmt.Sprintf("stake-pool registration-certificate --cold-verification-key-file node.vkey --vrf-verification-key-file vrf.vkey --pool-pledge %d000000 --pool-cost 340000000 --pool-margin 0.%02d --pool-reward-account-verification-key-file stake.vkey --pool-owner-stake-verification-key-file stake.vkey --mainnet --single-host-pool-relay relay1-%s.wolfschedule.com --pool-relay-port 6000 --metadata-url https://wolfschedule.com/assets/%s.json --metadata-hash %s --out-file pool.cert", ada, margin, lower, code, hash))
 	o, _ := exec.Command(cmd, tokens...).CombinedOutput()
 	fmt.Println(string(o))
 }
@@ -96,7 +97,7 @@ func MakePayment(name string) {
 	os.Remove("stake.vkey")
 	os.Remove("stake.skey")
 	os.Remove("stake.addr")
-	os.Remove("payment.addr")
+	//os.Remove("payment.addr")
 }
 
 func Step1() {

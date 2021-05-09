@@ -89,7 +89,7 @@ func InsertRow(name, provider, privKey, pubKey string) {
 func DisplayCopyDropboxNotice() {
 	fmt.Println("")
 	fmt.Println("cp ~/wolf.db ~/Dropbox/db-work/")
-	fmt.Println("scp -i ~/.ssh/wolf-91F4  ~/wolf.db root@cyborg.st:")
+	fmt.Println("scp ~/wolf.db root@cyborg.st:")
 	fmt.Println("")
 }
 func InsertPaymentRow(name, pv, ps, sv, ss, sa, pa string) {
