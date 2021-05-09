@@ -35,7 +35,9 @@ func MainList() {
 	if argMap["keys"] == "true" {
 		sum := int64(0)
 		for _, ip := range ProducerIps(pats) {
+			//fmt.Println("ip", ip)
 			jsonString := network.DoIpGet(ip)
+			//fmt.Println("ip", jsonString)
 			var ls LsDataHolder
 			json.Unmarshal([]byte(jsonString), &ls)
 			tokens := strings.Split(ls.M.Date, " ")

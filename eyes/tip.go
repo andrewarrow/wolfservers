@@ -40,7 +40,7 @@ func RunPaymentAmount() int64 {
 
 func QueryStakeAddress() int64 {
 	b, _ := ioutil.ReadFile("/root/cardano-my-node/stake.addr")
-	o, _ := exec.Command("cardano-cli", "query", "stake-address-info",
+	o, e := exec.Command("cardano-cli", "query", "stake-address-info",
 		"--address", strings.TrimSpace(string(b)), "--mainnet").CombinedOutput()
 	/*
 		[
@@ -54,7 +54,11 @@ func QueryStakeAddress() int64 {
 	*/
 	var list []interface{}
 	json.Unmarshal(o, &list)
+	if len(list) == 0 {
+		fmt.Println(string(o), e)
+		return 0
+	}
 	m := list[0].(map[string]interface{})
-	balance := m["rewardAccountBalance"].(int64)
-	return balance
+	balance := m["rewardAccountBalance"].(float64)
+	return int64(balance)
 }
