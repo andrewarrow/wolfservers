@@ -10,8 +10,11 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/andrewarrow/wolfservers/digitalocean"
 	"github.com/andrewarrow/wolfservers/files"
+	"github.com/andrewarrow/wolfservers/linode"
 	"github.com/andrewarrow/wolfservers/runner"
+	"github.com/andrewarrow/wolfservers/vultr"
 )
 
 func unescape(s string) template.HTML {
@@ -24,6 +27,16 @@ type Replacer struct {
 	ProducerIP     string
 	StartKesPeriod string
 	Code           string
+}
+
+func ProducerIps(pats map[string]string) []string {
+	vips := vultr.ListProducerIps(pats["vultr"])
+	lips := linode.ListProducerIps(pats["linode"])
+	dips := digitalocean.ListProducerIps(pats["do"])
+
+	ips := append(vips, lips...)
+	ips = append(ips, dips...)
+	return ips
 }
 
 func MakeRelay(ip string) {
