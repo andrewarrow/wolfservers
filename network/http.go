@@ -17,14 +17,14 @@ func BaseUrl() string {
 	return url
 }
 
-func DoGet(route string) string {
+func DoGet(pat, route string) string {
 	agent := "agent"
 
 	urlString := fmt.Sprintf("%s%s", BaseUrl(), route)
 	request, _ := http.NewRequest("GET", urlString, nil)
 	request.Header.Set("User-Agent", agent)
 	request.Header.Set("Content-Type", "application/json")
-	//request.Header.Set("Authorization", fmt.Sprintf("Bearer %s", pat))
+	request.Header.Set("Authorization", fmt.Sprintf("Bearer %s", pat))
 	client := &http.Client{Timeout: time.Second * 500}
 	return DoHttpRead("GET", route, client, request)
 }
@@ -52,12 +52,12 @@ func DoHttpRead(verb, route string, client *http.Client, request *http.Request) 
 	return ""
 }
 
-func DoPost(route string, payload []byte) string {
+func DoPost(pat, route string, payload []byte) string {
 	body := bytes.NewBuffer(payload)
 	urlString := fmt.Sprintf("%s%s", BaseUrl(), route)
 	request, _ := http.NewRequest("POST", urlString, body)
 	request.Header.Set("Content-Type", "application/json")
-	//request.Header.Set("Authorization", fmt.Sprintf("Bearer %s", pat))
+	request.Header.Set("Authorization", fmt.Sprintf("Bearer %s", pat))
 	client := &http.Client{Timeout: time.Second * 50}
 
 	return DoHttpRead("POST", route, client, request)

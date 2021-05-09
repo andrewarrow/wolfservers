@@ -16,9 +16,9 @@ type DomainRecordsThing struct {
 	DomainRecords []DomainRecord `json:"domain_records"`
 }
 
-func ListDomainRecords(domain string) []string {
+func ListDomainRecords(pat, domain string) []string {
 	list := []string{}
-	jsonString := network.DoGet(fmt.Sprintf("v2/domains/%s/records?per_page=100", domain))
+	jsonString := network.DoGet(pat, fmt.Sprintf("v2/domains/%s/records?per_page=100", domain))
 	var drt DomainRecordsThing
 	json.Unmarshal([]byte(jsonString), &drt)
 	for _, thing := range drt.DomainRecords {
@@ -34,12 +34,12 @@ type RecordThing struct {
 	Ttl  int    `json:"ttl"`
 }
 
-func AddRecord(domain, ip, name string) {
+func AddRecord(pat, domain, ip, name string) {
 	ckt := RecordThing{}
 	ckt.Name = name
 	ckt.Type = "A"
 	ckt.Data = ip
 	ckt.Ttl = 86400
 	asBytes, _ := json.Marshal(ckt)
-	network.DoPost(fmt.Sprintf("v2/domains/%s/records", domain), asBytes)
+	network.DoPost(pat, fmt.Sprintf("v2/domains/%s/records", domain), asBytes)
 }

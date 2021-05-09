@@ -23,7 +23,7 @@ func (t *TokenSource) Token() (*oauth2.Token, error) {
 }
 
 func ListSizes() {
-	jsonString := network.DoGet("v2/sizes?per_page=100")
+	jsonString := network.DoGet("", "v2/sizes?per_page=100")
 	var sizes DropletSizes
 	json.Unmarshal([]byte(jsonString), &sizes)
 	for _, s := range sizes.Sizes {

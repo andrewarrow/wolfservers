@@ -18,7 +18,7 @@ type Images struct {
 }
 
 func ListImages(page int) {
-	jsonString := network.DoGet(fmt.Sprintf("v2/images?page=%d&per_page=200", page))
+	jsonString := network.DoGet("", fmt.Sprintf("v2/images?page=%d&per_page=200", page))
 	var images Images
 	json.Unmarshal([]byte(jsonString), &images)
 	for _, s := range images.Images {

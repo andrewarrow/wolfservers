@@ -19,7 +19,7 @@ type Keys struct {
 
 func ListKeys() []int {
 	list := []int{}
-	jsonString := network.DoGet("v2/account/keys?per_page=100")
+	jsonString := network.DoGet("", "v2/account/keys?per_page=100")
 	//fmt.Println(jsonString)
 	var keys Keys
 	json.Unmarshal([]byte(jsonString), &keys)
@@ -42,7 +42,7 @@ func CreateKey(name, pubKey string) {
 	ckt.Name = name
 	ckt.PublicKey = pubKey
 	asBytes, _ := json.Marshal(ckt)
-	network.DoPost("v2/account/keys", asBytes)
+	network.DoPost("", "v2/account/keys", asBytes)
 }
 
 func DeleteKey(id int) {
@@ -50,7 +50,7 @@ func DeleteKey(id int) {
 }
 func ListKeyFingerprints() []string {
 	list := []string{}
-	jsonString := network.DoGet("v2/account/keys?per_page=100")
+	jsonString := network.DoGet("", "v2/account/keys?per_page=100")
 	//fmt.Println(jsonString)
 	var keys Keys
 	json.Unmarshal([]byte(jsonString), &keys)
