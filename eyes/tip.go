@@ -22,16 +22,17 @@ func RunPaymentAmount() int64 {
 	o, e := exec.Command("cardano-cli", "query", "utxo", "--address",
 		strings.TrimSpace(string(b)), "--mainnet").CombinedOutput()
 	fmt.Println(e, string(o))
+	sum := int64(0)
 	for _, line := range strings.Split(string(o), "\n") {
 		tokens := strings.Split(line, " ")
 		fmt.Println("tokens", strings.Join(tokens, "|"))
 		if len(tokens) == 15 {
 			s := tokens[len(tokens)-2]
 			i, _ := strconv.ParseInt(s, 10, 64)
-			return i
+			sum += i
 		}
 
 	}
 
-	return 0
+	return sum
 }
