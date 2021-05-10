@@ -13,7 +13,7 @@ func ListChains() {
 	fmt.Println(" 5. XTZ      : tezos.com        2018 Arthur Breitman")
 	fmt.Println(" 6. DOT      : polkadot.network 2017 Gavin Wood")
 	fmt.Println(" 7. EOS      : eos.io           2018 Brendan Blumer")
-	fmt.Println(" 8. : ")
+	fmt.Println(" 8. ATOM     : cosmos.network   2017 Kwon/Buchman")
 	fmt.Println(" 9. : ")
 	fmt.Println("10. : ")
 	fmt.Println("11. : ")
