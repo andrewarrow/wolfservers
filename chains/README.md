@@ -7,6 +7,6 @@ blockchain other than ETH2.0
 | --- | --- | --- | --- | --- | 
 | ADA | cardano.org | 2017 | [Charles Hoskinson](https://en.wikipedia.org/wiki/Charles_Hoskinson) | [Haskell](https://github.com/input-output-hk/cardano-node) [Rust](https://github.com/input-output-hk/jormungandr) |
 | ALGO | algorand.org | 2017 |  [Silvio Micali](https://en.wikipedia.org/wiki/Silvio_Micali) | [Go](https://github.com/algorand/go-algorand) | 
-| CELO | celo.org | 2018 |   | [Go](https://github.com/celo-org/celo-blockchain) | 
+| CELO | celo.org | 2018 | [Sep Kamvar](https://en.wikipedia.org/wiki/Sepandar_Kamvar) / [Marek Olszewski](https://everipedia.org/wiki/lang_en/marek-olszewski) / [Rene Reinsberg](https://everipedia.org/wiki/lang_en/rene-reinsberg) | [Go](https://github.com/celo-org/celo-blockchain) | 
 
 test
