@@ -5,7 +5,7 @@ blockchain other than ETH2.0
 
 | Ticker | Domain | Year | Person | Github | 
 | --- | --- | --- | --- | --- | 
-| ADA | cardano.org | 2017 | [Charles Hoskinson](https://en.wikipedia.org/wiki/Charles_Hoskinson) | Haskell [github](https://github.com/input-output-hk/cardano-node) Rust [github](https://github.com/input-output-hk/jormungandr) |
-| ALGO | algorand.org | 2017 |  [Silvio Micali](https://en.wikipedia.org/wiki/Silvio_Micali) | Go [github](https://github.com/algorand/go-algorand) | 
+| ADA | cardano.org | 2017 | [Charles Hoskinson](https://en.wikipedia.org/wiki/Charles_Hoskinson) | [Haskell](https://github.com/input-output-hk/cardano-node) [Rust](https://github.com/input-output-hk/jormungandr) |
+| ALGO | algorand.org | 2017 |  [Silvio Micali](https://en.wikipedia.org/wiki/Silvio_Micali) | [Go](https://github.com/algorand/go-algorand) | 
 
 test
