@@ -14,7 +14,7 @@ func ListChains() {
 	fmt.Println(" 6. DOT      : polkadot.network  2017 Gavin Wood")
 	fmt.Println(" 7. EOS      : eos.io            2018 Brendan Blumer")
 	fmt.Println(" 8. ATOM     : cosmos.network    2017 Kwon/Buchman")
-	fmt.Println(" 9. CELO     : celo.org          2018 Boyd-Wickizer")
+	fmt.Println(" 9. CELO     : celo.org          2018 Sep Kamvar")
 	fmt.Println("10. VET      : vechain.org       2015 Sunny Lu")
 	fmt.Println("11. AGI      : singularitynet.io 2017 Ben Goertzel")
 	fmt.Println("12. : ")
