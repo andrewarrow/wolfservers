@@ -3,11 +3,12 @@
 List of contenders for what will be _**the**_ proof-of-stake / authority
 blockchain other than ETH2.0
 
-| Ticker | Domain | Year | Person | Github | 
+| Ticker | Domain | Year | Person | Git | 
 | --- | --- | --- | --- | --- | 
 | ADA | [cardano.org](https://cardano.org) | 2017 | [Charles Hoskinson](https://en.wikipedia.org/wiki/Charles_Hoskinson) | [Haskell](https://github.com/input-output-hk/cardano-node) [Rust](https://github.com/input-output-hk/jormungandr) |
 | ALGO | [algorand.org](https://algorand.org) | 2017 |  [Silvio Micali](https://en.wikipedia.org/wiki/Silvio_Micali) | [Go](https://github.com/algorand/go-algorand) | 
 | CELO | [celo.org](https://celo.org) | 2018 | [Sep Kamvar](https://en.wikipedia.org/wiki/Sepandar_Kamvar) / [Marek Olszewski](https://everipedia.org/wiki/lang_en/marek-olszewski) / [Rene Reinsberg](https://everipedia.org/wiki/lang_en/rene-reinsberg) | [Go](https://github.com/celo-org/celo-blockchain) | 
 | ATOM | [cosmos.network](https://cosmos.network) | 2017 | [Jae Kwon](https://everipedia.org/wiki/lang_en/jae-kwon) [Ethan Buchman](https://www.creativedestructionlab.com/people/ethan-buchman/) | [Go](https://github.com/cosmos/cosmos-sdk) | 
+| XTZ | [tezos.com](https://tezos.com) | 2018 | [Arthur Breitman](https://everipedia.org/wiki/lang_en/arthur-breitman) | [ML](https://gitlab.com/tezos/tezos) | 
 
 test
