@@ -65,8 +65,6 @@ func main() {
 	} else if command == "address" {
 		PaymentAddress()
 	} else if command == "cold" {
-	} else if command == "chains" {
-		ListChains()
 	} else if command == "comments" {
 	} else if command == "danger-do" {
 		DangerDo()
