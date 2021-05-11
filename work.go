@@ -304,16 +304,7 @@ func foo() {
 	} else if command == "add-a-record" {
 	} else if command == "danger-do" {
 	} else if command == "danger-vultr" {
-		if argMap["ID"] == "" {
-			return
-		}
-		vultr.RemoveServer(pats["vultr"], argMap["ID"])
 	} else if command == "danger-linode" {
-		if argMap["ID"] == "" {
-			return
-		}
-		id, _ := strconv.Atoi(argMap["ID"])
-		linode.RemoveServer(pats["linode"], id)
 	} else if command == "ed255" {
 		if argMap["provider"] == "" {
 			return
@@ -392,4 +383,17 @@ func DangerDo() {
 	}
 	id, _ := strconv.Atoi(argMap["ID"])
 	digitalocean.RemoveDroplet(pats["do"], id)
+}
+func DangerLinode() {
+	if argMap["ID"] == "" {
+		return
+	}
+	id, _ := strconv.Atoi(argMap["ID"])
+	linode.RemoveServer(pats["linode"], id)
+}
+func DangerVultr() {
+	if argMap["ID"] == "" {
+		return
+	}
+	vultr.RemoveServer(pats["vultr"], argMap["ID"])
 }

@@ -2,6 +2,7 @@ package vultr
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/andrewarrow/wolfservers/display"
 	"github.com/vultr/govultr/v2"
@@ -16,7 +17,7 @@ func ListServers(pat string, ip2wolf map[string]string) {
 	for _, v := range i {
 		wolfName := ip2wolf[v.MainIP]
 		display.DisplayServer(wolfName, v.ID, "VULTR", v.Label, v.MainIP)
-		//fmt.Println(v.ID)
+		fmt.Println(v.ID)
 	}
 }
 func ListProducerIps(pat string) []string {

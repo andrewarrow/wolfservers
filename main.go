@@ -69,7 +69,9 @@ func main() {
 	} else if command == "danger-do" {
 		DangerDo()
 	} else if command == "danger-vultr" {
+		DangerVultr()
 	} else if command == "danger-linode" {
+		DangerLinode()
 	} else if command == "deleg.cert" {
 	} else if command == "deploy" {
 		DeployEyes()

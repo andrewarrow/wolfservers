@@ -19,6 +19,7 @@ func ListServers(pat string, ip2wolf map[string]string) {
 	for _, v := range i {
 		wolfName := ip2wolf[fmt.Sprintf("%v", v.IPv4[0])]
 		display.DisplayServer(wolfName, v.ID, "LINODE", v.Label, v.IPv4[0])
+		//fmt.Println(v.ID)
 	}
 }
 func ListProducerIps(pat string) []string {
