@@ -69,6 +69,7 @@ func main() {
 		ListChains()
 	} else if command == "comments" {
 	} else if command == "danger-do" {
+		DangerDo()
 	} else if command == "danger-vultr" {
 	} else if command == "danger-linode" {
 	} else if command == "deleg.cert" {

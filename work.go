@@ -303,11 +303,6 @@ func foo() {
 		digitalocean.ListDomainRecords(pats["do"], "wolfschedule.com")
 	} else if command == "add-a-record" {
 	} else if command == "danger-do" {
-		if argMap["ID"] == "" {
-			return
-		}
-		id, _ := strconv.Atoi(argMap["ID"])
-		digitalocean.RemoveDroplet(pats["do"], id)
 	} else if command == "danger-vultr" {
 		if argMap["ID"] == "" {
 			return
@@ -389,4 +384,12 @@ func RunTx() {
 	os.Remove("stake.skey")
 	result := runner.HotExec(name, ip, "cardano-cli transaction submit --tx-file /root/cardano-my-node/tx.signed --mainnet")
 	fmt.Println(result)
+}
+
+func DangerDo() {
+	if argMap["ID"] == "" {
+		return
+	}
+	id, _ := strconv.Atoi(argMap["ID"])
+	digitalocean.RemoveDroplet(pats["do"], id)
 }
