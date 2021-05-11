@@ -66,7 +66,7 @@ func ListDroplets(pat string, ip2wolf map[string]string) {
 			continue
 		}
 		display.DisplayServer(wolfName, droplet.ID, "DO", droplet.Name, ip)
-		fmt.Println(droplet.ID)
+		//fmt.Println(droplet.ID)
 	}
 }
 
