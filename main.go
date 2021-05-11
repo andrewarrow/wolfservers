@@ -101,6 +101,7 @@ func main() {
 	} else if command == "touch" {
 	} else if command == "tx-delegate" {
 	} else if command == "tx" {
+		RunTx()
 	} else if command == "update-ed" {
 	} else if command == "update-ids" {
 	} else if command == "update-ips" {

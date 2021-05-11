@@ -3,7 +3,7 @@
 List of contenders for what will be _**the**_ proof-of-stake 
 blockchain other than ETH2.0
 
-| Ticker | Domain | Year | Founders | Git | 
+| Ticker | Domain | Year | Founder(s) | Git | 
 | --- | --- | --- | --- | --- | 
 | ADA | [cardano.org](https://cardano.org) | 2017 | [Charles Hoskinson](https://en.wikipedia.org/wiki/Charles_Hoskinson) | [Haskell](https://github.com/input-output-hk/cardano-node) [Rust](https://github.com/input-output-hk/jormungandr) |
 | ALGO | [algorand.org](https://algorand.org) | 2017 |  [Silvio Micali](https://en.wikipedia.org/wiki/Silvio_Micali) | [Go](https://github.com/algorand/go-algorand) | 

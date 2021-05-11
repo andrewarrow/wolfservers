@@ -130,19 +130,6 @@ func foo() {
 		result := runner.HotExec(name, ip, "cardano-cli transaction submit --tx-file /root/cardano-my-node/tx.signed --mainnet")
 		fmt.Println(result)
 	} else if command == "tx" {
-		ip := argMap["ip"]
-		name := ip2name[ip]
-		ps, ss := sqlite.PaymentAndStakeSigning(name)
-		ioutil.WriteFile("payment.skey", []byte(ps), 0755)
-		ioutil.WriteFile("stake.skey", []byte(ss), 0755)
-		keys.SignTx()
-		ScpFileToHot(name, "tx.signed", ip)
-		os.Remove("tx.raw")
-		os.Remove("tx.signed")
-		os.Remove("payment.skey")
-		os.Remove("stake.skey")
-		result := runner.HotExec(name, ip, "cardano-cli transaction submit --tx-file /root/cardano-my-node/tx.signed --mainnet")
-		fmt.Println(result)
 	} else if command == "deleg.cert" {
 		ip := argMap["ip"]
 		name := ip2name[ip]
@@ -386,4 +373,20 @@ func DeployEyes() {
 		fmt.Println(name)
 		ScpFileToAa(name, "eyes.next", ip)
 	}
+}
+
+func RunTx() {
+	ip := argMap["ip"]
+	name := ip2name[ip]
+	ps, ss := sqlite.PaymentAndStakeSigning(name)
+	ioutil.WriteFile("payment.skey", []byte(ps), 0755)
+	ioutil.WriteFile("stake.skey", []byte(ss), 0755)
+	keys.SignTx()
+	ScpFileToHot(name, "tx.signed", ip)
+	os.Remove("tx.raw")
+	os.Remove("tx.signed")
+	os.Remove("payment.skey")
+	os.Remove("stake.skey")
+	result := runner.HotExec(name, ip, "cardano-cli transaction submit --tx-file /root/cardano-my-node/tx.signed --mainnet")
+	fmt.Println(result)
 }
