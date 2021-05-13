@@ -7,6 +7,7 @@ blockchain other than ETH2.0
 | --- | --- | --- | --- | --- | 
 | ADA | [cardano.org](https://cardano.org) | 2017 | [Charles Hoskinson](https://en.wikipedia.org/wiki/Charles_Hoskinson) | [Haskell](https://github.com/input-output-hk/cardano-node) [Rust](https://github.com/input-output-hk/jormungandr) |
 | ALGO | [algorand.org](https://algorand.org) | 2017 |  [Silvio Micali](https://en.wikipedia.org/wiki/Silvio_Micali) | [Go](https://github.com/algorand/go-algorand) | 
+| NANO | [nano.org](https://nano.org/) | 2014 | [Colin LeMahieu](https://en.wikipedia.org/wiki/Nano_(cryptocurrency)) | [C++](https://github.com/nanocurrency/nano-node) |
 | EGLD | [elrond.com](https://elrond.com/) | 2020 | [Beniamin Mincu](https://everipedia.org/wiki/lang_en/beniamin-mincu) | [Go](https://github.com/ElrondNetwork/elrond-go) |
 | CELO | [celo.org](https://celo.org) | 2018 | [Sep Kamvar](https://en.wikipedia.org/wiki/Sepandar_Kamvar) / [Marek Olszewski](https://everipedia.org/wiki/lang_en/marek-olszewski) / [Rene Reinsberg](https://everipedia.org/wiki/lang_en/rene-reinsberg) | [Go](https://github.com/celo-org/celo-blockchain) | 
 | ATOM | [cosmos.network](https://cosmos.network) | 2017 | [Jae Kwon](https://everipedia.org/wiki/lang_en/jae-kwon) / [Ethan Buchman](https://www.creativedestructionlab.com/people/ethan-buchman/) | [Go](https://github.com/cosmos/cosmos-sdk) | 
