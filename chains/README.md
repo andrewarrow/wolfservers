@@ -12,6 +12,7 @@ blockchain other than ETH2.0
 | EGLD | [elrond.com](https://elrond.com/) | 2020 | [Beniamin Mincu](https://everipedia.org/wiki/lang_en/beniamin-mincu) | [Go](https://github.com/ElrondNetwork/elrond-go) | 3.0 B |
 | CELO | [celo.org](https://celo.org) | 2018 | [Sep Kamvar](https://en.wikipedia.org/wiki/Sepandar_Kamvar) / [Marek Olszewski](https://everipedia.org/wiki/lang_en/marek-olszewski) / [Rene Reinsberg](https://everipedia.org/wiki/lang_en/rene-reinsberg) | [Go](https://github.com/celo-org/celo-blockchain) | 1.1 B |
 | ATOM | [cosmos.network](https://cosmos.network) | 2017 | [Jae Kwon](https://everipedia.org/wiki/lang_en/jae-kwon) / [Ethan Buchman](https://www.creativedestructionlab.com/people/ethan-buchman/) | [Go](https://github.com/cosmos/cosmos-sdk) | 5.3 B |
+| LUNA | [terra.money](https://terra.money) | 2018 | [Daniel Shin / Do Kwon](https://techcrunch.com/2018/08/29/terra/) | [Go](https://github.com/terra-project/core) | 6.3 B |
 | XTZ | [tezos.com](https://tezos.com) | 2018 | [Arthur Breitman](https://everipedia.org/wiki/lang_en/arthur-breitman) | [ML](https://gitlab.com/tezos/tezos) | 5.7 B |
 | DOT | [polkadot.network](https://polkadot.network) | 2017 | [Gavin Wood](https://en.wikipedia.org/wiki/Gavin_Wood) | [Rust](https://github.com/paritytech/polkadot) | 41.3 B|
 
