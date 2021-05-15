@@ -48,6 +48,9 @@ func ShowOaths() {
 	if BioMetricNo() {
 		return
 	}
+	fmt.Println("")
+	fmt.Println("        oathtool --totp -b ''")
+	fmt.Println("")
 	db := OpenTheDB()
 	defer db.Close()
 	rows, err := db.Query("select name,seed,username,password from oaths")

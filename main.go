@@ -62,6 +62,7 @@ func main() {
 		AddARecord()
 	} else if command == "add-pat" {
 	} else if command == "add-oath" {
+		AddOath()
 	} else if command == "address" {
 		PaymentAddress()
 	} else if command == "cold" {
@@ -95,7 +96,6 @@ func main() {
 	} else if command == "ssh" {
 		MainSsh()
 	} else if command == "show-oath" {
-		// oathtool --totp -b ''
 		sqlite.ShowOaths()
 	} else if command == "stake.cert" {
 	} else if command == "sqlite" {

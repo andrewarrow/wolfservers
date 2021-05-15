@@ -204,11 +204,6 @@ func foo() {
 		sqlite.InsertPat(provider, pat)
 	} else if command == "show-oath" {
 	} else if command == "add-oath" {
-		name := argMap["name"]
-		seed := argMap["seed"]
-		username := argMap["username"]
-		password := argMap["password"]
-		sqlite.InsertOath(name, seed, username, password)
 	} else if command == "comments" {
 		in := argMap["in"]
 		files.RemoveComments(in)
@@ -396,4 +391,12 @@ func DangerVultr() {
 		return
 	}
 	vultr.RemoveServer(pats["vultr"], argMap["ID"])
+}
+
+func AddOath() {
+	name := argMap["name"]
+	seed := argMap["seed"]
+	username := argMap["username"]
+	password := argMap["password"]
+	sqlite.InsertOath(name, seed, username, password)
 }
