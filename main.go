@@ -67,6 +67,7 @@ func main() {
 		PaymentAddress()
 	} else if command == "cold" {
 	} else if command == "comments" {
+		Comments()
 	} else if command == "danger-do" {
 		DangerDo()
 	} else if command == "danger-vultr" {

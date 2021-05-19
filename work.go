@@ -205,8 +205,6 @@ func foo() {
 	} else if command == "show-oath" {
 	} else if command == "add-oath" {
 	} else if command == "comments" {
-		in := argMap["in"]
-		files.RemoveComments(in)
 	} else if command == "touch" {
 
 	} else if command == "deploy" {
@@ -399,4 +397,9 @@ func AddOath() {
 	username := argMap["username"]
 	password := argMap["password"]
 	sqlite.InsertOath(name, seed, username, password)
+}
+
+func Comments() {
+	in := argMap["in"]
+	files.RemoveComments(in)
 }
