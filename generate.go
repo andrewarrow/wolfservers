@@ -76,6 +76,20 @@ func MakeProducer(ip string) {
 	t.Execute(&buff, r)
 	ioutil.WriteFile("producer.sh", buff.Bytes(), 0755)
 }
+func MakeBitClout() {
+	/*
+		b2, _ := ioutil.ReadFile("scripts/producer.history")
+		blob := string(b2)
+		t := template.Must(template.New("producer").
+			Funcs(template.FuncMap{"unescape": unescape}).
+			Parse(blob))
+		var buff bytes.Buffer
+		r := Replacer{}
+		r.LtLt = "<<"
+		t.Execute(&buff, r)
+		ioutil.WriteFile("producer.sh", buff.Bytes(), 0755)
+	*/
+}
 
 func PrepDest(dest string) {
 	out, _ := exec.Command("ssh-keyscan", "-H", dest).Output()

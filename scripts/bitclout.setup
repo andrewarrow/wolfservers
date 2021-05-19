@@ -12,4 +12,20 @@ echo "aa ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/99_sudo_include_file
     echo 'vm.swappiness=10' | sudo tee -a /etc/sysctl.conf
     echo 'vm.vfs_cache_pressure=50' | sudo tee -a /etc/sysctl.conf
 
+apt update
+apt install -y build-essential
+
+wget https://golang.org/dl/go1.16.4.linux-amd64.tar.gz
+gunzip go1.16.4.linux-amd64.tar.gz
+tar -xf go1.16.4.linux-amd64.tar
+rm go1.16.4.linux-amd64.tar
+mv go /home/aa
+chown -R aa:aa /home/aa/go
+
 wget https://github.com/bitclout/core/archive/refs/tags/v1.0.0.tar.gz
+gunzip v1.0.0.tar.gz 
+tar -xf v1.0.0.tar 
+rm v1.0.0.tar 
+mv core-1.0.0 /home/aa/
+chown -R aa:aa /home/aa/core-1.0.0
+

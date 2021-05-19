@@ -65,6 +65,8 @@ func main() {
 		AddOath()
 	} else if command == "address" {
 		PaymentAddress()
+	} else if command == "bitclout" {
+		BitClout()
 	} else if command == "cold" {
 	} else if command == "comments" {
 		Comments()
@@ -79,6 +81,7 @@ func main() {
 		DeployEyes()
 	} else if command == "domains-do" {
 	} else if command == "ed255" {
+		Ed255()
 	} else if command == "fresh2linode" {
 	} else if command == "fresh1vultr" {
 		Fresh1Vultr()
@@ -101,6 +104,7 @@ func main() {
 		sqlite.ShowOaths()
 	} else if command == "stake.cert" {
 	} else if command == "sqlite" {
+		sqlite.List()
 	} else if command == "touch" {
 	} else if command == "tx-delegate" {
 	} else if command == "tx" {

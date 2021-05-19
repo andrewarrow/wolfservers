@@ -299,33 +299,6 @@ func foo() {
 	} else if command == "danger-vultr" {
 	} else if command == "danger-linode" {
 	} else if command == "ed255" {
-		if argMap["provider"] == "" {
-			return
-		}
-		provider := argMap["provider"]
-
-		if provider == "linode" {
-			ids := linode.ListKeys(pats["linode"])
-			for _, id := range ids {
-				linode.DeleteSshKey(pats["linode"], id)
-			}
-			name, pubKey := keys.MakeEd("LINODE")
-			linode.CreateSshKey(pats["linode"], name, strings.TrimSpace(pubKey))
-		} else if provider == "vultr" {
-			ids := vultr.ListKeys(pats["vultr"])
-			for _, id := range ids {
-				vultr.DeleteKey(pats["vultr"], id)
-			}
-			name, pubKey := keys.MakeEd("VULTR")
-			vultr.CreateKey(pats["vultr"], name, strings.TrimSpace(pubKey))
-		} else if provider == "do" {
-			ids := digitalocean.ListKeys()
-			for _, id := range ids {
-				digitalocean.DeleteKey(id)
-			}
-			name, pubKey := keys.MakeEd("DO")
-			digitalocean.CreateKey(name, strings.TrimSpace(pubKey))
-		}
 	}
 }
 
@@ -337,6 +310,36 @@ func MainSsh() {
 		user = "root"
 	}
 	SshAsUser(user, name, ip)
+}
+
+func Ed255() {
+	if argMap["provider"] == "" {
+		return
+	}
+	provider := argMap["provider"]
+
+	if provider == "linode" {
+		ids := linode.ListKeys(pats["linode"])
+		for _, id := range ids {
+			linode.DeleteSshKey(pats["linode"], id)
+		}
+		name, pubKey := keys.MakeEd("LINODE")
+		linode.CreateSshKey(pats["linode"], name, strings.TrimSpace(pubKey))
+	} else if provider == "vultr" {
+		ids := vultr.ListKeys(pats["vultr"])
+		for _, id := range ids {
+			vultr.DeleteKey(pats["vultr"], id)
+		}
+		name, pubKey := keys.MakeEd("VULTR")
+		vultr.CreateKey(pats["vultr"], name, strings.TrimSpace(pubKey))
+	} else if provider == "do" {
+		ids := digitalocean.ListKeys()
+		for _, id := range ids {
+			digitalocean.DeleteKey(id)
+		}
+		name, pubKey := keys.MakeEd("DO")
+		digitalocean.CreateKey(name, strings.TrimSpace(pubKey))
+	}
 }
 
 func UpdateIps() {
@@ -409,4 +412,13 @@ func Fresh1Vultr() {
 		return
 	}
 	vultr.CreateServer(pats["vultr"], "bitclout")
+}
+
+func BitClout() {
+	dest := argMap["producer"]
+	PrepDest(dest)
+	MakeBitClout()
+	ScpFile(ip2name[dest], "scripts/bitclout.setup", dest)
+	fmt.Println("1. ssh as root")
+	fmt.Println("2. run bitclout.setup")
 }
