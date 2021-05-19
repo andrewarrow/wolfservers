@@ -80,7 +80,8 @@ func main() {
 	} else if command == "domains-do" {
 	} else if command == "ed255" {
 	} else if command == "fresh2linode" {
-	} else if command == "fresh2vultr" {
+	} else if command == "fresh1vultr" {
+		Fresh1Vultr()
 	} else if command == "fresh2do" {
 	} else if command == "hot" {
 	} else if command == "issue-op-cert" {

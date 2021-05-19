@@ -403,3 +403,10 @@ func Comments() {
 	in := argMap["in"]
 	files.RemoveComments(in)
 }
+
+func Fresh1Vultr() {
+	if argMap["sure"] == "" {
+		return
+	}
+	vultr.CreateServer(pats["vultr"], "bitclout")
+}
