@@ -44,7 +44,23 @@ chown -R aa:aa /home/aa/backend-1.0.0
 mkdir -p /home/aa/workdir/backend
 mkdir -p /home/aa/workdir/core
 mkdir -p /home/aa/workdir/core/third_party
+mkdir -p /home/aa/workdir/backend/cmd
+mkdir -p /home/aa/workdir/backend/miner
+mkdir -p /home/aa/workdir/backend/routes
+mkdir -p /home/aa/workdir/core/clouthash
+mkdir -p /home/aa/workdir/core/cmd
+mkdir -p /home/aa/workdir/core/lib
 cp -r backend-1.0.0/go.* /home/aa/workdir/backend
+cp -r backend-1.0.0/cmd /home/aa/workdir/backend
+cp -r backend-1.0.0/miner /home/aa/workdir/backend
+cp -r backend-1.0.0/routes /home/aa/workdir/backend
+cp -r backend-1.0.0/main.go /home/aa/workdir/backend
 cp -r core-1.0.0/go.* /home/aa/workdir/core
 cp -r core-1.0.0/third_party /home/aa/workdir/core
+cp -r core-1.0.0/clouthash /home/aa/workdir/core
+cp -r core-1.0.0/cmd/*.go /home/aa/workdir/cmd
+cp -r core-1.0.0/lib/*.go /home/aa/workdir/lib
 chown -R aa:aa /home/aa/workdir
+
+
+
