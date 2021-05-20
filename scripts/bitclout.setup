@@ -22,6 +22,7 @@ tar -xf go1.16.4.linux-amd64.tar
 rm go1.16.4.linux-amd64.tar
 mv go /home/aa
 chown -R aa:aa /home/aa/go
+echo 'PATH="$HOME/go/bin:$PATH"' >> /home/aa/.profile
 
 wget https://github.com/bitclout/core/archive/refs/tags/v1.0.0.tar.gz
 gunzip v1.0.0.tar.gz 
@@ -43,3 +44,4 @@ mkdir -p /home/aa/workdir/core/third_party
 cp -r backend-1.0.0/go.* /home/aa/workdir/backend
 cp -r core-1.0.0/go.* /home/aa/workdir/core
 cp -r core-1.0.0/third_party /home/aa/workdir/third_party
+chown -R aa:aa /home/aa/workdir
