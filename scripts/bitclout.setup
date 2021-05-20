@@ -62,5 +62,8 @@ cp -r /home/aa/core-1.0.0/cmd/*.go /home/aa/workdir/core/cmd
 cp -r /home/aa/core-1.0.0/lib/*.go /home/aa/workdir/core/lib
 chown -R aa:aa /home/aa/workdir
 
+# then ssh in as user aa, cd /home/aa/workdir/backend
+# go build -mod=mod -a -installsuffix cgo -o bin/backend main.go
+# then run bin/backend in screen or tmux session
 
 
