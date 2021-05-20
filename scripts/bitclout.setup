@@ -14,6 +14,7 @@ echo "aa ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/99_sudo_include_file
 
 apt update
 apt install -y build-essential
+apt install -y libvips-dev
 
 wget https://golang.org/dl/go1.16.4.linux-amd64.tar.gz
 gunzip go1.16.4.linux-amd64.tar.gz
@@ -29,3 +30,16 @@ rm v1.0.0.tar
 mv core-1.0.0 /home/aa/
 chown -R aa:aa /home/aa/core-1.0.0
 
+wget https://github.com/bitclout/backend/archive/refs/tags/v1.0.0.tar.gz
+gunzip v1.0.0.tar.gz 
+tar -xf v1.0.0.tar 
+rm v1.0.0.tar 
+mv backend-1.0.0 /home/aa/
+chown -R aa:aa /home/aa/backend-1.0.0
+
+mkdir -p /home/aa/workdir/backend
+mkdir -p /home/aa/workdir/core
+mkdir -p /home/aa/workdir/core/third_party
+cp -r backend-1.0.0/go.* /home/aa/workdir/backend
+cp -r core-1.0.0/go.* /home/aa/workdir/core
+cp -r core-1.0.0/third_party /home/aa/workdir/third_party
